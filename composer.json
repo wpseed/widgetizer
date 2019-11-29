@@ -1,0 +1,32 @@
+{
+  "name": "wpseed/widgetizer",
+  "authors": [
+    {
+      "name": "Zorca Orcinus",
+      "email": "vs@zorca.org"
+    }
+  ],
+  "minimum-stability": "dev",
+  "prefer-stable": true,
+  "config": {
+    "platform": {
+      "php": "5.6"
+    }
+  },
+  "require": {
+    "psr/container": "^1.0",
+    "latte/latte": "^2.4",
+    "symfony/finder": "^3.4",
+    "symfony/yaml": "^3.4"
+  },
+  "require-dev": {
+    "brain/monkey": "^2.3",
+    "phpunit/phpunit": "^5.7",
+    "wp-coding-standards/wpcs": "^2.1"
+  },
+  "autoload": {
+    "classmap": [
+      "includes"
+    ]
+  }
+}
