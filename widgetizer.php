@@ -30,19 +30,31 @@
  * Starts at version 1.0.0 and uses SemVer - https://semver.org
  */
 define( 'WPSEED_WIDGETIZER_VERSION', '1.0.0' );
+
 /**
  * Minimum required php version.
  */
 define( 'WPSEED_WIDGETIZER_MIN_PHP_VERSION', '5.6.20' );
+
 /**
  * Path to the plugin dir.
  */
 define( 'WPSEED_WIDGETIZER_PATH', __DIR__ );
+
 /**
  * Basepath of the plugin.
  */
 define( 'WPSEED_WIDGETIZER_BASENAME', plugin_basename( __FILE__ ) );
+
 /**
  * Url of the plugin dir.
  */
 define( 'WPSEED_WIDGETIZER_URL', plugin_dir_url( __FILE__ ) );
+
+/**
+ * Load vendor packages.
+ */
+require_once WPSEED_WIDGETIZER_PATH . '/vendor/autoload.php';
+
+// Kick it off.
+add_action( 'plugins_loaded', array( \Wpseed\Widgetizer\Widgetizer::get_instance(), 'init' ) );
