@@ -52,16 +52,48 @@ final class Widgetizer {
 	}
 
 	/**
-	 * Register widgets.
+	 * Init hooks.
 	 */
-	public function register_widgets() {
+	public function hooks() {
+
+	}
+
+	/**
+	 * Check Elementor plugin installed or not.
+	 *
+	 * @return bool
+	 */
+	public function check_elementor() {
+		return defined( 'ELEMENTOR_PATH' ) && class_exists( 'Elementor\Widget_Base' );
+	}
+
+	/**
+	 * Register Elementor widgets.
+	 *
+	 * @param mixed $widgets_dir Elementor widgets path.
+	 */
+	public function register_elementor_widgets( $widgets_dir = null ) {
+
+		if ( ! $widgets_dir ) {
+			$widgets_dirs = array(
+				get_stylesheet_directory() . '/widgets/elementor',
+				WPSEED_WIDGETIZER_PATH . '/tests/widgets/elementor',
+			);
+
+			foreach ( $widgets_dirs as $dir ) {
+				if ( is_dir( $dir ) ) {
+					$widgets_dir = $dir;
+					break;
+				}
+			}
+		}
 
 		$finder = new Finder();
 
-		$elementor_widgets = $finder->directories()->in( WP_CONTENT_DIR . '/widgets/elementor/widgetizer' );
+		$elementor_widgets_providers = $finder->directories()->in( $widgets_dir );
 
-		foreach ( $elementor_widgets as $elementor_widget ) {
-			$class_name = 'Wpseed_Widgetizer_Elementor_' . ucfirst( strtolower( str_replace( '-', '_', $elementor_widget->getFileName() ) ) );
+		foreach ( $elementor_widgets_providers as $elementor_widgets_providers_item ) {
+			$class_name = 'Wpseed_Widgetizer_Elementor_' . ucfirst( strtolower( str_replace( '-', '_', $elementor_widgets_providers_item->getFileName() ) ) );
 			$code       = "class {$class_name} extends Wpseed\Widgetizer\Elementor_Widget{}";
 			eval( $code ); // phpcs:ignore
 			$widget = new $class_name();
