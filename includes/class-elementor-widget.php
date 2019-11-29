@@ -7,7 +7,6 @@
 
 namespace Wpseed\Widgetizer;
 
-use Elementor\Controls_Manager;
 use Latte\Engine;
 use Symfony\Component\Yaml\Yaml;
 
