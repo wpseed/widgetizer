@@ -12,4 +12,13 @@ namespace Wpseed\Widgetizer\Elementor;
  *
  * @package Wpseed\Widgetizer\Elementor
  */
-class Parser {}
+class Parser {
+
+	/**
+	 * Parse widgets from directory.
+	 *
+	 * @param null $dir Directory for parsing widget configs.
+	 */
+	public function parse_dir( $dir = null ) {
+	}
+}
