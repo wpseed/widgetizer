@@ -5,7 +5,7 @@
  * @package Widgetizer
  */
 
-namespace Wpseed\Widgetizer;
+namespace Wpseed\Widgetizer\Elementor;
 
 use Latte\Engine;
 use Nette\Neon\Exception;
@@ -20,7 +20,7 @@ use Symfony\Component\Yaml\Yaml;
  *
  * @package Wpseed\Widgetizer
  */
-class Elementor_Widget extends \Elementor\Widget_Base {
+class Widget extends \Elementor\Widget_Base {
 
 	/**
 	 * Widget provider.

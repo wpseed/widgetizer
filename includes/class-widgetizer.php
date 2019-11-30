@@ -91,7 +91,7 @@ final class Widgetizer {
 
 		foreach ( $elementor_widgets_providers as $elementor_widgets_providers_item ) {
 			$class_name = 'Wpseed_Widgetizer_Elementor_' . ucfirst( strtolower( str_replace( '-', '_', $elementor_widgets_providers_item->getFileName() ) ) );
-			$code       = "class {$class_name} extends Wpseed\Widgetizer\Elementor_Widget{}";
+			$code       = "class {$class_name} extends Wpseed\Widgetizer\Elementor\Widget{}";
 			eval( $code ); // phpcs:ignore
 			$widget = new $class_name();
 			\Elementor\Plugin::instance()->widgets_manager->register_widget_type( $widget );

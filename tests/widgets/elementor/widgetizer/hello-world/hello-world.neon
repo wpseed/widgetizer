@@ -1,0 +1,15 @@
+# This is demo widget config
+title: Hello World!
+icon: eicon-posts-ticker
+content:
+    general: # General section
+        widget_title:
+            type: text
+            label: Widget Title
+            default: Default Title Content
+        widget_content:
+            type: textarea
+    advanced:
+        widget_code:
+            type: code
+            label: Widget Code
