@@ -20,7 +20,7 @@ class Parser {
 	 * Parse widgets from directory.
 	 *
 	 * @param string $dir Directory for parsing widget configs.
-	 * @return string $output Output config.
+	 * @return array $output Output config.
 	 */
 	public function parse_widgets( $dir = null ) {
 		$output = [];
