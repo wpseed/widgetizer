@@ -48,14 +48,12 @@ final class Widgetizer {
 	 * Init plugin.
 	 */
 	public function init() {
-
 	}
 
 	/**
 	 * Init hooks.
 	 */
 	public function hooks() {
-
 	}
 
 	/**
@@ -73,7 +71,6 @@ final class Widgetizer {
 	 * @param mixed $widgets_dir Elementor widgets path.
 	 */
 	public function register_elementor_widgets( $widgets_dir = null ) {
-
 		if ( ! $widgets_dir ) {
 			$widgets_dirs = array(
 				get_stylesheet_directory() . '/widgets/elementor',

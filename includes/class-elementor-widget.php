@@ -75,7 +75,7 @@ class Elementor_Widget extends \Elementor\Widget_Base {
 	 * @return mixed
 	 */
 	public function get_title() {
-		return __( 'Test', 'elementor-hello-world' );
+		return __( 'Test', 'wpseed-widgetizer' );
 	}
 
 	/**
@@ -97,7 +97,6 @@ class Elementor_Widget extends \Elementor\Widget_Base {
 		$controls = $value['controls'];
 
 		foreach ( $controls as $controls_item_index => $control_item_value ) {
-
 			$this->start_controls_section(
 				'section_' . $controls_item_index,
 				array(
