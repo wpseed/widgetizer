@@ -8,6 +8,9 @@
 namespace Wpseed\Widgetizer;
 
 use Latte\Engine;
+use Nette\Neon\Exception;
+use Nette\Neon\Neon;
+use Nette\Utils\FileSystem;
 use Symfony\Component\Yaml\Yaml;
 
 /**
@@ -91,10 +94,9 @@ class Elementor_Widget extends \Elementor\Widget_Base {
 	 * Register widget controls.
 	 */
 	protected function _register_controls() { // phpcs:ignore
-		$yaml  = new Yaml();
-		$value = Yaml::parseFile( WP_CONTENT_DIR . '/widgets/elementor/widgetizer/hello-world/hello-world.yaml' );
-
-		$controls = $value['controls'];
+		$value    = FileSystem::read( WP_CONTENT_DIR . '/widgets/elementor/widgetizer/hello-world/hello-world.neon' );
+		$neon     = Neon::encode( $value );
+		$controls = $neon['controls'];
 
 		foreach ( $controls as $controls_item_index => $control_item_value ) {
 			$this->start_controls_section(
