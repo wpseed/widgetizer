@@ -7,6 +7,8 @@
 
 namespace Wpseed\Widgetizer\Elementor;
 
+use Symfony\Component\Finder\Finder;
+
 /**
  * Class Parser
  *
@@ -17,8 +19,16 @@ class Parser {
 	/**
 	 * Parse widgets from directory.
 	 *
-	 * @param null $dir Directory for parsing widget configs.
+	 * @param string $dir Directory for parsing widget configs.
+	 * @return string $output Output config.
 	 */
-	public function parse_dir( $dir = null ) {
+	public function parse_widgets( $dir = null ) {
+		$output = [];
+		$finder = new Finder();
+		$folders = $finder->directories()->in($dir)->depth('== 0');
+		foreach ( $folders as $folders_item ) {
+			$output[] = $folders_item->getFileName();
+		}
+		return $output;
 	}
 }
