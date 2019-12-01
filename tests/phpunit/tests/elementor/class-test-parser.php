@@ -1,4 +1,9 @@
 <?php
+/**
+ * Parser test file
+ *
+ * @package Widgetizer
+ */
 
 use Tester\Assert;
 
@@ -8,4 +13,4 @@ Tester\Environment::setup();
 
 $o = new \Wpseed\Widgetizer\Elementor\Parser();
 
-Assert::same('Hello John', $o->parse_dir('../../widgets/elementor'));  # we expect the same
+Assert::same( 'Hello John', $o->parse_dir( '../../widgets/elementor' ) );
