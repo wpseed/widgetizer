@@ -6,6 +6,6 @@ require __DIR__ . '/../bootstrap.php';
 
 $o = new \Wpseed\Widgetizer\Elementor\Parser();
 
-$expect_result = ['non-widgetizer', 'third-provider', 'widgetizer'];
+$expect_result = require '../../templates/widgets/elementor/test-result.php';
 
-Assert::same($expect_result, $o->parse_widgets(realpath('../../widgets/elementor')));  # we expect the same
+Assert::same($expect_result, $o->parse_widgets(realpath('../../templates/widgets/elementor')));  # we expect the same

@@ -44,3 +44,4 @@ pids
 
 # Other, add your own ignored things here.
 /.idea/
+tests/tester/tests/output/
