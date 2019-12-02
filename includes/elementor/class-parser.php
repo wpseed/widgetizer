@@ -21,11 +21,11 @@ class Parser {
 	/**
 	 * Check that given name only uses latin characters, digits, and dash
 	 *
-	 * @param string $string String to validate
-	 * @return boolean True if latin only, false otherwise
+	 * @param string $string String to validate.
+	 * @return boolean True if latin only, false otherwise.
 	 */
-	public function validate_name($string) {
-		if (preg_match("/^[\w\d\s-]*$/", $string)) {
+	public function validate_name( $string ) {
+		if ( preg_match( '/^[\w\d\s-]*$/', $string ) ) {
 			return true;
 		}
 		return false;
@@ -46,7 +46,7 @@ class Parser {
 		foreach ( $folders as $folders_item ) {
 			$current_provider            = $folders_item->getFileName();
 			$output[ $current_provider ] = false;
-			if ($this->validate_name($current_provider)) {
+			if ( $this->validate_name( $current_provider ) ) {
 				$subfolders_finder           = new Finder();
 				$subfolders                  = $subfolders_finder->directories()->in( $dir . '/' . $current_provider )->depth( '== 0' );
 				$output[ $current_provider ] = array();
