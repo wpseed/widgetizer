@@ -52,13 +52,15 @@ class Parser {
 				$output[ $current_provider ] = array();
 				if ( iterator_count( $subfolders ) ) {
 					foreach ( $subfolders as $subfolders_item ) {
-						$current_widget             = $subfolders_item->getFileName();
-						$current_widget_config_path = $dir . '/' . $current_provider . '/' . $current_widget . '/' . $current_widget . '.neon';
-						$current_widget_config      = '';
-						if ( $fs->exists( $current_widget_config_path ) ) {
-							$current_widget_config = $neon::decode( \Nette\Utils\FileSystem::read( $current_widget_config_path ) );
+						$current_widget                                 = $subfolders_item->getFileName();
+						$output[ $current_provider ][ $current_widget ] = array();
+						if ( $this->validate_name( $current_widget ) ) {
+							$current_widget_config_path = $dir . '/' . $current_provider . '/' . $current_widget . '/' . $current_widget . '.neon';
+							if ( $fs->exists( $current_widget_config_path ) ) {
+								$current_widget_config = $neon::decode( \Nette\Utils\FileSystem::read( $current_widget_config_path ) );
+								$output[ $current_provider ][ $current_widget ] = $current_widget_config;
+							}
 						}
-						$output[ $current_provider ][ $current_widget ] = $current_widget_config;
 					};
 				}
 			}

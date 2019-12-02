@@ -1,7 +1,9 @@
 <?php
 
 return [
-	'non-widgetizer' => [],
+	'non-widgetizer' => [
+		'no-config' => [],
+	],
 	'third-provider' => [],
 	'widgetizer'     => [
 		'hello-world' => [
