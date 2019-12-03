@@ -39,6 +39,7 @@ class Widget extends \Elementor\Widget_Base {
 	/**
 	 * Basepath of widget template directory
 	 *
+	 * @var string $template_path Template path.
 	 */
 	protected $template_path;
 
@@ -52,12 +53,13 @@ class Widget extends \Elementor\Widget_Base {
 	}
 
 	/**
-	 * Set properties of custom child.
+	 * Set properties of custom child class.
 	 *
 	 * @param string $widget_name Widget name.
+	 * @param string $template_path Template path.
 	 */
 	public function set_properties( $widget_name, $template_path ) {
-		$this->widget_name = $widget_name; 
+		$this->widget_name   = $widget_name;
 		$this->template_path = $template_path;
 	}
 
@@ -70,7 +72,7 @@ class Widget extends \Elementor\Widget_Base {
 		return $this->widget_provider;
 	}
 
-	/*
+	/**
 	 * Get widget name.
 	 *
 	 * @return string
@@ -101,7 +103,7 @@ class Widget extends \Elementor\Widget_Base {
 	 * Register widget controls.
 	 */
 	protected function _register_controls() { // phpcs:ignore
-		$value    = FileSystem::read( $this->template_path . '/' . $this->widget_name . '.neon');
+		$value    = FileSystem::read( $this->template_path . '/' . $this->widget_name . '.neon' );
 		$neon     = Neon::encode( $value );
 		$controls = $neon['controls'];
 

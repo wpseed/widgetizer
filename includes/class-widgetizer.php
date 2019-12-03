@@ -27,7 +27,7 @@ final class Widgetizer {
 	 * Widgetizer constructor.
 	 */
 	public function __construct() {
-		add_action( 'plugins_loaded', [ $this, 'init' ] );
+		add_action( 'plugins_loaded', array( $this, 'init' ) );
 	}
 
 	/**
@@ -52,8 +52,11 @@ final class Widgetizer {
 		add_action( 'elementor/widgets/widgets_registered', array( $this, 'register_widgets' ) );
 	}
 
+	/**
+	 * Register widgets
+	 */
 	public function register_widgets() {
-		$this->register_elementor_widgets( WPSEED_WIDGETIZER_WIDGETS_PATH . '/elementor');
+		$this->register_elementor_widgets( WPSEED_WIDGETIZER_WIDGETS_PATH . '/elementor' );
 	}
 
 	/**
@@ -65,20 +68,20 @@ final class Widgetizer {
 		if ( ! $widgets_dir ) {
 			return;
 		}
-		$finder = new Finder();
-		$elementor_widgets_providers = $finder->directories()->in( $widgets_dir )->depth('== 0');
-		$deb = array();
-		$filenames = array();
+		$finder                      = new Finder();
+		$elementor_widgets_providers = $finder->directories()->in( $widgets_dir )->depth( '== 0' );
+		$deb                         = array();
+		$filenames                   = array();
 		foreach ( $elementor_widgets_providers as $elementor_widgets_providers_item ) {
-			$subFinder = new Finder();
-			$widgets = $subFinder->directories()->in($widgets_dir . '/' . $elementor_widgets_providers_item->getFileName())->depth('== 0');
-			foreach ($widgets as $currentWidget) {
-				$class_name = 'Wpseed_Widgetizer_Elementor_' . ucfirst( strtolower( str_replace( '-', '_', $currentWidget->getFileName() ) ) );
+			$sub_finder = new Finder();
+			$widgets    = $sub_finder->directories()->in( $widgets_dir . '/' . $elementor_widgets_providers_item->getFileName() )->depth( '== 0' );
+			foreach ( $widgets as $current_widget ) {
+				$class_name = 'Wpseed_Widgetizer_Elementor_' . ucfirst( strtolower( str_replace( '-', '_', $current_widget->getFileName() ) ) );
 				$code       = "class {$class_name} extends Wpseed\Widgetizer\Elementor\Widget{}";
-				eval( $code ); 
-				$widgetObject = new $class_name(); //phpcs:ignore
-				$widgetObject->set_properties( $currentWidget->getFileName(), $widgets_dir . '/' . $elementor_widgets_providers_item->getFileName() . '/' . $currentWidget->getFileName() );
-				\Elementor\Plugin::instance()->widgets_manager->register_widget_type( $widgetObject );
+				eval( $code ); //phpcs:ignore
+				$widget_object = new $class_name();
+				$widget_object->set_properties( $current_widget->getFileName(), $widgets_dir . '/' . $elementor_widgets_providers_item->getFileName() . '/' . $current_widget->getFileName() );
+				\Elementor\Plugin::instance()->widgets_manager->register_widget_type( $widget_object );
 			}
 			$name = $elementor_widgets_providers_item->getFileName();
 		}
