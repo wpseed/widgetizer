@@ -37,6 +37,12 @@ class Widget extends \Elementor\Widget_Base {
 	protected $widget_name;
 
 	/**
+	 * Basepath of widget template directory
+	 *
+	 */
+	protected $template_path;
+
+	/**
 	 * Set widget provider.
 	 *
 	 * @param string $widget_provider Widget provider.
@@ -46,12 +52,13 @@ class Widget extends \Elementor\Widget_Base {
 	}
 
 	/**
-	 * Set widget name.
+	 * Set properties of custom child.
 	 *
 	 * @param string $widget_name Widget name.
 	 */
-	public function set_name( $widget_name ) {
-		$this->widget_name = $widget_name;
+	public function set_properties( $widget_name, $template_path ) {
+		$this->widget_name = $widget_name; 
+		$this->template_path = $template_path;
 	}
 
 	/**
@@ -63,13 +70,13 @@ class Widget extends \Elementor\Widget_Base {
 		return $this->widget_provider;
 	}
 
-	/**
+	/*
 	 * Get widget name.
 	 *
 	 * @return string
 	 */
 	public function get_name() {
-		return 'test';
+		return $this->widget_name;
 	}
 
 	/**
@@ -78,7 +85,7 @@ class Widget extends \Elementor\Widget_Base {
 	 * @return mixed
 	 */
 	public function get_title() {
-		return __( 'Test', 'wpseed-widgetizer' );
+		return $this->widget_name;
 	}
 
 	/**
@@ -94,7 +101,7 @@ class Widget extends \Elementor\Widget_Base {
 	 * Register widget controls.
 	 */
 	protected function _register_controls() { // phpcs:ignore
-		$value    = FileSystem::read( WP_CONTENT_DIR . '/widgets/elementor/widgetizer/hello-world/hello-world.neon' );
+		$value    = FileSystem::read( $this->template_path . '/' . $this->widget_name . '.neon');
 		$neon     = Neon::encode( $value );
 		$controls = $neon['controls'];
 
@@ -128,7 +135,7 @@ class Widget extends \Elementor\Widget_Base {
 		$parameters = array(
 			'settings' => $this->get_settings_for_display(),
 		);
-		$html       = $latte->renderToString( WP_CONTENT_DIR . '/widgets/elementor/widgetizer/hello-world/views/hello-world.latte', $parameters );
+		$html       = $latte->renderToString( $this->template_path . '/' . $this->widget_name . '.latte', $parameters );
 		echo $html; // phpcs:ignore
 	}
 }

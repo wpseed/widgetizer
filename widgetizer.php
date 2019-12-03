@@ -41,6 +41,7 @@ define( 'WPSEED_WIDGETIZER_MIN_PHP_VERSION', '5.6.20' );
  */
 define( 'WPSEED_WIDGETIZER_PATH', __DIR__ );
 
+
 /**
  * Basepath of the plugin.
  */
@@ -50,6 +51,11 @@ define( 'WPSEED_WIDGETIZER_BASENAME', plugin_basename( __FILE__ ) );
  * Url of the plugin dir.
  */
 define( 'WPSEED_WIDGETIZER_URL', plugin_dir_url( __FILE__ ) );
+
+/**
+ * Basepath of the widgets dir.
+ */
+define( 'WPSEED_WIDGETIZER_WIDGETS_PATH', WP_CONTENT_DIR . '/widgets' );
 
 /**
  * Load vendor packages.
