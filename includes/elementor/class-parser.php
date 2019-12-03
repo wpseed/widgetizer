@@ -30,13 +30,13 @@ class Parser {
 		$fs             = new Filesystem();
 		$neon           = new Neon();
 		$folders_finder = new Finder();
-		$folders        = $folders_finder->directories()->in( $dir )->depth( '== 0' );
+		$folders        = $folders_finder->directories()->in( $dir )->depth( '== 0' )->sortByName();
 		foreach ( $folders as $folders_item ) {
 			$current_provider            = $folders_item->getFileName();
 			$output[ $current_provider ] = false;
 			if ( Validate::name( $current_provider ) ) {
 				$subfolders_finder           = new Finder();
-				$subfolders                  = $subfolders_finder->directories()->in( $dir . '/' . $current_provider )->depth( '== 0' );
+				$subfolders                  = $subfolders_finder->directories()->in( $dir . '/' . $current_provider )->depth( '== 0' )->sortByName();
 				$output[ $current_provider ] = array();
 				if ( iterator_count( $subfolders ) ) {
 					foreach ( $subfolders as $subfolders_item ) {
