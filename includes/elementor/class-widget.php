@@ -84,11 +84,18 @@ class Widget extends \Elementor\Widget_Base {
 	 */
 	protected function _register_controls() { // phpcs:ignore
 		$value    = FileSystem::read( $this->template_path . '/' . $this->widget_name . '.neon' );
-		do_action('logger', $value);
-		$neon     = Neon::encode( $value );
-		$controls = $neon['controls'];
+		$neon     = Neon::decode( $value );
+		/*do_action('logger', array(
+			"value" => $value,
+			"neon" => $neon));
+			*/
+		$controls = $neon['content'];
 
 		foreach ( $controls as $controls_item_index => $control_item_value ) {
+			do_action('logger', array(
+				"controls" => $controls_item_index,
+				"data" => $control_item_value
+			));
 			$this->start_controls_section(
 				'section_' . $controls_item_index,
 				array(
@@ -98,10 +105,10 @@ class Widget extends \Elementor\Widget_Base {
 
 			foreach ( $control_item_value as $control_subitem_index => $control_subitem_value ) {
 				$this->add_control(
-					'text',
+					$control_subitem_index,
 					array(
-						'label' => 'Text',
-						'type'  => \Elementor\Controls_Manager::TEXT,
+						'label' => $control_subitem_value['label'],
+						'type'  => $control_subitem_value['type'] 
 					)
 				);
 			}
