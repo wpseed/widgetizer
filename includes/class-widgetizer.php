@@ -77,10 +77,21 @@ final class Widgetizer {
 			$widgets    = $sub_finder->directories()->in( $widgets_dir . '/' . $elementor_widgets_providers_item->getFileName() )->depth( '== 0' );
 			foreach ( $widgets as $current_widget ) {
 				$class_name = 'Wpseed_Widgetizer_Elementor_' . ucfirst( strtolower( str_replace( '-', '_', $current_widget->getFileName() ) ) );
-				$code       = "class {$class_name} extends Wpseed\Widgetizer\Elementor\Widget{}";
+				$data_template = <<<'EOD'
+protected $widget_name="%s";
+protected $widget_title="%s";
+protected $template_path="%s";
+protected $widget_provider="%s";
+EOD;
+				$data = sprintf($data_template, 
+					$current_widget->getFileName(),
+					$current_widget->getFileName(),
+					$widgets_dir . '/' . $elementor_widgets_providers_item->getFileName() . '/' . $current_widget->getFileName(),
+					$elementor_widgets_providers_item->getFileName()
+				);
+				$code       = "class {$class_name} extends Wpseed\Widgetizer\Elementor\Widget{{$data}}";
 				eval( $code ); //phpcs:ignore
 				$widget_object = new $class_name();
-				$widget_object->set_properties( $current_widget->getFileName(), $widgets_dir . '/' . $elementor_widgets_providers_item->getFileName() . '/' . $current_widget->getFileName() );
 				\Elementor\Plugin::instance()->widgets_manager->register_widget_type( $widget_object );
 			}
 			$name = $elementor_widgets_providers_item->getFileName();

@@ -44,26 +44,6 @@ class Widget extends \Elementor\Widget_Base {
 	protected $template_path;
 
 	/**
-	 * Set widget provider.
-	 *
-	 * @param string $widget_provider Widget provider.
-	 */
-	public function set_provider( $widget_provider ) {
-		$this->widget_provider = $widget_provider;
-	}
-
-	/**
-	 * Set properties of custom child class.
-	 *
-	 * @param string $widget_name Widget name.
-	 * @param string $template_path Template path.
-	 */
-	public function set_properties( $widget_name, $template_path ) {
-		$this->widget_name   = $widget_name;
-		$this->template_path = $template_path;
-	}
-
-	/**
 	 * Get widget provider.
 	 *
 	 * @return string
@@ -87,7 +67,7 @@ class Widget extends \Elementor\Widget_Base {
 	 * @return mixed
 	 */
 	public function get_title() {
-		return $this->widget_name;
+		return $this->widget_title;
 	}
 
 	/**
@@ -104,6 +84,7 @@ class Widget extends \Elementor\Widget_Base {
 	 */
 	protected function _register_controls() { // phpcs:ignore
 		$value    = FileSystem::read( $this->template_path . '/' . $this->widget_name . '.neon' );
+		do_action('logger', $value);
 		$neon     = Neon::encode( $value );
 		$controls = $neon['controls'];
 
