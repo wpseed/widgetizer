@@ -1,0 +1,8 @@
+# This is demo widget config with minimal settings
+title: Minimal
+content:
+	General: # General section
+		widget_title: # Text input field
+			type: text
+			label: Widget Title
+			default: Default Title Content
