@@ -8,6 +8,8 @@
 namespace Wpseed\Widgetizer;
 
 use Symfony\Component\Finder\Finder;
+use Nette\PhpGenerator\ClassType;
+use Wpseed\Widgetizer\Elementor\Parser;
 
 /**
  * Main initiation plugin class.
@@ -49,6 +51,7 @@ final class Widgetizer {
 		if ( ! did_action( 'elementor/loaded' ) ) {
 			return;
 		}
+
 		add_action( 'elementor/widgets/widgets_registered', array( $this, 'register_widgets' ) );
 	}
 
@@ -60,30 +63,55 @@ final class Widgetizer {
 	}
 
 	/**
+	 * Generate and register widget-type class
+	 *
+	 * @param string $class_name  class name.
+	 * @param mixed  $properties  array of protected widget properties.
+	 */
+	public function generate_widget_type_class( $class_name, $properties ) {
+		$class = new ClassType( $class_name );
+		$class
+			->setFinal()
+			->setExtends( 'Wpseed\Widgetizer\Elementor\Widget' );
+		foreach ( $properties as $property => $value ) {
+			$class
+				->addProperty( $property )
+				->setValue( $value )
+				->setVisibility( 'protected' );
+		}
+		eval( $class ); //phpcs:ignore
+		return true;
+	}
+
+	/**
 	 * Register Elementor widgets.
 	 *
 	 * @param mixed $widgets_dir Elementor widgets path.
 	 */
 	public function register_elementor_widgets( $widgets_dir = null ) {
-		if ( ! $widgets_dir ) {
-			return;
+		if ( ! is_dir( $widgets_dir ) ) {
+			$widgets_dir = is_dir( get_stylesheet_directory() . '/widgetizer/elementor' ) ? get_stylesheet_directory() . '/widgetizer/elementor' : WPSEED_WIDGETIZER_PATH . '/templates/elementor';
 		}
-		$finder                      = new Finder();
-		$elementor_widgets_providers = $finder->directories()->in( $widgets_dir )->depth( '== 0' );
-		$deb                         = array();
-		$filenames                   = array();
-		foreach ( $elementor_widgets_providers as $elementor_widgets_providers_item ) {
-			$sub_finder = new Finder();
-			$widgets    = $sub_finder->directories()->in( $widgets_dir . '/' . $elementor_widgets_providers_item->getFileName() )->depth( '== 0' );
-			foreach ( $widgets as $current_widget ) {
-				$class_name = 'Wpseed_Widgetizer_Elementor_' . ucfirst( strtolower( str_replace( '-', '_', $current_widget->getFileName() ) ) );
-				$code       = "class {$class_name} extends Wpseed\Widgetizer\Elementor\Widget{}";
-				eval( $code ); //phpcs:ignore
+
+		$widgets_parser = new Parser();
+
+		$parsed_data = $widgets_parser->parse_widgets( $widgets_dir );
+
+		foreach ( $parsed_data as $provider_name => $provider_items ) {
+			foreach ( $provider_items as $widget_name => $widget_content ) {
+				$class_name = 'Wpseed_Widgetizer_Elementor_' . ucfirst( strtolower( str_replace( '-', '_', $widget_name ) ) );
+
+				$class_properties = array(
+					'widget_name'     => $widget_name,
+					'widget_title'    => isset( $widget_content['title'] ) ? $widget_content['title'] : $widget_name,
+					'widget_provider' => $provider_name,
+					'widget_icon'     => isset( $widget_content['icon'] ) ? $widget_content['icon'] : 'eicon-code',
+					'template_path'   => $widgets_dir . '/' . $provider_name . '/' . $widget_name,
+				);
+				$this->generate_widget_type_class( $class_name, $class_properties );
 				$widget_object = new $class_name();
-				$widget_object->set_properties( $current_widget->getFileName(), $widgets_dir . '/' . $elementor_widgets_providers_item->getFileName() . '/' . $current_widget->getFileName() );
 				\Elementor\Plugin::instance()->widgets_manager->register_widget_type( $widget_object );
 			}
-			$name = $elementor_widgets_providers_item->getFileName();
 		}
 	}
 }
