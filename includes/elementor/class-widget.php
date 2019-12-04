@@ -37,31 +37,19 @@ class Widget extends \Elementor\Widget_Base {
 	protected $widget_name;
 
 	/**
+	 * Widget icon
+	 *
+	 * @var string $widget_icon widget icon
+	 */
+	protected $widget_icon;
+
+	/**
 	 * Basepath of widget template directory
 	 *
 	 * @var string $template_path Template path.
 	 */
 	protected $template_path;
 
-	/**
-	 * Set widget provider.
-	 *
-	 * @param string $widget_provider Widget provider.
-	 */
-	public function set_provider( $widget_provider ) {
-		$this->widget_provider = $widget_provider;
-	}
-
-	/**
-	 * Set properties of custom child class.
-	 *
-	 * @param string $widget_name Widget name.
-	 * @param string $template_path Template path.
-	 */
-	public function set_properties( $widget_name, $template_path ) {
-		$this->widget_name   = $widget_name;
-		$this->template_path = $template_path;
-	}
 
 	/**
 	 * Get widget provider.
@@ -87,7 +75,7 @@ class Widget extends \Elementor\Widget_Base {
 	 * @return mixed
 	 */
 	public function get_title() {
-		return $this->widget_name;
+		return $this->widget_title;
 	}
 
 	/**
@@ -96,7 +84,7 @@ class Widget extends \Elementor\Widget_Base {
 	 * @return string
 	 */
 	public function get_icon() {
-		return 'eicon-code';
+		return $this->widget_icon;
 	}
 
 	/**
@@ -104,8 +92,8 @@ class Widget extends \Elementor\Widget_Base {
 	 */
 	protected function _register_controls() { // phpcs:ignore
 		$value    = FileSystem::read( $this->template_path . '/' . $this->widget_name . '.neon' );
-		$neon     = Neon::encode( $value );
-		$controls = $neon['controls'];
+		$neon     = Neon::decode( $value );
+		$controls = $neon['content'];
 
 		foreach ( $controls as $controls_item_index => $control_item_value ) {
 			$this->start_controls_section(
@@ -116,13 +104,7 @@ class Widget extends \Elementor\Widget_Base {
 			);
 
 			foreach ( $control_item_value as $control_subitem_index => $control_subitem_value ) {
-				$this->add_control(
-					'text',
-					array(
-						'label' => 'Text',
-						'type'  => \Elementor\Controls_Manager::TEXT,
-					)
-				);
+				$this->add_control( $control_subitem_index, $control_subitem_value );
 			}
 
 			$this->end_controls_section();

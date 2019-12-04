@@ -38,7 +38,8 @@
     "wp-coding-standards/wpcs": "^2.0",
     "phpcompatibility/phpcompatibility-wp": "*",
     "php-coveralls/php-coveralls": "^2.1",
-    "wp-cli/wp-cli": "dev-master"
+    "wp-cli/wp-cli": "dev-master",
+    "nette/php-generator": "^2.6"
   },
   "autoload": {
     "classmap": [
