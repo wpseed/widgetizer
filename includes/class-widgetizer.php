@@ -63,12 +63,13 @@ final class Widgetizer {
 	}
 
 	/**
-	 * Generate and register widget-type class
+	 * Generate widget class
 	 *
-	 * @param string $class_name  class name.
-	 * @param mixed  $properties  array of protected widget properties.
+	 * @param string $class_name  Class name.
+	 * @param mixed  $properties  Array of protected widget properties.
+	 * @return ClassType $class Generated class
 	 */
-	public function generate_widget_type_class( $class_name, $properties ) {
+	public function generate_widget_class( $class_name, $properties ) {
 		$class = new ClassType( $class_name );
 		$class
 			->setFinal()
@@ -80,7 +81,7 @@ final class Widgetizer {
 				->setVisibility( 'protected' );
 		}
 		eval( $class ); //phpcs:ignore
-		return true;
+		return $class;
 	}
 
 	/**
@@ -90,7 +91,7 @@ final class Widgetizer {
 	 */
 	public function register_elementor_widgets( $widgets_dir = null ) {
 		if ( ! is_dir( $widgets_dir ) ) {
-			$widgets_dir = is_dir( get_stylesheet_directory() . '/widgetizer/elementor' ) ? get_stylesheet_directory() . '/widgetizer/elementor' : WPSEED_WIDGETIZER_PATH . '/templates/elementor';
+			$widgets_dir = is_dir( get_stylesheet_directory() . '/widgets/elementor' ) ? get_stylesheet_directory() . '/widgets/elementor' : WPSEED_WIDGETIZER_PATH . '/widgets/elementor';
 		}
 
 		$widgets_parser = new Parser();
@@ -108,7 +109,7 @@ final class Widgetizer {
 					'widget_icon'     => isset( $widget_content['icon'] ) ? $widget_content['icon'] : 'eicon-code',
 					'template_path'   => $widgets_dir . '/' . $provider_name . '/' . $widget_name,
 				);
-				$this->generate_widget_type_class( $class_name, $class_properties );
+				$this->generate_widget_class( $class_name, $class_properties );
 				$widget_object = new $class_name();
 				\Elementor\Plugin::instance()->widgets_manager->register_widget_type( $widget_object );
 			}

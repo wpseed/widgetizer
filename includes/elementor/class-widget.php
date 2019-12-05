@@ -1,6 +1,6 @@
 <?php
 /**
- * Elementor_Widget class file
+ * Elementor widget class file
  *
  * @package Widgetizer
  */
