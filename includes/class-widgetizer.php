@@ -9,6 +9,7 @@ namespace Wpseed\Widgetizer;
 
 use Symfony\Component\Finder\Finder;
 use Nette\PhpGenerator\ClassType;
+use Wpseed\Widgetizer\Admin\Pages;
 use Wpseed\Widgetizer\Elementor\Parser;
 
 /**
@@ -26,9 +27,19 @@ final class Widgetizer {
 	protected static $instance = null;
 
 	/**
+	 * Pages class.
+	 *
+	 * @var Pages Pages class.
+	 */
+	protected $admin_pages;
+
+	/**
 	 * Widgetizer constructor.
 	 */
 	public function __construct() {
+		if ( ! $this->admin_pages ) {
+			$this->admin_pages = new Pages();
+		}
 		add_action( 'plugins_loaded', array( $this, 'init' ) );
 	}
 
