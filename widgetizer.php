@@ -16,7 +16,7 @@
  * Donate link: https://wpseed.io/donate/
  * License:     GPLv2
  *
- * Text Domain: widgetizer
+ * Text Domain: wpseed-widgetizer
  * Domain Path: /languages
  *
  * @link    https://wpseed.io/
