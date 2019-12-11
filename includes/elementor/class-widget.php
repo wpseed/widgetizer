@@ -117,7 +117,7 @@ class Widget extends \Elementor\Widget_Base {
 	protected function render() {
 		$latte      = new Engine();
 		$parameters = array(
-			'settings' => $this->get_settings_for_display(),
+			'content' => $this->get_settings_for_display(),
 		);
 		$html       = $latte->renderToString( $this->template_path . '/' . $this->widget_name . '.latte', $parameters );
 		echo $html; // phpcs:ignore
