@@ -52,12 +52,12 @@ class Widget extends \Elementor\Widget_Base {
 
 
 	/**
-	 * Get widget provider.
+	 * Get widget categories.
 	 *
-	 * @return string
+	 * @return array
 	 */
-	public function get_provider() {
-		return $this->widget_provider;
+	public function get_categories() {
+		return array( $this->widget_provider );
 	}
 
 	/**

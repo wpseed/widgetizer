@@ -63,7 +63,23 @@ final class Widgetizer {
 			return;
 		}
 
+		add_action( 'elementor/elements/categories_registered', array( $this, 'register_elementor_categories' ) );
 		add_action( 'elementor/widgets/widgets_registered', array( $this, 'register_widgets' ) );
+	}
+
+	/**
+	 * Register elementor categories.
+	 *
+	 * @param \Elementor\Elements_Manager $elements_manager Elementor elements manager.
+	 */
+	public function register_elementor_categories( $elements_manager ) {
+		$elements_manager->add_category(
+			'widgetizer',
+			array(
+				'title' => __( 'Widgetizer', 'wpseed-widgetizer' ),
+				'icon'  => 'fa fa-plug',
+			)
+		);
 	}
 
 	/**
@@ -111,12 +127,12 @@ final class Widgetizer {
 
 		foreach ( $parsed_data as $provider_name => $provider_items ) {
 			foreach ( $provider_items as $widget_name => $widget_content ) {
-				$class_name = 'Wpseed_Widgetizer_Elementor_' . Helpers::dashes_to_class_name($widget_name);
+				$class_name = 'Wpseed_Widgetizer_Elementor_' . Helpers::dashes_to_class_name( $widget_name );
 
 				$class_properties = array(
 					'widget_name'     => $widget_name,
 					'widget_title'    => isset( $widget_content['title'] ) ? $widget_content['title'] : $widget_name,
-					'widget_provider' => $provider_name,
+					'widget_provider' => 'widgetizer',
 					'widget_icon'     => isset( $widget_content['icon'] ) ? $widget_content['icon'] : 'eicon-code',
 					'template_path'   => $widgets_dir . '/' . $provider_name . '/' . $widget_name,
 				);
