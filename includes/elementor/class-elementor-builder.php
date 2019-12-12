@@ -22,11 +22,15 @@ use Wpseed\Widgetizer\Validate;
 class Elementor_Builder {
 
 	/**
+	 * Elementor widgets directory.
+	 *
 	 * @var string|null
 	 */
 	protected $dir;
 
 	/**
+	 * Elementor widgets config.
+	 *
 	 * @var array $config Global config.
 	 */
 	protected $config;
@@ -34,12 +38,12 @@ class Elementor_Builder {
 	/**
 	 * Elementor_Builder constructor.
 	 *
-	 * @param string|null $dir
+	 * @param string|null $dir Elementor widgets directory.
 	 */
 	public function __construct( $dir = null ) {
 		$this->dir    = $dir;
 		$this->config = $this->parse_config( $dir );
-		// add_action( 'elementor/frontend/after_register_scripts', array( $this, 'register_elementor_scripts' ) );
+		add_action( 'elementor/frontend/after_register_scripts', array( $this, 'register_assets' ) );
 		add_action( 'elementor/elements/categories_registered', array( $this, 'register_categories' ) );
 		add_action( 'elementor/widgets/widgets_registered', array( $this, 'register_widgets' ) );
 	}
@@ -81,6 +85,13 @@ class Elementor_Builder {
 		return $output;
 	}
 
+	/**
+	 * Parse assets.
+	 *
+	 * @param null $dir Elementor widgets directory.
+	 *
+	 * @return array
+	 */
 	public function parse_assets( $dir = null ) {
 		$output = array();
 		return $output;
@@ -110,34 +121,9 @@ class Elementor_Builder {
 	}
 
 	/**
-	 * Register widgets.
-	 *
-	 * @param mixed $dir Elementor widgets path.
+	 * Register widgets assets.
 	 */
-	public function register_widgets() {
-		$dir = $this->dir;
-		if ( ! is_dir( $dir ) ) {
-			$dir = is_dir( get_stylesheet_directory() . '/widgets/elementor' ) ? get_stylesheet_directory() . '/widgets/elementor' : WPSEED_WIDGETIZER_PATH . '/widgets/elementor';
-		}
-
-		$parsed_data = $this->parse_config( $dir );
-
-		foreach ( $parsed_data as $provider_name => $provider_items ) {
-			foreach ( $provider_items as $widget_name => $widget_content ) {
-				$class_name       = 'Wpseed_Widgetizer_Elementor_' . Helpers::dashes_to_class_name( $provider_name . '-' . $widget_name );
-				$class_properties = array(
-					'widget_name'     => $widget_name,
-					'widget_title'    => isset( $widget_content['title'] ) ? $widget_content['title'] : $widget_name,
-					'widget_provider' => 'widgetizer',
-					'widget_icon'     => isset( $widget_content['icon'] ) ? $widget_content['icon'] : 'eicon-code',
-					'template_path'   => $dir . '/' . $provider_name . '/' . $widget_name,
-				);
-				$this->generate_widget_class( $class_name, $class_properties );
-				$widget_object = new $class_name();
-				\Elementor\Plugin::instance()->widgets_manager->register_widget_type( $widget_object );
-			}
-		}
-	}
+	public function register_assets() {}
 
 	/**
 	 * Register Elementor categories.
@@ -152,5 +138,26 @@ class Elementor_Builder {
 				'icon'  => 'fa fa-plug',
 			)
 		);
+	}
+
+	/**
+	 * Register widgets.
+	 */
+	public function register_widgets() {
+		foreach ( $this->config as $provider_name => $provider_items ) {
+			foreach ( $provider_items as $widget_name => $widget_content ) {
+				$class_name       = 'Wpseed_Widgetizer_Elementor_' . Helpers::dashes_to_class_name( $provider_name . '-' . $widget_name );
+				$class_properties = array(
+					'widget_name'     => $widget_name,
+					'widget_title'    => isset( $widget_content['title'] ) ? $widget_content['title'] : $widget_name,
+					'widget_provider' => 'widgetizer',
+					'widget_icon'     => isset( $widget_content['icon'] ) ? $widget_content['icon'] : 'eicon-code',
+					'template_path'   => $this->dir . '/' . $provider_name . '/' . $widget_name,
+				);
+				$this->generate_widget_class( $class_name, $class_properties );
+				$widget_object = new $class_name();
+				\Elementor\Plugin::instance()->widgets_manager->register_widget_type( $widget_object );
+			}
+		}
 	}
 }
