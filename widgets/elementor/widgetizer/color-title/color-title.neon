@@ -1,0 +1,11 @@
+title: Color Title
+icon: eicon-code 
+content:
+	General: 
+		title:
+			type: text
+			label: Title
+			default: Hello world
+		color:
+			type: color
+			label: Color
