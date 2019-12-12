@@ -42,12 +42,14 @@
   },
   "autoload": {
     "classmap": [
-      "includes"
+      "includes",
+      "admin/includes"
     ]
   },
   "autoload-dev": {
     "classmap": [
       "includes",
+      "admin/includes",
       "tests"
     ]
   }

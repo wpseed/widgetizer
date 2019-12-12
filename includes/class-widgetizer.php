@@ -111,7 +111,7 @@ final class Widgetizer {
 
 		foreach ( $parsed_data as $provider_name => $provider_items ) {
 			foreach ( $provider_items as $widget_name => $widget_content ) {
-				$class_name = 'Wpseed_Widgetizer_Elementor_' . ucfirst( strtolower( str_replace( '-', '_', $widget_name ) ) );
+				$class_name = 'Wpseed_Widgetizer_Elementor_' . Helpers::dashes_to_class_name($widget_name);
 
 				$class_properties = array(
 					'widget_name'     => $widget_name,
