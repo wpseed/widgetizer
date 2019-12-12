@@ -5,7 +5,9 @@ content:
 		title:
 			type: text
 			label: Title
-			default: Hello world
+			description: Text field
+			default: Hello w
 		color:
 			type: color
 			label: Color
+			default: #333333

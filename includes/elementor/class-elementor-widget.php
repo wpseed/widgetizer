@@ -20,7 +20,7 @@ use Symfony\Component\Yaml\Yaml;
  *
  * @package Wpseed\Widgetizer
  */
-class Widget extends \Elementor\Widget_Base {
+class Elementor_Widget extends \Elementor\Widget_Base {
 
 	/**
 	 * Widget provider.
