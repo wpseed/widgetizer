@@ -58,7 +58,13 @@ final class Widgetizer {
 	 */
 	public function init() {
 		if ( did_action( 'elementor/loaded' ) ) {
-			$elementor_builder = new Elementor_Builder( array( get_stylesheet_directory() . '/widgetizer/elementor' ) );
+			$elementor_builder = new Elementor_Builder(
+				array(
+					WPSEED_WIDGETIZER_PATH . '/widgets/elementor',
+					WP_CONTENT_DIR . '/widgets/elementor',
+					get_stylesheet_directory() . '/widgetizer/elementor',
+				)
+			);
 			$elementor_builder->init();
 		}
 	}

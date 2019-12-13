@@ -53,16 +53,6 @@ define( 'WPSEED_WIDGETIZER_BASENAME', plugin_basename( __FILE__ ) );
 define( 'WPSEED_WIDGETIZER_URL', plugin_dir_url( __FILE__ ) );
 
 /**
- * Base path of the marketplace widgets dir.
- */
-define( 'WPSEED_WIDGETIZER_MARKETPLACE_WIDGETS_PATH', WP_CONTENT_DIR . '/widgets' );
-
-/**
- * Url of the marketplace widgets dir.
- */
-define( 'WPSEED_WIDGETIZER_MARKETPLACE_WIDGETS_URL', WP_CONTENT_URL . '/widgets' );
-
-/**
  * Load vendor packages.
  */
 require_once WPSEED_WIDGETIZER_PATH . '/vendor/autoload.php';

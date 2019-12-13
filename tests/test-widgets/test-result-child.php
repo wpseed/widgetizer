@@ -9,7 +9,7 @@ return [
 	'third-provider' => [],
 	'widgetizer' => [
 		'hello-world' => [
-			'path' => '/plugins/widgetizer/tests/test-widgets/widgets/elementor/widgetizer/hello-world',
+			'path' => '/plugins/widgetizer/tests/test-widgets/widgets-child/elementor/widgetizer/hello-world',
 			'config' => [
 				'title' => 'Hello World!',
 				'icon' => 'eicon-posts-ticker',
@@ -20,18 +20,13 @@ return [
 							'label' => 'Widget Title',
 							'default' => 'Default Title Content',
 						],
-						'widget_content' => [
-							'type' => 'textarea',
-							'label' => 'Widget Content',
-							'default' => 'Lorem Ipsum is simply dummy text of the printing and typesetting industry.',
-						],
 					],
 					'advanced' => ['widget_code' => ['type' => 'code', 'label' => 'Widget Code']],
 				],
 			],
 		],
 		'minimal' => [
-			'path' => '/plugins/widgetizer/tests/test-widgets/widgets/elementor/widgetizer/minimal',
+			'path' => '/plugins/widgetizer/tests/test-widgets/widgets-child/elementor/widgetizer/minimal',
 			'config' => ['title' => 'Minimal', 'content' => ['general' => null]],
 		],
 	],

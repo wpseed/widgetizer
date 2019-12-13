@@ -74,6 +74,9 @@ class Elementor_Builder {
 		$fs     = new Filesystem();
 		$neon   = new Neon();
 		foreach ( $dirs as $dir ) {
+			if ( ! is_dir( $dir ) ) {
+				continue;
+			}
 			$current_config = array();
 			$folders_finder = new Finder();
 			$folders        = $folders_finder->directories()->in( $dir )->depth( '== 0' )->sortByName();
@@ -89,10 +92,11 @@ class Elementor_Builder {
 							$current_widget = $subfolders_item->getFileName();
 							$current_config[ $current_provider ][ $current_widget ] = array();
 							if ( Validate::name( $current_widget ) ) {
-								$current_widget_config_path = $dir . '/' . $current_provider . '/' . $current_widget . '/' . $current_widget . '.neon';
+								$current_widget_config_path                                     = $dir . '/' . $current_provider . '/' . $current_widget . '/' . $current_widget . '.neon';
+								$current_config[ $current_provider ][ $current_widget ]['path'] = str_replace( '\\', '/', str_replace( realpath( WP_CONTENT_DIR ), '', realpath( $dir . '/' . $current_provider . '/' . $current_widget ) ) );
 								if ( $fs->exists( $current_widget_config_path ) ) {
-									$current_widget_config                                  = $neon::decode( \Nette\Utils\FileSystem::read( $current_widget_config_path ) );
-									$current_config[ $current_provider ][ $current_widget ] = $current_widget_config;
+									$current_widget_config = $neon::decode( \Nette\Utils\FileSystem::read( $current_widget_config_path ) );
+									$current_config[ $current_provider ][ $current_widget ]['config'] = $current_widget_config;
 								}
 							}
 						}
@@ -146,10 +150,27 @@ class Elementor_Builder {
 	public function register_assets() {
 		foreach ( $this->config as $provider_name => $provider_items ) {
 			foreach ( $provider_items as $widget_name => $widget_content ) {
-				$style_file  = $this->dir . '/' . $provider_name . '/' . $widget_name . '/' . $widget_name . '.css';
-				$script_file = $this->dir . '/' . $provider_name . '/' . $widget_name . '/' . $widget_name . '.js';
-				if ( is_readable( $style_file ) ) {
-					// wp_register_script( $provider_name . '-' . $widget_name , WPSEED_WIDGETIZER_URL . '/assets/js/hello-world.js', __FILE__ ), [ 'jquery' ], false, true );
+				$style_file_path  = WP_CONTENT_DIR . $widget_content['path'] . '/' . $widget_name . '.css';
+				$style_file_url   = WP_CONTENT_URL . $widget_content['path'] . '/' . $widget_name . '.css';
+				$script_file_path = WP_CONTENT_DIR . $widget_content['path'] . '/' . $widget_name . '.js';
+				$script_file_url  = WP_CONTENT_URL . $widget_content['path'] . '/' . $widget_name . '.js';
+				if ( is_readable( $style_file_path ) ) {
+					wp_register_style(
+						$provider_name . '-' . $widget_name,
+						$style_file_url,
+						array(),
+						WPSEED_WIDGETIZER_VERSION,
+						'all'
+					);
+				}
+				if ( is_readable( $script_file_path ) ) {
+					wp_register_script(
+						$provider_name . '-' . $widget_name,
+						$script_file_url,
+						array( 'jquery' ),
+						WPSEED_WIDGETIZER_VERSION,
+						true
+					);
 				}
 			}
 		}
@@ -178,11 +199,13 @@ class Elementor_Builder {
 			foreach ( $provider_items as $widget_name => $widget_content ) {
 				$class_name       = 'Wpseed_Widgetizer_Elementor_' . Helpers::dashes_to_class_name( $provider_name . '-' . $widget_name );
 				$class_properties = array(
+					'widget_provider' => 'widgetizer',
 					'widget_name'     => $widget_name,
 					'widget_title'    => isset( $widget_content['title'] ) ? $widget_content['title'] : $widget_name,
-					'widget_provider' => 'widgetizer',
 					'widget_icon'     => isset( $widget_content['icon'] ) ? $widget_content['icon'] : 'eicon-code',
-					'template_path'   => $this->dir . '/' . $provider_name . '/' . $widget_name,
+					'widget_styles'   => array( $provider_name . '-' . $widget_name ),
+					'widget_scripts'  => array( $provider_name . '-' . $widget_name ),
+					'template_path'   => WP_CONTENT_DIR . $widget_content['path'],
 				);
 				$this->generate_widget_class( $class_name, $class_properties );
 				$widget_object = new $class_name();

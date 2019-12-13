@@ -44,6 +44,20 @@ class Elementor_Widget extends \Elementor\Widget_Base {
 	protected $widget_icon;
 
 	/**
+	 * Widget styles
+	 *
+	 * @var string $widget_icon Widget styles.
+	 */
+	protected $widget_styles;
+
+	/**
+	 * Widget scripts
+	 *
+	 * @var string $widget_scripts Widget scripts.
+	 */
+	protected $widget_scripts;
+
+	/**
 	 * Base path of widget template directory
 	 *
 	 * @var string $template_path Template path.
@@ -85,6 +99,24 @@ class Elementor_Widget extends \Elementor\Widget_Base {
 	 */
 	public function get_icon() {
 		return $this->widget_icon;
+	}
+
+	/**
+	 * Widget styles array
+	 *
+	 * @return array Array of widget styles.
+	 */
+	public function get_style_depends() {
+		return $this->widget_styles;
+	}
+
+	/**
+	 * Widget scipts array
+	 *
+	 * @return array Array of widget scripts.
+	 */
+	public function get_script_depends() {
+		return $this->widget_scripts;
 	}
 
 	/**

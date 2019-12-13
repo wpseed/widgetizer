@@ -1,0 +1,13 @@
+# This is demo widget config
+title: Hello World! # Widget title
+icon: eicon-posts-ticker # Widget icon
+content:
+	general: # General section
+		widget_title: # Text input field
+			type: text
+			label: Widget Title
+			default: Default Title Content
+	advanced: # Advanced section
+		widget_code: # Code input field
+			type: code
+			label: Widget Code
