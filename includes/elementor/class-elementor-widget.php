@@ -8,10 +8,8 @@
 namespace Wpseed\Widgetizer\Elementor;
 
 use Latte\Engine;
-use Nette\Neon\Exception;
 use Nette\Neon\Neon;
 use Nette\Utils\FileSystem;
-use Symfony\Component\Yaml\Yaml;
 
 /**
  * Elementor Widget class
@@ -111,7 +109,7 @@ class Elementor_Widget extends \Elementor\Widget_Base {
 	}
 
 	/**
-	 * Widget scipts array
+	 * Widget scripts array
 	 *
 	 * @return array Array of widget scripts.
 	 */
@@ -123,7 +121,11 @@ class Elementor_Widget extends \Elementor\Widget_Base {
 	 * Register widget controls
 	 */
 	protected function _register_controls() { // phpcs:ignore
-		$value    = FileSystem::read( $this->template_path . '/' . $this->widget_name . '.neon' );
+		$config_file = $this->template_path . '/' . $this->widget_name . '.neon';
+		if ( ! is_readable( $config_file ) ) {
+			return false;
+		}
+		$value    = FileSystem::read( $config_file );
 		$neon     = Neon::decode( $value );
 		$controls = $neon['content'];
 
