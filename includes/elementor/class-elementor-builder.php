@@ -199,10 +199,10 @@ class Elementor_Builder {
 			foreach ( $provider_items as $widget_name => $widget_content ) {
 				$class_name       = 'Wpseed_Widgetizer_Elementor_' . Helpers::dashes_to_class_name( $provider_name . '-' . $widget_name );
 				$class_properties = array(
-					'widget_provider' => 'widgetizer',
+					'widget_provider' => $provider_name,
 					'widget_name'     => $widget_name,
-					'widget_title'    => isset( $widget_content['title'] ) ? $widget_content['title'] : $widget_name,
-					'widget_icon'     => isset( $widget_content['icon'] ) ? $widget_content['icon'] : 'eicon-code',
+					'widget_title'    => isset( $widget_content['config']['title'] ) ? $widget_content['config']['title'] : $widget_name,
+					'widget_icon'     => isset( $widget_content['config']['icon'] ) ? $widget_content['config']['icon'] : 'eicon-code',
 					'widget_styles'   => array( $provider_name . '-' . $widget_name ),
 					'widget_scripts'  => array( $provider_name . '-' . $widget_name ),
 					'template_path'   => WP_CONTENT_DIR . $widget_content['path'],
