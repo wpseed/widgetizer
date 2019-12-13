@@ -29,7 +29,7 @@
  * Currently plugin version.
  * Starts at version 1.0.0 and uses SemVer - https://semver.org
  */
-define( 'WPSEED_WIDGETIZER_VERSION', '1.0.0' );
+define( 'WPSEED_WIDGETIZER_VERSION', '1.0.1' );
 
 /**
  * Minimum required php version.
