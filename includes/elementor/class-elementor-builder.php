@@ -22,11 +22,11 @@ use Wpseed\Widgetizer\Validate;
 class Elementor_Builder {
 
 	/**
-	 * Elementor widgets directory
+	 * Elementor widgets directories list
 	 *
-	 * @var string|null
+	 * @var array $dirs Directories array.
 	 */
-	protected $dir;
+	protected $dirs;
 
 	/**
 	 * Elementor widgets config
@@ -38,11 +38,11 @@ class Elementor_Builder {
 	/**
 	 * Elementor_Builder constructor
 	 *
-	 * @param string|null $dir Elementor widgets directory.
+	 * @param array|null $dirs Elementor widgets directories list.
 	 */
-	public function __construct( $dir = null ) {
-		$this->dir    = $dir;
-		$this->config = $this->parse_config( $dir );
+	public function __construct( $dirs ) {
+		$this->dirs   = $dirs;
+		$this->config = $this->parse_config();
 	}
 
 	/**
@@ -66,37 +66,42 @@ class Elementor_Builder {
 	/**
 	 * Parse widgets from directory
 	 *
-	 * @param string $dir Directory for parsing widget configs.
-	 * @return array $output Output summary config.
+	 * @return array $output Parsed config.
 	 */
-	public function parse_config( $dir = null ) {
-		$output         = array();
-		$fs             = new Filesystem();
-		$neon           = new Neon();
-		$folders_finder = new Finder();
-		$folders        = $folders_finder->directories()->in( $dir )->depth( '== 0' )->sortByName();
-		foreach ( $folders as $folders_item ) {
-			$current_provider            = $folders_item->getFileName();
-			$output[ $current_provider ] = false;
-			if ( Validate::name( $current_provider ) ) {
-				$subfolders_finder           = new Finder();
-				$subfolders                  = $subfolders_finder->directories()->in( $dir . '/' . $current_provider )->depth( '== 0' )->sortByName();
-				$output[ $current_provider ] = array();
-				if ( iterator_count( $subfolders ) ) {
-					foreach ( $subfolders as $subfolders_item ) {
-						$current_widget                                 = $subfolders_item->getFileName();
-						$output[ $current_provider ][ $current_widget ] = array();
-						if ( Validate::name( $current_widget ) ) {
-							$current_widget_config_path = $dir . '/' . $current_provider . '/' . $current_widget . '/' . $current_widget . '.neon';
-							if ( $fs->exists( $current_widget_config_path ) ) {
-								$current_widget_config                          = $neon::decode( \Nette\Utils\FileSystem::read( $current_widget_config_path ) );
-								$output[ $current_provider ][ $current_widget ] = $current_widget_config;
+	public function parse_config() {
+		$output = array();
+		$dirs   = $this->dirs;
+		$fs     = new Filesystem();
+		$neon   = new Neon();
+		foreach ( $dirs as $dir ) {
+			$current_config = array();
+			$folders_finder = new Finder();
+			$folders        = $folders_finder->directories()->in( $dir )->depth( '== 0' )->sortByName();
+			foreach ( $folders as $folders_item ) {
+				$current_provider                    = $folders_item->getFileName();
+				$current_config[ $current_provider ] = false;
+				if ( Validate::name( $current_provider ) ) {
+					$subfolders_finder                   = new Finder();
+					$subfolders                          = $subfolders_finder->directories()->in( $dir . '/' . $current_provider )->depth( '== 0' )->sortByName();
+					$current_config[ $current_provider ] = array();
+					if ( iterator_count( $subfolders ) ) {
+						foreach ( $subfolders as $subfolders_item ) {
+							$current_widget = $subfolders_item->getFileName();
+							$current_config[ $current_provider ][ $current_widget ] = array();
+							if ( Validate::name( $current_widget ) ) {
+								$current_widget_config_path = $dir . '/' . $current_provider . '/' . $current_widget . '/' . $current_widget . '.neon';
+								if ( $fs->exists( $current_widget_config_path ) ) {
+									$current_widget_config                                  = $neon::decode( \Nette\Utils\FileSystem::read( $current_widget_config_path ) );
+									$current_config[ $current_provider ][ $current_widget ] = $current_widget_config;
+								}
 							}
 						}
-					};
+					}
 				}
 			}
+			$output = array_merge( $output, $current_config );
 		}
+
 		return $output;
 	}
 
@@ -138,7 +143,17 @@ class Elementor_Builder {
 	/**
 	 * Register widgets assets
 	 */
-	public function register_assets() {}
+	public function register_assets() {
+		foreach ( $this->config as $provider_name => $provider_items ) {
+			foreach ( $provider_items as $widget_name => $widget_content ) {
+				$style_file  = $this->dir . '/' . $provider_name . '/' . $widget_name . '/' . $widget_name . '.css';
+				$script_file = $this->dir . '/' . $provider_name . '/' . $widget_name . '/' . $widget_name . '.js';
+				if ( is_readable( $style_file ) ) {
+					// wp_register_script( $provider_name . '-' . $widget_name , WPSEED_WIDGETIZER_URL . '/assets/js/hello-world.js', __FILE__ ), [ 'jquery' ], false, true );
+				}
+			}
+		}
+	}
 
 	/**
 	 * Register Elementor categories.

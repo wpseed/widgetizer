@@ -58,7 +58,7 @@ final class Widgetizer {
 	 */
 	public function init() {
 		if ( did_action( 'elementor/loaded' ) ) {
-			$elementor_builder = new Elementor_Builder( is_dir( get_stylesheet_directory() . '/widgets/elementor' ) ? get_stylesheet_directory() . '/widgets/elementor' : WPSEED_WIDGETIZER_PATH . '/widgets/elementor' );
+			$elementor_builder = new Elementor_Builder( array( get_stylesheet_directory() . '/widgetizer/elementor' ) );
 			$elementor_builder->init();
 		}
 	}

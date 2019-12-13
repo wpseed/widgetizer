@@ -43,7 +43,7 @@ define( 'WPSEED_WIDGETIZER_PATH', __DIR__ );
 
 
 /**
- * Basepath of the plugin.
+ * Base path of the plugin.
  */
 define( 'WPSEED_WIDGETIZER_BASENAME', plugin_basename( __FILE__ ) );
 
@@ -53,9 +53,14 @@ define( 'WPSEED_WIDGETIZER_BASENAME', plugin_basename( __FILE__ ) );
 define( 'WPSEED_WIDGETIZER_URL', plugin_dir_url( __FILE__ ) );
 
 /**
- * Basepath of the widgets dir.
+ * Base path of the marketplace widgets dir.
  */
-define( 'WPSEED_WIDGETIZER_WIDGETS_PATH', WP_CONTENT_DIR . '/widgets' );
+define( 'WPSEED_WIDGETIZER_MARKETPLACE_WIDGETS_PATH', WP_CONTENT_DIR . '/widgets' );
+
+/**
+ * Url of the marketplace widgets dir.
+ */
+define( 'WPSEED_WIDGETIZER_MARKETPLACE_WIDGETS_URL', WP_CONTENT_URL . '/widgets' );
 
 /**
  * Load vendor packages.
