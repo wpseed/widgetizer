@@ -182,13 +182,14 @@ class Elementor_Builder {
 	 * @param \Elementor\Elements_Manager $elements_manager Elementor elements manager.
 	 */
 	public function register_categories( $elements_manager ) {
-		$elements_manager->add_category(
-			'widgetizer',
-			array(
-				'title' => __( 'Widgetizer', 'wpseed-widgetizer' ),
-				'icon'  => 'fa fa-plug',
-			)
-		);
+		foreach ( $this->config as $provider_name => $provider_items ) {
+			$elements_manager->add_category(
+				$provider_name,
+				array(
+					'title' => ucwords(str_replace('-', ' ', $provider_name)),
+				)
+			);
+		}
 	}
 
 	/**
