@@ -1,0 +1,9 @@
+title: Section
+icon: eicon-code
+content:
+	General:
+		title:
+			type: text
+			label: Title
+			description: Text field
+			default: Hello world

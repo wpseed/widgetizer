@@ -3,6 +3,7 @@
 .git
 .idea
 .gitignore
+.gitkeep
 .gitlab-ci.yml
 .coveralls.yml
 .travis.yml

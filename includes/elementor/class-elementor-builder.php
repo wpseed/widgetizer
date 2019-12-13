@@ -205,7 +205,7 @@ class Elementor_Builder {
 					'widget_icon'     => isset( $widget_content['config']['icon'] ) ? $widget_content['config']['icon'] : 'eicon-code',
 					'widget_styles'   => array( $provider_name . '-' . $widget_name ),
 					'widget_scripts'  => array( $provider_name . '-' . $widget_name ),
-					'template_path'   => WP_CONTENT_DIR . $widget_content['path'],
+					'widget_path'     => WP_CONTENT_DIR . $widget_content['path'],
 				);
 				$this->generate_widget_class( $class_name, $class_properties );
 				$widget_object = new $class_name();

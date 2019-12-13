@@ -35,6 +35,13 @@ class Elementor_Widget extends \Elementor\Widget_Base {
 	protected $widget_name;
 
 	/**
+	 * Widget title
+	 *
+	 * @var $widget_title
+	 */
+	protected $widget_title;
+
+	/**
 	 * Widget icon
 	 *
 	 * @var string $widget_icon widget icon
@@ -56,11 +63,11 @@ class Elementor_Widget extends \Elementor\Widget_Base {
 	protected $widget_scripts;
 
 	/**
-	 * Base path of widget template directory
+	 * Base path of widget
 	 *
-	 * @var string $template_path Template path.
+	 * @var string $widget_path Widget path.
 	 */
-	protected $template_path;
+	protected $widget_path;
 
 
 	/**
@@ -78,7 +85,7 @@ class Elementor_Widget extends \Elementor\Widget_Base {
 	 * @return string
 	 */
 	public function get_name() {
-		return $this->widget_name;
+		return $this->widget_provider . '-' . $this->widget_name;
 	}
 
 	/**
@@ -121,7 +128,7 @@ class Elementor_Widget extends \Elementor\Widget_Base {
 	 * Register widget controls
 	 */
 	protected function _register_controls() { // phpcs:ignore
-		$config_file = $this->template_path . '/' . $this->widget_name . '.neon';
+		$config_file = $this->widget_path . '/' . $this->widget_name . '.neon';
 		if ( ! is_readable( $config_file ) ) {
 			return false;
 		}
@@ -153,7 +160,7 @@ class Elementor_Widget extends \Elementor\Widget_Base {
 		$parameters = array(
 			'content' => $this->get_settings_for_display(),
 		);
-		$html       = $latte->renderToString( $this->template_path . '/' . $this->widget_name . '.latte', $parameters );
+		$html       = $latte->renderToString( $this->widget_path . '/' . $this->widget_name . '.latte', $parameters );
 		echo $html; // phpcs:ignore
 	}
 }
