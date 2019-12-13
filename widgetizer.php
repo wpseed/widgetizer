@@ -10,7 +10,7 @@
  * Plugin Name: Widgetizer
  * Plugin URI:  https://github.com/wpseed/widgetizer
  * Description: Widgets Generator for Page Builders.
- * Version:     1.0.0
+ * Version:     1.0.1
  * Author:      WP Seed
  * Author URI:  https://wpseed.io/
  * Donate link: https://wpseed.io/donate/
@@ -22,7 +22,7 @@
  * @link    https://wpseed.io/
  *
  * @package Widgetizer
- * @version 1.0.0
+ * @version 1.0.1
  */
 
 /**
