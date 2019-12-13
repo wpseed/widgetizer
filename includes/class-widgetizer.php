@@ -20,16 +20,23 @@ final class Widgetizer {
 	/**
 	 * Plugin instance
 	 *
-	 * @var null
+	 * @var Widgetizer|null $instance Widgetizer instance.
 	 */
 	protected static $instance = null;
+
+	/**
+	 * Elementor builder
+	 *
+	 * @var $elementor_builder
+	 */
+	protected $elementor_builder = null;
 
 	/**
 	 * Pages class.
 	 *
 	 * @var Pages Pages class
 	 */
-	protected $admin_pages;
+	protected $admin_pages = null;
 
 	/**
 	 * Widgetizer constructor
@@ -58,14 +65,14 @@ final class Widgetizer {
 	 */
 	public function init() {
 		if ( did_action( 'elementor/loaded' ) ) {
-			$elementor_builder = new Elementor_Builder(
+			$this->elementor_builder = new Elementor_Builder(
 				array(
 					WPSEED_WIDGETIZER_PATH . '/widgets/elementor',
 					WP_CONTENT_DIR . '/widgets/elementor',
 					get_stylesheet_directory() . '/widgetizer/elementor',
 				)
 			);
-			$elementor_builder->init();
+			$this->elementor_builder->init();
 		}
 	}
 }

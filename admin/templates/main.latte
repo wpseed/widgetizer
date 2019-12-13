@@ -7,7 +7,7 @@
             <h2>Provider: {$item_index}</h2>
             <ul class="wpseed-widgetizer-widgets">
                 <li class="wpseed-widgetizer-widgets__item" n:foreach="$item as $item => $subitem">
-                    <h3>{$item|capitalize}{ifset $subitem['icon']}<i class="{$subitem['icon']}" aria-hidden="true"></i>{/ifset}</h3>
+                    <h3>{$item|capitalize}{ifset $subitem['config']['icon']} <i class="{$subitem['config']['icon']}" aria-hidden="true"></i>{/ifset}</h3>
                 </li>
             </ul>
         </li>

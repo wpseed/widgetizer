@@ -8,6 +8,7 @@
 namespace Wpseed\Widgetizer\Admin;
 
 use Latte\Engine;
+use Wpseed\Widgetizer\Elementor\Elementor_Builder;
 use Wpseed\Widgetizer\Elementor\Parser;
 
 /**
@@ -56,9 +57,14 @@ class Pages {
 	 */
 	public function main_page() {
 		$template       = WPSEED_WIDGETIZER_PATH . '/admin/templates/main.latte';
-		$widgets_parser = new Parser();
-		$widgets_dir    = is_dir( get_stylesheet_directory() . '/widgetizer/elementor' ) ? get_stylesheet_directory() . '/widgetizer/elementor' : WPSEED_WIDGETIZER_PATH . '/widgets/elementor';
-		$widgets_config = $widgets_parser->parse_widgets( $widgets_dir );
+		$widgets_parser = new Elementor_Builder(
+			array(
+				WPSEED_WIDGETIZER_PATH . '/widgets/elementor',
+				WP_CONTENT_DIR . '/widgets/elementor',
+				get_stylesheet_directory() . '/widgetizer/elementor',
+			)
+		);
+		$widgets_config = $widgets_parser->get_config();
 		$parameters     = array(
 			'widgets_config' => $widgets_config,
 		);
