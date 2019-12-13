@@ -43,9 +43,16 @@ class Elementor_Builder {
 	public function __construct( $dir = null ) {
 		$this->dir    = $dir;
 		$this->config = $this->parse_config( $dir );
+	}
+
+	public function init() {
 		add_action( 'elementor/frontend/after_register_scripts', array( $this, 'register_assets' ) );
 		add_action( 'elementor/elements/categories_registered', array( $this, 'register_categories' ) );
 		add_action( 'elementor/widgets/widgets_registered', array( $this, 'register_widgets' ) );
+	}
+
+	public function get_config() {
+		return $this->config;
 	}
 
 	/**
