@@ -6,11 +6,12 @@
  */
 
 use Tester\Assert;
+use Wpseed\Widgetizer\Elementor\Parser;
 
 require __DIR__ . '/../../../../vendor/autoload.php';
 
 Tester\Environment::setup();
 
-$o = new \Wpseed\Widgetizer\Elementor\Parser();
+$o = new Parser();
 
 Assert::same( 'Hello John', $o->parse_dir( '../../widgets/elementor' ) );

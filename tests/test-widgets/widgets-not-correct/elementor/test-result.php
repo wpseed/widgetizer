@@ -1,7 +1,7 @@
 <?php
 
 return [
-	'non-Widgetizer' => [],
+	'non-Widgetizer'   => [],
 	'third-!provider$' => false,
-	'widgetizer' => []
+	'widgetizer'       => []
 ];
