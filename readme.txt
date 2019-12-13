@@ -45,3 +45,6 @@ Widgetizer creates Elementor widgets on the fly using templates from the widgets
 
 = 1.0.0 =
 * Initial release
+
+= 1.0.1 =
+* Styles and scripts for widgets have been added

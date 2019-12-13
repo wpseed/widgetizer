@@ -6,7 +6,7 @@ content:
 			type: text
 			label: Title
 			description: Text field
-			default: Hello w
+			default: Hello world
 		color:
 			type: color
 			label: Color
