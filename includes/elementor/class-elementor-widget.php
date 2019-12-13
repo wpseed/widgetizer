@@ -14,7 +14,7 @@ use Nette\Utils\FileSystem;
 use Symfony\Component\Yaml\Yaml;
 
 /**
- * Elementor Widget class.
+ * Elementor Widget class
  *
  * Class Elementor_Widget
  *
@@ -23,14 +23,14 @@ use Symfony\Component\Yaml\Yaml;
 class Elementor_Widget extends \Elementor\Widget_Base {
 
 	/**
-	 * Widget provider.
+	 * Widget provider
 	 *
 	 * @var $widget_provider
 	 */
 	protected $widget_provider;
 
 	/**
-	 * Widget name.
+	 * Widget name
 	 *
 	 * @var $widget_name
 	 */
@@ -44,7 +44,7 @@ class Elementor_Widget extends \Elementor\Widget_Base {
 	protected $widget_icon;
 
 	/**
-	 * Basepath of widget template directory
+	 * Base path of widget template directory
 	 *
 	 * @var string $template_path Template path.
 	 */
@@ -52,7 +52,7 @@ class Elementor_Widget extends \Elementor\Widget_Base {
 
 
 	/**
-	 * Get widget categories.
+	 * Get widget categories
 	 *
 	 * @return array
 	 */
@@ -61,7 +61,7 @@ class Elementor_Widget extends \Elementor\Widget_Base {
 	}
 
 	/**
-	 * Get widget name.
+	 * Get widget name
 	 *
 	 * @return string
 	 */
@@ -70,7 +70,7 @@ class Elementor_Widget extends \Elementor\Widget_Base {
 	}
 
 	/**
-	 * Get widget title.
+	 * Get widget title
 	 *
 	 * @return mixed
 	 */
@@ -79,7 +79,7 @@ class Elementor_Widget extends \Elementor\Widget_Base {
 	}
 
 	/**
-	 * Get widget icon.
+	 * Get widget icon
 	 *
 	 * @return string
 	 */
@@ -88,7 +88,7 @@ class Elementor_Widget extends \Elementor\Widget_Base {
 	}
 
 	/**
-	 * Register widget controls.
+	 * Register widget controls
 	 */
 	protected function _register_controls() { // phpcs:ignore
 		$value    = FileSystem::read( $this->template_path . '/' . $this->widget_name . '.neon' );
@@ -112,7 +112,7 @@ class Elementor_Widget extends \Elementor\Widget_Base {
 	}
 
 	/**
-	 * Render widget.
+	 * Render widget
 	 */
 	protected function render() {
 		$latte      = new Engine();

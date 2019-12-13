@@ -22,21 +22,21 @@ use Wpseed\Widgetizer\Validate;
 class Elementor_Builder {
 
 	/**
-	 * Elementor widgets directory.
+	 * Elementor widgets directory
 	 *
 	 * @var string|null
 	 */
 	protected $dir;
 
 	/**
-	 * Elementor widgets config.
+	 * Elementor widgets config
 	 *
 	 * @var array $config Global config.
 	 */
 	protected $config;
 
 	/**
-	 * Elementor_Builder constructor.
+	 * Elementor_Builder constructor
 	 *
 	 * @param string|null $dir Elementor widgets directory.
 	 */
@@ -46,7 +46,7 @@ class Elementor_Builder {
 	}
 
 	/**
-	 * Initialize builder.
+	 * Initialize builder
 	 */
 	public function init() {
 		add_action( 'elementor/frontend/after_register_scripts', array( $this, 'register_assets' ) );
@@ -55,7 +55,7 @@ class Elementor_Builder {
 	}
 
 	/**
-	 * Get current widgets config.
+	 * Get current widgets config
 	 *
 	 * @return array
 	 */
@@ -64,7 +64,7 @@ class Elementor_Builder {
 	}
 
 	/**
-	 * Parse widgets from directory.
+	 * Parse widgets from directory
 	 *
 	 * @param string $dir Directory for parsing widget configs.
 	 * @return array $output Output summary config.
@@ -101,7 +101,7 @@ class Elementor_Builder {
 	}
 
 	/**
-	 * Parse assets.
+	 * Parse assets
 	 *
 	 * @param null $dir Elementor widgets directory.
 	 *
@@ -136,7 +136,7 @@ class Elementor_Builder {
 	}
 
 	/**
-	 * Register widgets assets.
+	 * Register widgets assets
 	 */
 	public function register_assets() {}
 
@@ -156,7 +156,7 @@ class Elementor_Builder {
 	}
 
 	/**
-	 * Register widgets.
+	 * Register widgets
 	 */
 	public function register_widgets() {
 		foreach ( $this->config as $provider_name => $provider_items ) {

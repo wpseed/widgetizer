@@ -11,14 +11,14 @@ use Wpseed\Widgetizer\Admin\Pages;
 use Wpseed\Widgetizer\Elementor\Elementor_Builder;
 
 /**
- * Main initiation plugin class.
+ * Main initiation plugin class
  *
  * @since  1.0.0
  */
 final class Widgetizer {
 
 	/**
-	 * Plugin instance.
+	 * Plugin instance
 	 *
 	 * @var null
 	 */
@@ -27,12 +27,12 @@ final class Widgetizer {
 	/**
 	 * Pages class.
 	 *
-	 * @var Pages Pages class.
+	 * @var Pages Pages class
 	 */
 	protected $admin_pages;
 
 	/**
-	 * Widgetizer constructor.
+	 * Widgetizer constructor
 	 */
 	public function __construct() {
 		if ( ! $this->admin_pages ) {
@@ -42,7 +42,7 @@ final class Widgetizer {
 	}
 
 	/**
-	 * Get plugin instance.
+	 * Get plugin instance
 	 *
 	 * @return null
 	 */
@@ -54,7 +54,7 @@ final class Widgetizer {
 	}
 
 	/**
-	 * Init plugin.
+	 * Init plugin
 	 */
 	public function init() {
 		if ( did_action( 'elementor/loaded' ) ) {

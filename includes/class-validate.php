@@ -8,7 +8,7 @@
 namespace Wpseed\Widgetizer;
 
 /**
- * Validate class.
+ * Validate class
  *
  * @since  1.0.0
  */
