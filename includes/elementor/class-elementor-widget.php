@@ -144,8 +144,10 @@ class Elementor_Widget extends \Elementor\Widget_Base {
 				)
 			);
 
-			foreach ( $control_item_value as $control_subitem_index => $control_subitem_value ) {
-				$this->add_control( $control_subitem_index, $control_subitem_value );
+			if ( is_array( $control_item_value ) ) {
+				foreach ( $control_item_value as $control_subitem_index => $control_subitem_value ) {
+					$this->add_control( $control_subitem_index, $control_subitem_value );
+				}
 			}
 
 			$this->end_controls_section();
@@ -156,11 +158,14 @@ class Elementor_Widget extends \Elementor\Widget_Base {
 	 * Render widget
 	 */
 	protected function render() {
-		$latte      = new Engine();
-		$parameters = array(
+		$latte         = new Engine();
+		$parameters    = array(
 			'content' => $this->get_settings_for_display(),
 		);
-		$html       = $latte->renderToString( $this->widget_path . '/' . $this->widget_name . '.latte', $parameters );
-		echo $html; // phpcs:ignore
+		$template_file = $this->widget_path . '/' . $this->widget_name . '.latte';
+		if ( is_readable( $template_file ) ) {
+			$html = $latte->renderToString( $this->widget_path . '/' . $this->widget_name . '.latte', $parameters );
+			echo $html; // phpcs:ignore
+		}
 	}
 }

@@ -186,7 +186,7 @@ class Elementor_Builder {
 			$elements_manager->add_category(
 				$provider_name,
 				array(
-					'title' => ucwords(str_replace('-', ' ', $provider_name)),
+					'title' => ucwords( str_replace( '-', ' ', $provider_name ) ),
 				)
 			);
 		}
