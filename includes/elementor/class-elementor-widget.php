@@ -69,6 +69,12 @@ class Elementor_Widget extends \Elementor\Widget_Base {
 	 */
 	protected $widget_path;
 
+	/**
+	 * Widget config
+	 *
+	 * @var mixed $widget_config Widget config.
+	 */
+	protected $widget_config;
 
 	/**
 	 * Get widget categories
@@ -128,25 +134,20 @@ class Elementor_Widget extends \Elementor\Widget_Base {
 	 * Register widget controls
 	 */
 	protected function _register_controls() { // phpcs:ignore
-		$config_file = $this->widget_path . '/' . $this->widget_name . '.neon';
-		if ( ! is_readable( $config_file ) ) {
-			return false;
-		}
-		$value    = FileSystem::read( $config_file );
-		$neon     = Neon::decode( $value );
-		$controls = $neon['content'];
-
-		foreach ( $controls as $controls_item_index => $control_item_value ) {
+		$widget_config = $this->widget_config;
+		$widget_content = array_key_exists( 'content', $widget_config ) ? $widget_config['content'] : array();
+		var_dump($widget_content);
+		foreach ( $widget_content as $widget_content_item_index => $widget_content_item_value ) {
 			$this->start_controls_section(
-				'section_' . $controls_item_index,
+				'section_' . $widget_content_item_index,
 				array(
-					'label' => esc_html( $controls_item_index ),
+					'label' => esc_html( $widget_content_item_index ),
 				)
 			);
 
-			if ( is_array( $control_item_value ) ) {
-				foreach ( $control_item_value as $control_subitem_index => $control_subitem_value ) {
-					$this->add_control( $control_subitem_index, $control_subitem_value );
+			if ( is_array( $widget_content_item_value ) ) {
+				foreach ( $widget_content_item_value as $widget_content_subitem_index => $widget_content_subitem_value ) {
+					$this->add_control( $widget_content_subitem_index, $widget_content_subitem_value );
 				}
 			}
 
