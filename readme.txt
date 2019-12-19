@@ -4,7 +4,7 @@ Donate link: https://wpseed.io/donate/
 Tags: elementor, elementor widget, gutenberg, gutenberg widget
 Requires at least: 4.7
 Tested up to: 5.3
-Stable tag: 1.0.1
+Stable tag: 1.0.2
 Requires PHP: 5.6.20
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
@@ -49,3 +49,7 @@ Widgetizer creates Elementor widgets on the fly using templates from the widgets
 = 1.0.1 =
 * Plugin page in admin panel have been added
 * Styles and scripts for widgets have been added
+
+= 1.0.2 =
+* Tab setting for sections added
+* Freeze editor bugs fixed
