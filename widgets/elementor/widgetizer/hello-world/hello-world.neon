@@ -2,7 +2,7 @@
 title: Hello World! # Widget title
 icon: eicon-testimonial # Widget icon
 content:
-	General: # General section
+	general: # General section
 		tab: content
 		widget_title: # Text input field
 			type: text
@@ -12,7 +12,7 @@ content:
 			type: textarea
 			label: Widget Content
 			default: Lorem Ipsum is simply dummy text of the printing and typesetting industry.
-	Advanced: # Advanced section
+	advanced: # Advanced section
 		tab: style
 		widget_code: # Code input field
 			type: code

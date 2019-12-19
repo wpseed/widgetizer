@@ -1,7 +1,7 @@
 title: Section
 icon: eicon-code
 content:
-	General:
+	general:
 		title:
 			type: text
 			label: Title
