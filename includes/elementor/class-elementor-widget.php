@@ -138,14 +138,18 @@ class Elementor_Widget extends \Elementor\Widget_Base {
 		$widget_content = array_key_exists( 'content', $widget_config ) ? $widget_config['content'] : array();
 		foreach ( $widget_content as $widget_content_item_index => $widget_content_item_value ) {
 			$this->start_controls_section(
-				'section_' . $widget_content_item_index,
+				'section_' . mb_strtolower( esc_html( $widget_content_item_index ), 'UTF-8' ),
 				array(
-					'label' => esc_html( $widget_content_item_index ),
+					'label' => ucfirst( mb_strtolower( esc_html( $widget_content_item_index ), 'UTF-8' ) ),
+					'tab'   => array_key_exists( 'tab', $widget_content_item_value ) ? $widget_content_item_value['tab'] : 'content',
 				)
 			);
 
 			if ( is_array( $widget_content_item_value ) ) {
 				foreach ( $widget_content_item_value as $widget_content_subitem_index => $widget_content_subitem_value ) {
+					if ( 'tab' === $widget_content_subitem_index ) {
+						continue;
+					}
 					$this->add_control( $widget_content_subitem_index, $widget_content_subitem_value );
 				}
 			}
