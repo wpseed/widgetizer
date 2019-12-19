@@ -3,6 +3,7 @@ title: Hello World! # Widget title
 icon: eicon-posts-ticker # Widget icon
 content:
 	general: # General section
+		tab: content
 		widget_title: # Text input field
 			type: text
 			label: Widget Title
@@ -12,6 +13,7 @@ content:
 			label: Widget Content
 			default: Lorem Ipsum is simply dummy text of the printing and typesetting industry.
 	advanced: # Advanced section
+		tab: style
 		widget_code: # Code input field
 			type: code
 			label: Widget Code

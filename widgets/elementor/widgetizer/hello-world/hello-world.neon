@@ -2,16 +2,18 @@
 title: Hello World! # Widget title
 icon: eicon-testimonial # Widget icon
 content:
-    General: # General section
-        widget_title: # Text input field
-            type: text
-            label: Widget Title
-            default: Default Title Content
-        widget_content: # Textarea input field
-            type: textarea
-            label: Widget Content
-            default: Lorem Ipsum is simply dummy text of the printing and typesetting industry.
-    Advanced: # Advanced section
-        widget_code: # Code input field
-            type: code
-            label: Widget Code
+	General: # General section
+		tab: content
+		widget_title: # Text input field
+			type: text
+			label: Widget Title
+			default: Default Title Content
+		widget_content: # Textarea input field
+			type: textarea
+			label: Widget Content
+			default: Lorem Ipsum is simply dummy text of the printing and typesetting industry.
+	Advanced: # Advanced section
+		tab: style
+		widget_code: # Code input field
+			type: code
+			label: Widget Code

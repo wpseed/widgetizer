@@ -15,6 +15,7 @@ return [
 				'icon' => 'eicon-posts-ticker',
 				'content' => [
 					'general' => [
+						'tab' => 'content',
 						'widget_title' => [
 							'type' => 'text',
 							'label' => 'Widget Title',
@@ -26,7 +27,10 @@ return [
 							'default' => 'Lorem Ipsum is simply dummy text of the printing and typesetting industry.',
 						],
 					],
-					'advanced' => ['widget_code' => ['type' => 'code', 'label' => 'Widget Code']],
+					'advanced' => [
+						'tab' => 'style',
+						'widget_code' => ['type' => 'code', 'label' => 'Widget Code'],
+					],
 				],
 			],
 		],
