@@ -207,7 +207,7 @@ class Elementor_Builder {
 					'widget_styles'   => array( $provider_name . '-' . $widget_name ),
 					'widget_scripts'  => array( $provider_name . '-' . $widget_name ),
 					'widget_path'     => WP_CONTENT_DIR . $widget_content['path'],
-					'widget_config'	  => isset( $widget_content['config'] ) ? $widget_content['config'] : array(),
+					'widget_config'   => isset( $widget_content['config'] ) ? $widget_content['config'] : array(),
 				);
 				$this->generate_widget_class( $class_name, $class_properties );
 				$widget_object = new $class_name();
