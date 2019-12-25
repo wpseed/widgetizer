@@ -10,9 +10,11 @@ let mix = require('laravel-mix');
  | file for your application, as well as bundling up your JS files.
  |
  */
+mix.config.fileLoaderDirs.fonts = 'admin/assets/fonts';
 mix
 	.js('admin/assets-src/scripts/wpseed-widgetizer-admin.js', 'admin/assets/scripts/')
-	.sass('admin/assets-src/styles/wpseed-widgetizer-admin.scss', 'admin/assets/styles/');
+	.sass('admin/assets-src/styles/wpseed-widgetizer-admin.scss', 'admin/assets/styles/')
+	.setResourceRoot('../../../');
 
 // Full API
 // mix.js(src, output);

@@ -103,9 +103,9 @@ class Pages {
 		);
 		wp_localize_script(
 			'wpseed-widgetizer-admin',
-			'wpseedWidgetizerAdminData',
+			'dataWpseedWidgetizerAdmin',
 			array(
-				'nonce' => wp_create_nonce( 'wp_rest_wpseed_widgetizer_admin' ),
+				'nonce' => wp_create_nonce( 'wp_rest' ),
 				'userDisplayName' => wp_get_current_user()->display_name,
 				'userId' => wp_get_current_user()->ID,
 				'siteName' => get_bloginfo( 'name' ),

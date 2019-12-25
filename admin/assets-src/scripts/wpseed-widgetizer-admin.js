@@ -1,13 +1,15 @@
 import Vue from 'vue'
+import VueRouter from 'vue-router'
 import Buefy from 'buefy'
 import Axios from 'axios'
-import VueRouter from 'vue-router'
+import VueCodemirror from 'vue-codemirror'
 
 Vue.use(Buefy);
 Vue.use(VueRouter);
+Vue.use(VueCodemirror);
 
 window.axios = Axios;
-window.axios.defaults.headers.common['X-WP-Nonce'] = wpseedWidgetizerAdminData.nonce;
+window.axios.defaults.headers.common['X-WP-Nonce'] = dataWpseedWidgetizerAdmin.nonce;
 
 import HomeComponent from "./components/HomeComponent";
 import WidgetComponent from "./components/WidgetComponent";

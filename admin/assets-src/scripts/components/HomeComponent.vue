@@ -8,7 +8,7 @@
                 :pagination-simple=false>
             <template slot-scope="props">
                 <b-table-column field="widget_name" label="Widget Name" sortable>
-                    <a :href="'?page=widgetizer&widget_provider=' + props.row.widget_provider + '&widget_name=' + props.row.widget_name">{{ props.row.widget_provider }}/{{ props.row.widget_name }}</a>
+                    <router-link :to="'/widget/' + props.row.widget_provider + '/' + props.row.widget_name">{{ props.row.widget_provider }}/{{ props.row.widget_name }}</router-link>
                 </b-table-column>
             </template>
         </b-table>
@@ -34,12 +34,13 @@
                         label: 'Widget Path',
                     }
                 ],
-                errors: []
+                errors: [],
+                dataWpseedWidgetizerAdmin: window.dataWpseedWidgetizerAdmin
             }
         },
         created() {
             window.axios
-                .get('/wp-json/widgetizer/v1/widgets/')
+                .get(dataWpseedWidgetizerAdmin.restUrl + 'widgetizer/v1/widgets/')
                 .then(
                     response => {
                         this.widgets = response.data;

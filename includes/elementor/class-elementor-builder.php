@@ -109,6 +109,27 @@ class Elementor_Builder {
 		return $output;
 	}
 
+
+	/**
+	 * Get all widgets
+	 *
+	 * @return array $output All widgets array.
+	 */
+	public function get_widgets() {
+		$output = array();
+		foreach ( $this->config as $provider_name => $provider_content ) {
+			foreach ( $provider_content as $widget_name => $widget_content ) {
+				$output[] = array(
+					'widget_provider' => $provider_name,
+					'widget_name'     => $widget_name,
+					'widget_icon'     => $widget_content['config']['icon'],
+					'widget_path'     => $widget_content['path'],
+				);
+			}
+		}
+		return $output;
+	}
+
 	/**
 	 * Parse assets
 	 *

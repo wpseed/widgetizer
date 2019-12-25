@@ -1,6 +1,13 @@
-<div class="wrap wrap--wpseed">
-    <h1>{block title}{/block}</h1>
-    <p>
-        {block content}{/block}
-    </p>
+<div id="wpseed-widgetizer-admin">
+    <div class="wpseed-widgetizer-admin-header">
+        <div class="container is-fluid">
+            <div class="level">
+                <div class="level-left"><h1><span class="dashicons dashicons-welcome-widgets-menus"></span> {block title}{/block}</h1></div>
+                <div class="level-right"><button class="button is-primary is-medium"><span class="icon"><i class="mdi mdi-plus-circle"></i></span><span class="is-uppercase">Add widget</span></button></div>
+            </div>
+        </div>
+    </div>
+    <div class="wpseed-widgetizer-admin-content">
+        <div class="container is-fluid"><div class="section">{block content}{/block}</div></div>
+    </div>
 </div>
