@@ -101,6 +101,19 @@ class Pages {
 			WPSEED_WIDGETIZER_VERSION,
 			true
 		);
+		wp_localize_script(
+			'wpseed-widgetizer-admin',
+			'wpseedWidgetizerAdminData',
+			array(
+				'nonce' => wp_create_nonce( 'wp_rest_wpseed_widgetizer_admin' ),
+				'userDisplayName' => wp_get_current_user()->display_name,
+				'userId' => wp_get_current_user()->ID,
+				'siteName' => get_bloginfo( 'name' ),
+				'siteUrl' => get_bloginfo( 'url' ),
+				'restUrl' => rest_url(),
+				'adminUrl' => admin_url()
+			)
+		);
 		wp_enqueue_style(
 			'wpseed-widgetizer-admin',
 			WPSEED_WIDGETIZER_URL . '/admin/assets/styles/wpseed-widgetizer-admin.css',
