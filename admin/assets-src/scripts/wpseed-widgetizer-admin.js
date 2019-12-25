@@ -12,6 +12,7 @@ window.axios = Axios;
 window.axios.defaults.headers.common['X-WP-Nonce'] = dataWpseedWidgetizerAdmin.nonce;
 
 import HomeComponent from "./components/HomeComponent";
+import AddWidgetComponent from "./components/AddWidgetComponent";
 import WidgetComponent from "./components/WidgetComponent";
 
 const files = require.context('./components', true, /\.vue$/i);
@@ -20,6 +21,7 @@ files.keys().map(key => Vue.component(key.split('/').pop().split('.')[0], files(
 const routes = [
 		{ path: '/', redirect: '/home' },
 		{ path: '/home', component: HomeComponent },
+		{ path: '/add-widget', component: AddWidgetComponent },
 		{ path: '/widget/:widget_provider/:widget_name', component: WidgetComponent },
 	];
 const router = new VueRouter({routes : routes});

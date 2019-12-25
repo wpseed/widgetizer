@@ -37379,7 +37379,7 @@ MIT (https://github.com/Wikiki/bulma-steps/blob/master/LICENSE)
 .wpseed-widgetizer-admin-header {
   background-color: #ffffff;
   box-shadow: 0 1px 0 #ccd0d4, 0 1px 1px 1px rgba(0, 0, 0, 0.05);
-  padding: 1rem 2rem;
+  padding: 1rem 0;
 }
 
 .wpseed-widgetizer-admin-header h1 {
@@ -37394,5 +37394,9 @@ MIT (https://github.com/Wikiki/bulma-steps/blob/master/LICENSE)
   font-size: 2.5rem;
   line-height: 1;
   margin-right: 2rem;
+}
+
+.wpseed-widgetizer-admin-breadcrumb {
+  padding: 1rem 0 2rem;
 }
 
