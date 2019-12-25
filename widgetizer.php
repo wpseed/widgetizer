@@ -22,7 +22,6 @@
  * @link    https://wpseed.io/
  *
  * @package Widgetizer
- * @version 1.0.2
  */
 
 /**
