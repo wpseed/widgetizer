@@ -19,17 +19,25 @@ use Wpseed\Widgetizer\Elementor\Parser;
 class Pages {
 
 	/**
-	 * Engine class.
+	 * Engine class
 	 *
 	 * @var Engine Engine class.
 	 */
 	private $latte;
 
 	/**
+	 * Admin pages
+	 *
+	 * @var array $pages Admin pages array.
+	 */
+	private $pages = array();
+
+	/**
 	 * Pages constructor.
 	 */
 	public function __construct() {
 		$this->latte = new Engine();
+		$this->pages = array( 'wpseed-widgetizer-admin' );
 		add_action( 'plugins_loaded', array( $this, 'init' ) );
 	}
 
@@ -38,7 +46,18 @@ class Pages {
 	 */
 	public function init() {
 		add_action( 'admin_menu', array( $this, 'add_main_page' ) );
-		add_action( 'admin_enqueue_scripts', array( $this, 'admin_enqueue_scripts' ) );
+		if ( $this->is_plugin_page() ) {
+			add_action( 'admin_enqueue_scripts', array( $this, 'admin_enqueue_scripts' ) );
+		}
+	}
+
+	/**
+	 * Check is plugin page or not
+	 */
+	public function is_plugin_page() {
+		$page = isset( $_GET['page'] ) ? trim( $_GET['page'] ) : null;
+		if ( in_array( $page, $this->pages ) ) return true;
+		return false;
 	}
 
 	/**
@@ -48,14 +67,14 @@ class Pages {
 		$page_title = __( 'Widgetizer', 'wpseed-widgetizer' );
 		$menu_title = __( 'Widgetizer', 'wpseed-widgetizer' );
 		$capability = 'manage_options';
-		$slug       = 'widgetizer';
-		add_menu_page( $page_title, $menu_title, $capability, $slug, array( $this, 'main_page' ), 'dashicons-welcome-widgets-menus' );
+		$slug       = 'wpseed-widgetizer-admin';
+		add_menu_page( $page_title, $menu_title, $capability, $slug, array( $this, 'render_main_page' ), 'dashicons-welcome-widgets-menus' );
 	}
 
 	/**
 	 * Render main admin page.
 	 */
-	public function main_page() {
+	public function render_main_page() {
 		$template       = WPSEED_WIDGETIZER_PATH . '/admin/templates/main.latte';
 		$widgets_parser = new Elementor_Builder(
 			array(
