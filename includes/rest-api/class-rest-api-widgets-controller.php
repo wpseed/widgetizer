@@ -34,29 +34,33 @@ class Rest_Api_Widgets_Controller extends Rest_Api_Controller {
 					'permission_callback' => array( $this, 'permissions_check' ),
 					'args'                => $this->get_collection_params(),
 				),
-				array(
-					'methods'             => \WP_REST_Server::CREATABLE,
-					'callback'            => array( $this, 'create_item' ),
-					'permission_callback' => array( $this, 'permissions_check' ),
-					'args'                => $this->get_collection_params(),
-				),
 				'schema' => array( $this, 'get_public_item_schema' ),
 			)
 		);
 
 		register_rest_route(
 			$this->namespace,
-			'/widgets',
+			'/widgets/(?P<widget_provider>[a-z-]+)/(?P<widget_name>[a-z-]+)',
 			array(
 				'args'   => array (
-					'id' => array(
-						'description' => __( 'Unique identifier for the object.', 'anycomment' ),
-						'type'        => 'integer',
+					'widget_provider' => array(
+						'description' => __( 'Widget provider identifier.' ),
+						'type'        => 'string',
+					),
+					'widget_name' => array(
+						'description' => __( 'Widget name identifier.' ),
+						'type'        => 'string',
 					),
 				),
 				array(
 					'methods'             => \WP_REST_Server::READABLE,
 					'callback'            => array( $this, 'get_item' ),
+					'permission_callback' => array( $this, 'permissions_check' ),
+					'args'                => $this->get_collection_params(),
+				),
+				array(
+					'methods'             => \WP_REST_Server::CREATABLE,
+					'callback'            => array( $this, 'create_item' ),
 					'permission_callback' => array( $this, 'permissions_check' ),
 					'args'                => $this->get_collection_params(),
 				),
@@ -80,7 +84,7 @@ class Rest_Api_Widgets_Controller extends Rest_Api_Controller {
 	 */
 	public function permissions_check( \WP_REST_Request $request ) {
 //		if ( ! current_user_can( 'edit_others_pages' ) ) {
-//			return new WP_Error(
+//			return new \WP_Error(
 //				'rest_forbidden_context',
 //				__( 'Sorry, you are not allowed to use Widgetizer API.' ),
 //				array( 'status' => rest_authorization_required_code() )
@@ -105,7 +109,7 @@ class Rest_Api_Widgets_Controller extends Rest_Api_Controller {
 				get_stylesheet_directory() . '/widgetizer/elementor',
 			)
 		);
-		return $widgets_parser->get_widgets();
+		return new \WP_REST_Response( $widgets_parser->get_widgets() );
 	}
 
 
@@ -118,9 +122,35 @@ class Rest_Api_Widgets_Controller extends Rest_Api_Controller {
 	 * @return \WP_REST_Response|\WP_Error Response object on success, or WP_Error object on failure.
 	 */
 	public function create_item( \WP_REST_Request $request ) {
-		return array(
-			'widget_name' => $request['widget_name'],
-		);
+		if ( isset( $request['widget_provider'] ) && ( isset( $request['widget_name'] ) ) ) {
+			return new \WP_REST_Response(
+				array(
+					'widget_provider' => $request['widget_provider'],
+					'widget_name' => $request['widget_name'],
+				)
+			);
+		}
+		return false;
+	}
+
+	/**
+	 * Update one item from the collection.
+	 *
+	 * @since 4.7.0
+	 *
+	 * @param \WP_REST_Request $request Full data about the request.
+	 * @return \WP_REST_Response|\WP_Error Response object on success, or WP_Error object on failure.
+	 */
+	public function update_item( \WP_REST_Request $request ) {
+		if ( isset( $request['widget_provider'] ) && ( isset( $request['widget_name'] ) ) ) {
+			return new \WP_REST_Response(
+				array(
+					'widget_provider' => $request['widget_provider'],
+					'widget_name' => $request['widget_name'],
+				)
+			);
+		}
+		return false;
 	}
 
 }
