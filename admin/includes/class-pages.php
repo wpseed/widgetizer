@@ -56,7 +56,9 @@ class Pages {
 	 */
 	public function is_plugin_page() {
 		$page = isset( $_GET['page'] ) ? trim( $_GET['page'] ) : null;
-		if ( in_array( $page, $this->pages ) ) return true;
+		if ( in_array( $page, $this->pages ) ) {
+			return true;
+		}
 		return false;
 	}
 
@@ -105,13 +107,13 @@ class Pages {
 			'wpseed-widgetizer-admin',
 			'dataWpseedWidgetizerAdmin',
 			array(
-				'nonce' => wp_create_nonce( 'wp_rest' ),
+				'nonce'           => wp_create_nonce( 'wp_rest' ),
 				'userDisplayName' => wp_get_current_user()->display_name,
-				'userId' => wp_get_current_user()->ID,
-				'siteName' => get_bloginfo( 'name' ),
-				'siteUrl' => get_bloginfo( 'url' ),
-				'restUrl' => rest_url(),
-				'adminUrl' => admin_url()
+				'userId'          => wp_get_current_user()->ID,
+				'siteName'        => get_bloginfo( 'name' ),
+				'siteUrl'         => get_bloginfo( 'url' ),
+				'restUrl'         => rest_url(),
+				'adminUrl'        => admin_url(),
 			)
 		);
 		wp_enqueue_style(
