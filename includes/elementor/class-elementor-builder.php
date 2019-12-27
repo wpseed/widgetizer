@@ -12,7 +12,7 @@ use Nette\PhpGenerator\ClassType;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Finder\Finder;
 use Wpseed\Widgetizer\Helpers;
-use Wpseed\Widgetizer\Validate;
+use Wpseed\Widgetizer\Validator;
 
 /**
  * Class Elementor_Builder
@@ -83,7 +83,7 @@ class Elementor_Builder {
 			foreach ( $folders as $folders_item ) {
 				$current_provider                    = $folders_item->getFileName();
 				$current_config[ $current_provider ] = false;
-				if ( Validate::name( $current_provider ) ) {
+				if ( Validator::is_widgetizer_slug( $current_provider ) ) {
 					$subfolders_finder                   = new Finder();
 					$subfolders                          = $subfolders_finder->directories()->in( $dir . '/' . $current_provider )->depth( '== 0' )->sortByName();
 					$current_config[ $current_provider ] = array();
@@ -91,7 +91,7 @@ class Elementor_Builder {
 						foreach ( $subfolders as $subfolders_item ) {
 							$current_widget = $subfolders_item->getFileName();
 							$current_config[ $current_provider ][ $current_widget ] = array();
-							if ( Validate::name( $current_widget ) ) {
+							if ( Validator::is_widgetizer_slug( $current_widget ) ) {
 								$current_widget_config_path                                     = $dir . '/' . $current_provider . '/' . $current_widget . '/' . $current_widget . '.neon';
 								$current_config[ $current_provider ][ $current_widget ]['path'] = str_replace( '\\', '/', str_replace( realpath( WP_CONTENT_DIR ), '', realpath( $dir . '/' . $current_provider . '/' . $current_widget ) ) );
 								if ( $fs->exists( $current_widget_config_path ) ) {
