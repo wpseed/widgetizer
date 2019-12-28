@@ -93,6 +93,7 @@ export default {
                 message: 'Widget created',
                 type: 'is-success',
               });
+              this.$router.push({ path: `/widgets/${this.widget_provider_slug}/${this.widget_name_slug}`, params: { userId: 123 }});
               console.log(this.widget);
             },
           )
