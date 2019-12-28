@@ -72,6 +72,12 @@ class Rest_Api_Widgets_Controller extends Rest_Api_Controller {
 					'permission_callback' => array( $this, 'permissions_check' ),
 					'args'                => $this->get_collection_params(),
 				),
+				array(
+					'methods'             => WP_REST_Server::DELETABLE,
+					'callback'            => array( $this, 'delete_item' ),
+					'permission_callback' => array( $this, 'permissions_check' ),
+					'args'                => $this->get_collection_params(),
+				),
 				'schema' => array( $this, 'get_public_item_schema' ),
 			)
 		);
@@ -163,15 +169,49 @@ class Rest_Api_Widgets_Controller extends Rest_Api_Controller {
 	 * @return \WP_REST_Response|\WP_Error Response object on success, or WP_Error object on failure.
 	 */
 	public function update_item( \WP_REST_Request $request ) {
-		if ( isset( $request['widget_provider'] ) && ( isset( $request['widget_name'] ) ) ) {
-			return new \WP_REST_Response(
-				array(
-					'widget_provider' => $request['widget_provider'],
-					'widget_name'     => $request['widget_name'],
-				)
-			);
+		if ( ! isset( $request['widget_provider'] ) || ! isset( $request['widget_name']  ) ) {
+			return new \WP_Error( 'fields_cannot_be_empty', __( 'Fields cannot be empty' ) );
 		}
-		return false;
+		$dir = get_stylesheet_directory() . '/widgetizer/elementor/' . $request['widget_provider'] . '/' . $request['widget_name'];
+		if ( is_dir( $dir ) ) {
+			return new \WP_Error( 'widget_already_exists', __( 'Widget already exists' ), array('status' => 403));
+		}
+		$filesystem = new Filesystem();
+		$remove_result = $filesystem->remove( array( $dir ) );
+		return new \WP_REST_Response(
+			array(
+				'widget_provider' => $request['widget_provider'],
+				'widget_name'     => $request['widget_name'],
+				'remove_result'   => $remove_result,
+			)
+		);
+	}
+
+	/**
+	 * Delete one item from the collection.
+	 *
+	 * @since 4.7.0
+	 *
+	 * @param \WP_REST_Request $request Full data about the request.
+	 * @return \WP_REST_Response|\WP_Error Response object on success, or WP_Error object on failure.
+	 */
+	public function delete_item( \WP_REST_Request $request ) {
+		if ( ! isset( $request['widget_provider'] ) || ! isset( $request['widget_name']  ) ) {
+			return new \WP_Error( 'fields_cannot_be_empty', __( 'Fields cannot be empty' ) );
+		}
+		$dir = get_stylesheet_directory() . '/widgetizer/elementor/' . $request['widget_provider'] . '/' . $request['widget_name'];
+		if ( ! is_dir( $dir ) ) {
+			return new \WP_Error( 'widget_not_exists', __( 'Widget not exists' ), array('status' => 403));
+		}
+		$filesystem = new Filesystem();
+		$remove_result = $filesystem->remove( array( $dir ) );
+		return new \WP_REST_Response(
+			array(
+				'widget_provider' => $request['widget_provider'],
+				'widget_name'     => $request['widget_name'],
+				'remove_result'   => $remove_result,
+			)
+		);
 	}
 
 }
