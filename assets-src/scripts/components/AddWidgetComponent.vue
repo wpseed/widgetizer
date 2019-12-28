@@ -92,12 +92,18 @@ export default {
               this.$buefy.toast.open({
                 message: 'Widget created',
                 type: 'is-success',
-              })
+              });
               console.log(this.widget);
             },
           )
           .catch(
-            (e) => { this.errors.push(e); },
+            (e) => {
+              this.errors.push(e);
+              this.$buefy.toast.open({
+                message: e.response.data.message,
+                type: 'is-danger',
+              });
+            },
           );
         this.submitStatus = 'PENDING';
         setTimeout(() => {

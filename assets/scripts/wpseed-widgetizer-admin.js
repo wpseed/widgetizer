@@ -2884,6 +2884,11 @@ __webpack_require__.r(__webpack_exports__);
           console.log(_this.widget);
         })["catch"](function (e) {
           _this.errors.push(e);
+
+          _this.$buefy.toast.open({
+            message: e.response.data.message,
+            type: 'is-danger'
+          });
         });
         this.submitStatus = 'PENDING';
         setTimeout(function () {

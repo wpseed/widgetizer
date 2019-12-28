@@ -7,6 +7,7 @@
 
 namespace Wpseed\Widgetizer\Rest_Api;
 
+use WP_REST_Server;
 use Symfony\Component\Filesystem\Filesystem;
 use Wpseed\Widgetizer\Elementor\Elementor_Builder;
 
@@ -30,7 +31,7 @@ class Rest_Api_Widgets_Controller extends Rest_Api_Controller {
 			'/widgets',
 			array(
 				array(
-					'methods'             => \WP_REST_Server::READABLE,
+					'methods'             => WP_REST_Server::READABLE,
 					'callback'            => array( $this, 'get_items' ),
 					'permission_callback' => array( $this, 'permissions_check' ),
 					'args'                => $this->get_collection_params(),
@@ -54,19 +55,19 @@ class Rest_Api_Widgets_Controller extends Rest_Api_Controller {
 					),
 				),
 				array(
-					'methods'             => \WP_REST_Server::READABLE,
+					'methods'             => WP_REST_Server::READABLE,
 					'callback'            => array( $this, 'get_item' ),
 					'permission_callback' => array( $this, 'permissions_check' ),
 					'args'                => $this->get_collection_params(),
 				),
 				array(
-					'methods'             => \WP_REST_Server::CREATABLE,
+					'methods'             => WP_REST_Server::CREATABLE,
 					'callback'            => array( $this, 'create_item' ),
 					'permission_callback' => array( $this, 'permissions_check' ),
 					'args'                => $this->get_collection_params(),
 				),
 				array(
-					'methods'             => \WP_REST_Server::EDITABLE,
+					'methods'             => WP_REST_Server::EDITABLE,
 					'callback'            => array( $this, 'update_item' ),
 					'permission_callback' => array( $this, 'permissions_check' ),
 					'args'                => $this->get_collection_params(),
@@ -136,11 +137,11 @@ class Rest_Api_Widgets_Controller extends Rest_Api_Controller {
 	 */
 	public function create_item( $request ) {
 		if ( ! isset( $request['widget_provider'] ) || ! ( isset( $request['widget_name'] ) ) ) {
-			return false;
+			return new \WP_Error( 'fields_cannot_be_empty', __( 'Fields cannot be empty' ) );
 		}
 		$dir = get_stylesheet_directory() . '/widgetizer/elementor/' . $request['widget_provider'] . '/' . $request['widget_name'];
 		if ( is_dir( $dir ) ) {
-			return false;
+			return new \WP_Error( 'widget_already_exists', __( 'Widget already exists' ), array('status' => 403));
 		}
 		$filesystem = new Filesystem();
 		$filesystem->mkdir( $dir, 0755 );
