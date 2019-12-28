@@ -1,14 +1,37 @@
 @import "~@mdi/font/scss/materialdesignicons";
 
 // Import Bulma and Buefy styles
-@import "~bulma";
+@import "~bulma/sass/utilities/_all";
+
+$primary: #8c67ef;
+$primary-invert: findColorInvert($primary);
+
+$colors: (
+	"white": ($white, $black),
+	"black": ($black, $white),
+	"light": ($light, $light-invert),
+	"dark": ($dark, $dark-invert),
+	"primary": ($primary, $primary-invert),
+	"info": ($info, $info-invert),
+	"success": ($success, $success-invert),
+	"warning": ($warning, $warning-invert),
+	"danger": ($danger, $danger-invert)
+);
+
+@import "~bulma/sass/base/_all";
+@import "~bulma/sass/elements/_all";
+@import "~bulma/sass/form/_all";
+@import "~bulma/sass/components/_all";
+@import "~bulma/sass/grid/_all";
+@import "~bulma/sass/layout/_all";
+
 @import "~buefy/src/scss/buefy";
 @import '~codemirror/lib/codemirror.css';
 @import '~codemirror/theme/monokai.css';
 
 .toplevel_page_wpseed-widgetizer-admin .button.is-primary:focus,
 .toplevel_page_wpseed-widgetizer-admin .button.is-primary.is-focused {
-	background-color: #00c4a7;
+	background-color: $primary;
 }
 
 .toplevel_page_wpseed-widgetizer-admin #wpcontent {
