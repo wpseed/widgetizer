@@ -1,126 +1,128 @@
 <template>
     <section>
+      <form @submit.prevent="submit">
         <div class="columns">
             <div class="column">
-                <b-field label="Widget Provider Title">
-                    <b-input v-model="widget_provider"></b-input>
+                <b-field label="Widget Provider Title" :type="{ 'is-danger': $v.widget_provider.$error }" :message="[
+                { 'Field is required': $v.widget_provider.$error && !$v.widget_provider.required },
+                { 'Field must have at least 4 letters': !$v.widget_provider.minLength }
+                  ]">
+                  <b-input v-model.trim="$v.widget_provider.$model" type="text"></b-input>
                 </b-field>
-                <b-field label="Widget Provider Slug">
-                    <b-input :value="widget_provider_slug"></b-input>
+                <b-field label="Widget Provider Slug" label-position="on-border">
+                    <b-input custom-class="is-small" :value="widget_provider_slug"></b-input>
                 </b-field>
             </div>
             <div class="column">
-                <b-field label="Widget Title">
-                    <b-input v-model="widget_name"></b-input>
-                </b-field>
-                <b-field label="Widget Slug">
-                    <b-input :value="widget_name_slug"></b-input>
-                </b-field>
+              <b-field label="Widget Name" :type="{ 'is-danger': $v.widget_name.$error }" :message="[
+                { 'Field is required': $v.widget_name.$error && !$v.widget_name.required },
+                { 'Field must have at least 4 letters': !$v.widget_name.minLength }
+                  ]">
+                <b-input v-model.trim="$v.widget_name.$model"></b-input>
+              </b-field>
+              <b-field label="Widget Name Slug" label-position="on-border">
+                <b-input custom-class="is-small" :value="widget_name_slug"></b-input>
+              </b-field>
             </div>
             <div class="column">
 
             </div>
         </div>
-        <div class="columns">
-            <div class="column">
-                <div class="field">
-                    <label class="label">Widget Config</label>
-                    <div class="control">
-                        <codemirror v-model="widget_code" :options="widgetCodeOptions"></codemirror>
-                    </div>
-                </div>
-            </div>
-            <div class="column">
-                <div class="field">
-                    <label class="label">Widget Style</label>
-                    <div class="control">
-                        <codemirror v-model="widget_style" :options="widgetStyleOptions"></codemirror>
-                    </div>
-                </div>
-            </div>
-            <div class="column">
-                <div class="field">
-                    <label class="label">Widget Script</label>
-                    <div class="control">
-                        <codemirror v-model="widget_script" :options="widgetScriptOptions"></codemirror>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <b-button type="is-primary is-medium" expanded  @click="addWidget">Save</b-button>
+        <b-button type="is-primary is-medium" expanded  @click="createWidget">Save</b-button>
+      </form>
+      <b-message type="is-danger">
+        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce id fermentum quam. Proin sagittis, nibh id hendrerit imperdiet, elit sapien laoreet elit
+      </b-message>
     </section>
 </template>
 
 <script>
-    import 'codemirror/theme/monokai.css'
-    import 'codemirror/mode/yaml/yaml.js'
-    import 'codemirror/mode/css/css.js'
-    import 'codemirror/mode/javascript/javascript.js'
-    export default {
-        data () {
-            return {
-                widget_provider: '',
-                widget_name: '',
-                widget_code: 'title: Hello World! # Widget title\n' +
-                    'icon: eicon-testimonial # Widget icon',
-                widget_style: '',
-                widget_script: '',
-                widgetCodeOptions: {
-                    tabSize: 2,
-                    mode: 'yaml',
-                    theme: 'monokai',
-                    lineNumbers: true,
-                    line: true,
-                },
-                widgetStyleOptions: {
-                    tabSize: 2,
-                    mode: 'css',
-                    theme: 'monokai',
-                    lineNumbers: true,
-                    line: true,
-                },
-                widgetScriptOptions: {
-                    tabSize: 2,
-                    mode: 'javascript',
-                    theme: 'monokai',
-                    lineNumbers: true,
-                    line: true,
-                },
-            }
-        },
-        methods: {
-            onCmReady(cm) {
-                console.log('the editor is readied!', cm)
+import { required, minLength, between } from 'vuelidate/lib/validators';
+import 'codemirror/theme/monokai.css';
+// eslint-disable-next-line import/extensions
+import 'codemirror/mode/yaml/yaml.js';
+// eslint-disable-next-line import/extensions
+import 'codemirror/mode/css/css.js';
+// eslint-disable-next-line import/extensions
+import 'codemirror/mode/javascript/javascript.js';
+
+export default {
+  data() {
+    return {
+      widget_provider: '',
+      widget_name: '',
+      widget_code: 'title: Hello World! # Widget title\n'
+                    + 'icon: eicon-testimonial # Widget icon',
+      widget_style: '',
+      widget_script: '',
+      widgetCodeOptions: {
+        tabSize: 2,
+        mode: 'yaml',
+        theme: 'monokai',
+        lineNumbers: true,
+        line: true,
+      },
+      widgetStyleOptions: {
+        tabSize: 2,
+        mode: 'css',
+        theme: 'monokai',
+        lineNumbers: true,
+        line: true,
+      },
+      widgetScriptOptions: {
+        tabSize: 2,
+        mode: 'javascript',
+        theme: 'monokai',
+        lineNumbers: true,
+        line: true,
+      },
+      errors: [],
+    };
+  },
+  methods: {
+    createWidget() {
+      console.log('submit!');
+      this.$v.$touch();
+      if (this.$v.$invalid) {
+        this.submitStatus = 'Invalid fields detected';
+        console.log('Invalid fields detected');
+      } else {
+        window.axios
+          .post(`${dataWpseedWidgetizerAdmin.restUrl}widgetizer/v1/widgets/${this.widget_provider_slug}/${this.widget_name_slug}`)
+          .then(
+            (response) => {
+              this.widget = response.data;
+              console.log(this.widget);
             },
-            onCmFocus(cm) {
-                console.log('the editor is focus!', cm)
-            },
-            onCmCodeChange(newCode) {
-                console.log('this is new code', newCode)
-                this.code = newCode
-            },
-            addWidget(){
-                window.axios
-                    .post(dataWpseedWidgetizerAdmin.restUrl + 'widgetizer/v1/widgets/'+ this.widget_provider_slug + '/' + this.widget_name_slug)
-                    .then(
-                        response => {
-                            this.widget = response.data;
-                            console.log(this.widget);
-                        }
-                    )
-                    .catch(
-                        e => { this.errors.push(e) }
-                    )
-            },
-        },
-        computed: {
-            widget_provider_slug: function () {
-                return window.slugify(this.widget_provider)
-            },
-            widget_name_slug: function () {
-                return window.slugify(this.widget_name)
-            },
-        },
-        mounted() {},
-    }
+          )
+          .catch(
+            (e) => { this.errors.push(e); },
+          );
+        this.submitStatus = 'PENDING';
+        setTimeout(() => {
+          this.submitStatus = 'OK';
+        }, 500);
+      }
+    },
+  },
+  computed: {
+    widget_provider_slug() {
+      return window.slugify(this.widget_provider);
+    },
+    widget_name_slug() {
+      return window.slugify(this.widget_name);
+    },
+  },
+  mounted() {},
+  validations: {
+    widget_provider: {
+      required,
+      minLength: minLength(4),
+    },
+    widget_name: {
+      required,
+      minLength: minLength(4),
+    },
+  },
+};
 </script>

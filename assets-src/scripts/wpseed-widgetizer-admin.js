@@ -5,6 +5,7 @@ import Axios from 'axios';
 import VueCodemirror from 'vue-codemirror';
 import VueBreadcrumbs from 'vue-2-breadcrumbs';
 import Slugify from '@sindresorhus/slugify';
+import Vuelidate from 'vuelidate';
 
 import HomeComponent from './components/HomeComponent.vue';
 import AddWidgetComponent from './components/AddWidgetComponent.vue';
@@ -24,6 +25,7 @@ Vue.use(VueBreadcrumbs, {
     + '</ul>'
     + '</nav>',
 });
+Vue.use(Vuelidate);
 
 window.slugify = Slugify;
 
