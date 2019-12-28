@@ -5,18 +5,17 @@
  * @package Widgetizer
  */
 
-namespace Wpseed\Widgetizer\Admin;
+namespace Wpseed\Widgetizer;
 
 use Latte\Engine;
 use Wpseed\Widgetizer\Elementor\Elementor_Builder;
-use Wpseed\Widgetizer\Elementor\Parser;
 
 /**
- * Class Pages
+ * Class Admin
  *
  * @package Wpseed\Widgetizer\Admin
  */
-class Pages {
+class Admin {
 
 	/**
 	 * Engine class
@@ -70,14 +69,14 @@ class Pages {
 		$menu_title = __( 'Widgetizer', 'wpseed-widgetizer' );
 		$capability = 'manage_options';
 		$slug       = 'wpseed-widgetizer-admin';
-		add_menu_page( $page_title, $menu_title, $capability, $slug, array( $this, 'render_main_page' ), 'dashicons-welcome-widgets-menus' );
+		add_menu_page( $page_title, $menu_title, $capability, $slug, array( $this, 'render_admin_page' ), 'dashicons-welcome-widgets-menus' );
 	}
 
 	/**
 	 * Render main admin page.
 	 */
-	public function render_main_page() {
-		$template       = WPSEED_WIDGETIZER_PATH . '/admin/templates/main.latte';
+	public function render_admin_page() {
+		$template       = WPSEED_WIDGETIZER_PATH . '/templates/main.latte';
 		$widgets_parser = new Elementor_Builder(
 			array(
 				WPSEED_WIDGETIZER_PATH . '/widgets/elementor',
@@ -98,7 +97,7 @@ class Pages {
 	public function admin_enqueue_scripts() {
 		wp_enqueue_script(
 			'wpseed-widgetizer-admin',
-			WPSEED_WIDGETIZER_URL . '/admin/assets/scripts/wpseed-widgetizer-admin.js',
+			WPSEED_WIDGETIZER_URL . '/assets/scripts/wpseed-widgetizer-admin.js',
 			array(),
 			WPSEED_WIDGETIZER_VERSION,
 			true
@@ -118,7 +117,7 @@ class Pages {
 		);
 		wp_enqueue_style(
 			'wpseed-widgetizer-admin',
-			WPSEED_WIDGETIZER_URL . '/admin/assets/styles/wpseed-widgetizer-admin.css',
+			WPSEED_WIDGETIZER_URL . '/assets/styles/wpseed-widgetizer-admin.css',
 			array(),
 			WPSEED_WIDGETIZER_VERSION
 		);

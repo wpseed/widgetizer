@@ -7,7 +7,6 @@
 
 namespace Wpseed\Widgetizer;
 
-use Wpseed\Widgetizer\Admin\Pages;
 use Wpseed\Widgetizer\Elementor\Elementor_Builder;
 use Wpseed\Widgetizer\Rest_Api\Rest_Api_Widgets_Controller;
 
@@ -44,7 +43,7 @@ final class Widgetizer {
 	 */
 	public function __construct() {
 		if ( ! $this->admin_pages ) {
-			$this->admin_pages = new Pages();
+			$this->admin_pages = new Admin();
 		}
 		$this->init_hooks();
 	}

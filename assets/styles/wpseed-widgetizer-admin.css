@@ -387,8 +387,8 @@ span.CodeMirror-selectedtext { background: none; }
 
 @font-face {
   font-family: "Material Design Icons";
-  src: url(../../../admin/assets/fonts/vendor/@mdi/materialdesignicons-webfont.eot?f81583fc4d8aa5aa2820976561ea8aec);
-  src: url(../../../admin/assets/fonts/vendor/@mdi/materialdesignicons-webfont.eot?f81583fc4d8aa5aa2820976561ea8aec) format("embedded-opentype"), url(../../../admin/assets/fonts/vendor/@mdi/materialdesignicons-webfont.woff2?927457ed7478ec7e1580a2b88116f9c3) format("woff2"), url(../../../admin/assets/fonts/vendor/@mdi/materialdesignicons-webfont.woff?d6e3eba9b16453f51d4ef6e216bf89ff) format("woff"), url(../../../admin/assets/fonts/vendor/@mdi/materialdesignicons-webfont.ttf?1618c77b6c5c11926819a8868a083031) format("truetype");
+  src: url(../../assets/fonts/vendor/@mdi/materialdesignicons-webfont.eot?f81583fc4d8aa5aa2820976561ea8aec);
+  src: url(../../assets/fonts/vendor/@mdi/materialdesignicons-webfont.eot?f81583fc4d8aa5aa2820976561ea8aec) format("embedded-opentype"), url(../../assets/fonts/vendor/@mdi/materialdesignicons-webfont.woff2?927457ed7478ec7e1580a2b88116f9c3) format("woff2"), url(../../assets/fonts/vendor/@mdi/materialdesignicons-webfont.woff?d6e3eba9b16453f51d4ef6e216bf89ff) format("woff"), url(../../assets/fonts/vendor/@mdi/materialdesignicons-webfont.ttf?1618c77b6c5c11926819a8868a083031) format("truetype");
   font-weight: normal;
   font-style: normal;
 }
@@ -37377,7 +37377,7 @@ MIT (https://github.com/Wikiki/bulma-steps/blob/master/LICENSE)
 }
 
 .wpseed-widgetizer-admin-header {
-  background-color: #ffffff;
+  background-color: #fff;
   box-shadow: 0 1px 0 #ccd0d4, 0 1px 1px 1px rgba(0, 0, 0, 0.05);
   padding: 1rem 0;
 }
