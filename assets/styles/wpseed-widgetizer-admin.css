@@ -37372,6 +37372,11 @@ MIT (https://github.com/Wikiki/bulma-steps/blob/master/LICENSE)
   }
 }
 
+.toplevel_page_wpseed-widgetizer-admin .button.is-primary:focus,
+.toplevel_page_wpseed-widgetizer-admin .button.is-primary.is-focused {
+  background-color: #00c4a7;
+}
+
 .toplevel_page_wpseed-widgetizer-admin #wpcontent {
   padding-left: 0;
 }
