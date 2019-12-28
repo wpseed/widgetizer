@@ -30,9 +30,6 @@
         </div>
         <b-button type="is-primary is-medium" expanded  @click="createWidget">Save</b-button>
       </form>
-      <b-message type="is-danger">
-        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce id fermentum quam. Proin sagittis, nibh id hendrerit imperdiet, elit sapien laoreet elit
-      </b-message>
     </section>
 </template>
 
@@ -92,6 +89,10 @@ export default {
           .then(
             (response) => {
               this.widget = response.data;
+              this.$buefy.toast.open({
+                message: 'Widget created',
+                type: 'is-success',
+              })
               console.log(this.widget);
             },
           )

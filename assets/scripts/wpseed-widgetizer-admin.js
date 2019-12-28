@@ -2822,9 +2822,6 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
-//
-//
 
  // eslint-disable-next-line import/extensions
 
@@ -2878,6 +2875,12 @@ __webpack_require__.r(__webpack_exports__);
       } else {
         window.axios.post("".concat(dataWpseedWidgetizerAdmin.restUrl, "widgetizer/v1/widgets/").concat(this.widget_provider_slug, "/").concat(this.widget_name_slug)).then(function (response) {
           _this.widget = response.data;
+
+          _this.$buefy.toast.open({
+            message: 'Widget created',
+            type: 'is-success'
+          });
+
           console.log(_this.widget);
         })["catch"](function (e) {
           _this.errors.push(e);
@@ -29681,171 +29684,161 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c(
-    "section",
-    [
-      _c(
-        "form",
-        {
-          on: {
-            submit: function($event) {
-              $event.preventDefault()
-              return _vm.submit($event)
-            }
+  return _c("section", [
+    _c(
+      "form",
+      {
+        on: {
+          submit: function($event) {
+            $event.preventDefault()
+            return _vm.submit($event)
           }
-        },
-        [
-          _c("div", { staticClass: "columns" }, [
-            _c(
-              "div",
-              { staticClass: "column" },
-              [
-                _c(
-                  "b-field",
-                  {
-                    attrs: {
-                      label: "Widget Provider Title",
-                      type: { "is-danger": _vm.$v.widget_provider.$error },
-                      message: [
-                        {
-                          "Field is required":
-                            _vm.$v.widget_provider.$error &&
-                            !_vm.$v.widget_provider.required
-                        },
-                        {
-                          "Field must have at least 4 letters": !_vm.$v
-                            .widget_provider.minLength
-                        }
-                      ]
-                    }
-                  },
-                  [
-                    _c("b-input", {
-                      attrs: { type: "text" },
-                      model: {
-                        value: _vm.$v.widget_provider.$model,
-                        callback: function($$v) {
-                          _vm.$set(
-                            _vm.$v.widget_provider,
-                            "$model",
-                            typeof $$v === "string" ? $$v.trim() : $$v
-                          )
-                        },
-                        expression: "$v.widget_provider.$model"
+        }
+      },
+      [
+        _c("div", { staticClass: "columns" }, [
+          _c(
+            "div",
+            { staticClass: "column" },
+            [
+              _c(
+                "b-field",
+                {
+                  attrs: {
+                    label: "Widget Provider Title",
+                    type: { "is-danger": _vm.$v.widget_provider.$error },
+                    message: [
+                      {
+                        "Field is required":
+                          _vm.$v.widget_provider.$error &&
+                          !_vm.$v.widget_provider.required
+                      },
+                      {
+                        "Field must have at least 4 letters": !_vm.$v
+                          .widget_provider.minLength
                       }
-                    })
-                  ],
-                  1
-                ),
-                _vm._v(" "),
-                _c(
-                  "b-field",
-                  {
-                    attrs: {
-                      label: "Widget Provider Slug",
-                      "label-position": "on-border"
+                    ]
+                  }
+                },
+                [
+                  _c("b-input", {
+                    attrs: { type: "text" },
+                    model: {
+                      value: _vm.$v.widget_provider.$model,
+                      callback: function($$v) {
+                        _vm.$set(
+                          _vm.$v.widget_provider,
+                          "$model",
+                          typeof $$v === "string" ? $$v.trim() : $$v
+                        )
+                      },
+                      expression: "$v.widget_provider.$model"
                     }
-                  },
-                  [
-                    _c("b-input", {
-                      attrs: {
-                        "custom-class": "is-small",
-                        value: _vm.widget_provider_slug
-                      }
-                    })
-                  ],
-                  1
-                )
-              ],
-              1
-            ),
-            _vm._v(" "),
-            _c(
-              "div",
-              { staticClass: "column" },
-              [
-                _c(
-                  "b-field",
-                  {
+                  })
+                ],
+                1
+              ),
+              _vm._v(" "),
+              _c(
+                "b-field",
+                {
+                  attrs: {
+                    label: "Widget Provider Slug",
+                    "label-position": "on-border"
+                  }
+                },
+                [
+                  _c("b-input", {
                     attrs: {
-                      label: "Widget Name",
-                      type: { "is-danger": _vm.$v.widget_name.$error },
-                      message: [
-                        {
-                          "Field is required":
-                            _vm.$v.widget_name.$error &&
-                            !_vm.$v.widget_name.required
-                        },
-                        {
-                          "Field must have at least 4 letters": !_vm.$v
-                            .widget_name.minLength
-                        }
-                      ]
+                      "custom-class": "is-small",
+                      value: _vm.widget_provider_slug
                     }
-                  },
-                  [
-                    _c("b-input", {
-                      model: {
-                        value: _vm.$v.widget_name.$model,
-                        callback: function($$v) {
-                          _vm.$set(
-                            _vm.$v.widget_name,
-                            "$model",
-                            typeof $$v === "string" ? $$v.trim() : $$v
-                          )
-                        },
-                        expression: "$v.widget_name.$model"
-                      }
-                    })
-                  ],
-                  1
-                ),
-                _vm._v(" "),
-                _c(
-                  "b-field",
-                  {
-                    attrs: {
-                      label: "Widget Name Slug",
-                      "label-position": "on-border"
-                    }
-                  },
-                  [
-                    _c("b-input", {
-                      attrs: {
-                        "custom-class": "is-small",
-                        value: _vm.widget_name_slug
-                      }
-                    })
-                  ],
-                  1
-                )
-              ],
-              1
-            ),
-            _vm._v(" "),
-            _c("div", { staticClass: "column" })
-          ]),
+                  })
+                ],
+                1
+              )
+            ],
+            1
+          ),
           _vm._v(" "),
           _c(
-            "b-button",
-            {
-              attrs: { type: "is-primary is-medium", expanded: "" },
-              on: { click: _vm.createWidget }
-            },
-            [_vm._v("Save")]
-          )
-        ],
-        1
-      ),
-      _vm._v(" "),
-      _c("b-message", { attrs: { type: "is-danger" } }, [
-        _vm._v(
-          "\n    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce id fermentum quam. Proin sagittis, nibh id hendrerit imperdiet, elit sapien laoreet elit\n  "
+            "div",
+            { staticClass: "column" },
+            [
+              _c(
+                "b-field",
+                {
+                  attrs: {
+                    label: "Widget Name",
+                    type: { "is-danger": _vm.$v.widget_name.$error },
+                    message: [
+                      {
+                        "Field is required":
+                          _vm.$v.widget_name.$error &&
+                          !_vm.$v.widget_name.required
+                      },
+                      {
+                        "Field must have at least 4 letters": !_vm.$v
+                          .widget_name.minLength
+                      }
+                    ]
+                  }
+                },
+                [
+                  _c("b-input", {
+                    model: {
+                      value: _vm.$v.widget_name.$model,
+                      callback: function($$v) {
+                        _vm.$set(
+                          _vm.$v.widget_name,
+                          "$model",
+                          typeof $$v === "string" ? $$v.trim() : $$v
+                        )
+                      },
+                      expression: "$v.widget_name.$model"
+                    }
+                  })
+                ],
+                1
+              ),
+              _vm._v(" "),
+              _c(
+                "b-field",
+                {
+                  attrs: {
+                    label: "Widget Name Slug",
+                    "label-position": "on-border"
+                  }
+                },
+                [
+                  _c("b-input", {
+                    attrs: {
+                      "custom-class": "is-small",
+                      value: _vm.widget_name_slug
+                    }
+                  })
+                ],
+                1
+              )
+            ],
+            1
+          ),
+          _vm._v(" "),
+          _c("div", { staticClass: "column" })
+        ]),
+        _vm._v(" "),
+        _c(
+          "b-button",
+          {
+            attrs: { type: "is-primary is-medium", expanded: "" },
+            on: { click: _vm.createWidget }
+          },
+          [_vm._v("Save")]
         )
-      ])
-    ],
-    1
-  )
+      ],
+      1
+    )
+  ])
 }
 var staticRenderFns = []
 render._withStripped = true
