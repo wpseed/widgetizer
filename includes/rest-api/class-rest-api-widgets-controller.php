@@ -7,6 +7,7 @@
 
 namespace Wpseed\Widgetizer\Rest_Api;
 
+use Symfony\Component\Filesystem\Filesystem;
 use Wpseed\Widgetizer\Elementor\Elementor_Builder;
 
 class Rest_Api_Widgets_Controller extends Rest_Api_Controller {
@@ -42,12 +43,12 @@ class Rest_Api_Widgets_Controller extends Rest_Api_Controller {
 			$this->namespace,
 			'/widgets/(?P<widget_provider>[a-z-]+)/(?P<widget_name>[a-z-]+)',
 			array(
-				'args'   => array (
+				'args'   => array(
 					'widget_provider' => array(
 						'description' => __( 'Widget provider identifier.' ),
 						'type'        => 'string',
 					),
-					'widget_name' => array(
+					'widget_name'     => array(
 						'description' => __( 'Widget name identifier.' ),
 						'type'        => 'string',
 					),
@@ -83,18 +84,18 @@ class Rest_Api_Widgets_Controller extends Rest_Api_Controller {
 	 * @return bool|WP_Error
 	 */
 	public function permissions_check( \WP_REST_Request $request ) {
-//		if ( ! current_user_can( 'edit_others_pages' ) ) {
-//			return new \WP_Error(
-//				'rest_forbidden_context',
-//				__( 'Sorry, you are not allowed to use Widgetizer API.' ),
-//				array( 'status' => rest_authorization_required_code() )
-//			);
-//		}
+		// if ( ! current_user_can( 'edit_others_pages' ) ) {
+		// return new \WP_Error(
+		// 'rest_forbidden_context',
+		// __( 'Sorry, you are not allowed to use Widgetizer API.' ),
+		// array( 'status' => rest_authorization_required_code() )
+		// );
+		// }
 		return true;
 	}
 
 	/**
-	 * Retrieves a collection of widgets.
+	 * Retrieves a collection of widgets
 	 *
 	 * @since 4.7.0
 	 *
@@ -112,25 +113,44 @@ class Rest_Api_Widgets_Controller extends Rest_Api_Controller {
 		return new \WP_REST_Response( $widgets_parser->get_widgets() );
 	}
 
-
 	/**
-	 * Creates one item from the collection.
+	 * Retrieves on item
 	 *
 	 * @since 4.7.0
 	 *
 	 * @param \WP_REST_Request $request Full data about the request.
 	 * @return \WP_REST_Response|\WP_Error Response object on success, or WP_Error object on failure.
 	 */
-	public function create_item( \WP_REST_Request $request ) {
-		if ( isset( $request['widget_provider'] ) && ( isset( $request['widget_name'] ) ) ) {
-			return new \WP_REST_Response(
-				array(
-					'widget_provider' => $request['widget_provider'],
-					'widget_name' => $request['widget_name'],
-				)
-			);
+	public function get_item( $request ) {
+		return new \WP_REST_Response( 'current widget' );
+	}
+
+
+	/**
+	 * Creates one item from the collection
+	 *
+	 * @since 4.7.0
+	 *
+	 * @param \WP_REST_Request $request Full data about the request.
+	 * @return \WP_REST_Response|\WP_Error Response object on success, or WP_Error object on failure.
+	 */
+	public function create_item( $request ) {
+		if ( ! isset( $request['widget_provider'] ) || ! ( isset( $request['widget_name'] ) ) ) {
+			return false;
 		}
-		return false;
+		$dir = get_stylesheet_directory() . '/widgetizer/elementor/' . $request['widget_provider'] . '/' . $request['widget_name'];
+		if ( is_dir( $dir ) ) {
+			return false;
+		}
+		$filesystem = new Filesystem();
+		$filesystem->mkdir( $dir, 0755 );
+		return new \WP_REST_Response(
+			array(
+				'widget_provider' => $request['widget_provider'],
+				'widget_name'     => $request['widget_name'],
+				'dir'             => $dir,
+			)
+		);
 	}
 
 	/**
@@ -146,7 +166,7 @@ class Rest_Api_Widgets_Controller extends Rest_Api_Controller {
 			return new \WP_REST_Response(
 				array(
 					'widget_provider' => $request['widget_provider'],
-					'widget_name' => $request['widget_name'],
+					'widget_name'     => $request['widget_name'],
 				)
 			);
 		}

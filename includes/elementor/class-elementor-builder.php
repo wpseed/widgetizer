@@ -90,8 +90,9 @@ class Elementor_Builder {
 					if ( iterator_count( $subfolders ) ) {
 						foreach ( $subfolders as $subfolders_item ) {
 							$current_widget = $subfolders_item->getFileName();
-							$current_config[ $current_provider ][ $current_widget ] = array();
+							$current_config[ $current_provider ][ $current_widget ] = false;
 							if ( Validator::is_widgetizer_slug( $current_widget ) ) {
+								$current_config[ $current_provider ][ $current_widget ]         = array();
 								$current_widget_config_path                                     = $dir . '/' . $current_provider . '/' . $current_widget . '/' . $current_widget . '.neon';
 								$current_config[ $current_provider ][ $current_widget ]['path'] = str_replace( '\\', '/', str_replace( realpath( WP_CONTENT_DIR ), '', realpath( $dir . '/' . $current_provider . '/' . $current_widget ) ) );
 								if ( $fs->exists( $current_widget_config_path ) ) {

@@ -77,6 +77,19 @@
             }
         },
         computed: {},
+        created() {
+            window.axios
+                .get(dataWpseedWidgetizerAdmin.restUrl + 'widgetizer/v1/widgets/' + this.$route.params.provider + '/' + this.$route.params.widget_name)
+                .then(
+                    response => {
+                        this.widget = response.data;
+                        console.log(this.widget);
+                    }
+                )
+                .catch(
+                    e => { this.errors.push(e) }
+                )
+        },
         mounted() {}
     }
 </script>

@@ -2,6 +2,27 @@
     <section>
         <div class="columns">
             <div class="column">
+                <b-field label="Widget Provider Title">
+                    <b-input v-model="widget_provider"></b-input>
+                </b-field>
+                <b-field label="Widget Provider Slug">
+                    <b-input :value="widget_provider_slug"></b-input>
+                </b-field>
+            </div>
+            <div class="column">
+                <b-field label="Widget Title">
+                    <b-input v-model="widget_name"></b-input>
+                </b-field>
+                <b-field label="Widget Slug">
+                    <b-input :value="widget_name_slug"></b-input>
+                </b-field>
+            </div>
+            <div class="column">
+
+            </div>
+        </div>
+        <div class="columns">
+            <div class="column">
                 <div class="field">
                     <label class="label">Widget Config</label>
                     <div class="control">
@@ -26,7 +47,7 @@
                 </div>
             </div>
         </div>
-        <b-button type="is-primary is-medium" expanded>Save</b-button>
+        <b-button type="is-primary is-medium" expanded  @click="addWidget">Save</b-button>
     </section>
 </template>
 
@@ -38,9 +59,12 @@
     export default {
         data () {
             return {
-                widget_code: 'text: text',
-                widget_style: 'style',
-                widget_script: 'script',
+                widget_provider: '',
+                widget_name: '',
+                widget_code: 'title: Hello World! # Widget title\n' +
+                    'icon: eicon-testimonial # Widget icon',
+                widget_style: '',
+                widget_script: '',
                 widgetCodeOptions: {
                     tabSize: 2,
                     mode: 'yaml',
@@ -74,9 +98,29 @@
             onCmCodeChange(newCode) {
                 console.log('this is new code', newCode)
                 this.code = newCode
-            }
+            },
+            addWidget(){
+                window.axios
+                    .post(dataWpseedWidgetizerAdmin.restUrl + 'widgetizer/v1/widgets/'+ this.widget_provider_slug + '/' + this.widget_name_slug)
+                    .then(
+                        response => {
+                            this.widget = response.data;
+                            console.log(this.widget);
+                        }
+                    )
+                    .catch(
+                        e => { this.errors.push(e) }
+                    )
+            },
         },
-        computed: {},
-        mounted() {}
+        computed: {
+            widget_provider_slug: function () {
+                return window.slugify(this.widget_provider)
+            },
+            widget_name_slug: function () {
+                return window.slugify(this.widget_name)
+            },
+        },
+        mounted() {},
     }
 </script>

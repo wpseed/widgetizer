@@ -470,11 +470,14 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var vue_codemirror__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! vue-codemirror */ "./node_modules/vue-codemirror/dist/vue-codemirror.js");
 /* harmony import */ var vue_codemirror__WEBPACK_IMPORTED_MODULE_4___default = /*#__PURE__*/__webpack_require__.n(vue_codemirror__WEBPACK_IMPORTED_MODULE_4__);
 /* harmony import */ var vue_2_breadcrumbs__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! vue-2-breadcrumbs */ "./node_modules/vue-2-breadcrumbs/lib/index.js");
-/* harmony import */ var _components_HomeComponent__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./components/HomeComponent */ "./admin/assets-src/scripts/components/HomeComponent.vue");
-/* harmony import */ var _components_AddWidgetComponent__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./components/AddWidgetComponent */ "./admin/assets-src/scripts/components/AddWidgetComponent.vue");
-/* harmony import */ var _components_AllWidgetsComponent__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ./components/AllWidgetsComponent */ "./admin/assets-src/scripts/components/AllWidgetsComponent.vue");
-/* harmony import */ var _components_WidgetComponent__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ./components/WidgetComponent */ "./admin/assets-src/scripts/components/WidgetComponent.vue");
-/* harmony import */ var _components_NotFoundComponent__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! ./components/NotFoundComponent */ "./admin/assets-src/scripts/components/NotFoundComponent.vue");
+/* harmony import */ var _sindresorhus_slugify__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! @sindresorhus/slugify */ "./node_modules/@sindresorhus/slugify/index.js");
+/* harmony import */ var _sindresorhus_slugify__WEBPACK_IMPORTED_MODULE_6___default = /*#__PURE__*/__webpack_require__.n(_sindresorhus_slugify__WEBPACK_IMPORTED_MODULE_6__);
+/* harmony import */ var _components_HomeComponent__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./components/HomeComponent */ "./admin/assets-src/scripts/components/HomeComponent.vue");
+/* harmony import */ var _components_AddWidgetComponent__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ./components/AddWidgetComponent */ "./admin/assets-src/scripts/components/AddWidgetComponent.vue");
+/* harmony import */ var _components_AllWidgetsComponent__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ./components/AllWidgetsComponent */ "./admin/assets-src/scripts/components/AllWidgetsComponent.vue");
+/* harmony import */ var _components_WidgetComponent__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! ./components/WidgetComponent */ "./admin/assets-src/scripts/components/WidgetComponent.vue");
+/* harmony import */ var _components_NotFoundComponent__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! ./components/NotFoundComponent */ "./admin/assets-src/scripts/components/NotFoundComponent.vue");
+
 
 
 
@@ -487,6 +490,7 @@ vue__WEBPACK_IMPORTED_MODULE_0___default.a.use(vue_codemirror__WEBPACK_IMPORTED_
 vue__WEBPACK_IMPORTED_MODULE_0___default.a.use(vue_2_breadcrumbs__WEBPACK_IMPORTED_MODULE_5__["default"], {
   template: '<nav class="breadcrumb is-medium" aria-label="breadcrumbs" v-if="$breadcrumbs.length">' + '<ul>' + '<li class="breadcrumb-item" v-if="crumb.meta.breadcrumb" v-for="(crumb, key) in $breadcrumbs">' + '<router-link :to="{ path: getPath(crumb) }">{{ getBreadcrumb(crumb.meta.breadcrumb) }}</router-link>' + '</li>' + '</ul>' + '</nav>'
 });
+window.slugify = _sindresorhus_slugify__WEBPACK_IMPORTED_MODULE_6___default.a;
 window.axios = axios__WEBPACK_IMPORTED_MODULE_3___default.a;
 window.axios.defaults.headers.common['X-WP-Nonce'] = dataWpseedWidgetizerAdmin.nonce;
 
@@ -505,25 +509,25 @@ var routes = [{
   redirect: '/home'
 }, {
   path: '/home',
-  component: _components_HomeComponent__WEBPACK_IMPORTED_MODULE_6__["default"],
+  component: _components_HomeComponent__WEBPACK_IMPORTED_MODULE_7__["default"],
   meta: {
     breadcrumb: 'Home'
   }
 }, {
   path: '/add-widget',
-  component: _components_AddWidgetComponent__WEBPACK_IMPORTED_MODULE_7__["default"],
+  component: _components_AddWidgetComponent__WEBPACK_IMPORTED_MODULE_8__["default"],
   meta: {
     breadcrumb: 'Add widget'
   }
 }, {
   path: '/widgets',
-  component: _components_AllWidgetsComponent__WEBPACK_IMPORTED_MODULE_8__["default"],
+  component: _components_AllWidgetsComponent__WEBPACK_IMPORTED_MODULE_9__["default"],
   meta: {
     breadcrumb: 'All Widgets'
   }
 }, {
   path: '/widgets/:widget_provider/:widget_name',
-  component: _components_WidgetComponent__WEBPACK_IMPORTED_MODULE_9__["default"],
+  component: _components_WidgetComponent__WEBPACK_IMPORTED_MODULE_10__["default"],
   meta: {
     breadcrumb: function breadcrumb() {
       return this.$route.params.widget_name;
@@ -531,7 +535,7 @@ var routes = [{
   }
 }, {
   path: '*',
-  component: _components_NotFoundComponent__WEBPACK_IMPORTED_MODULE_10__["default"]
+  component: _components_NotFoundComponent__WEBPACK_IMPORTED_MODULE_11__["default"]
 }];
 var router = new vue_router__WEBPACK_IMPORTED_MODULE_1__["default"]({
   routes: routes
@@ -550,6 +554,448 @@ var app = new vue__WEBPACK_IMPORTED_MODULE_0___default.a({
 /***/ (function(module, exports) {
 
 // removed by extract-text-webpack-plugin
+
+/***/ }),
+
+/***/ "./node_modules/@sindresorhus/slugify/index.js":
+/*!*****************************************************!*\
+  !*** ./node_modules/@sindresorhus/slugify/index.js ***!
+  \*****************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+const deburr = __webpack_require__(/*! lodash.deburr */ "./node_modules/lodash.deburr/index.js");
+const escapeStringRegexp = __webpack_require__(/*! escape-string-regexp */ "./node_modules/escape-string-regexp/index.js");
+const builtinReplacements = __webpack_require__(/*! ./replacements */ "./node_modules/@sindresorhus/slugify/replacements.js");
+const builtinOverridableReplacements = __webpack_require__(/*! ./overridable-replacements */ "./node_modules/@sindresorhus/slugify/overridable-replacements.js");
+
+const decamelize = string => {
+	return string
+		.replace(/([a-z\d])([A-Z])/g, '$1 $2')
+		.replace(/([A-Z]+)([A-Z][a-z\d]+)/g, '$1 $2');
+};
+
+const doCustomReplacements = (string, replacements) => {
+	for (const [key, value] of replacements) {
+		string = string.replace(new RegExp(escapeStringRegexp(key), 'g'), value);
+	}
+
+	return string;
+};
+
+const removeMootSeparators = (string, separator) => {
+	return string
+		.replace(new RegExp(`${separator}{2,}`, 'g'), separator)
+		.replace(new RegExp(`^${separator}|${separator}$`, 'g'), '');
+};
+
+const slugify = (string, options) => {
+	if (typeof string !== 'string') {
+		throw new TypeError(`Expected a string, got \`${typeof string}\``);
+	}
+
+	options = {
+		separator: '-',
+		lowercase: true,
+		decamelize: true,
+		customReplacements: [],
+		...options
+	};
+
+	const separator = escapeStringRegexp(options.separator);
+	const customReplacements = new Map([
+		...builtinOverridableReplacements,
+		...options.customReplacements,
+		...builtinReplacements
+	]);
+
+	string = doCustomReplacements(string, customReplacements);
+	string = deburr(string);
+	string = string.normalize('NFKD');
+
+	if (options.decamelize) {
+		string = decamelize(string);
+	}
+
+	let patternSlug = /[^a-zA-Z\d]+/g;
+
+	if (options.lowercase) {
+		string = string.toLowerCase();
+		patternSlug = /[^a-z\d]+/g;
+	}
+
+	string = string.replace(patternSlug, separator);
+	string = string.replace(/\\/g, '');
+	string = removeMootSeparators(string, separator);
+
+	return string;
+};
+
+module.exports = slugify;
+// TODO: Remove this for the next major release
+module.exports.default = slugify;
+
+
+/***/ }),
+
+/***/ "./node_modules/@sindresorhus/slugify/overridable-replacements.js":
+/*!************************************************************************!*\
+  !*** ./node_modules/@sindresorhus/slugify/overridable-replacements.js ***!
+  \************************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+module.exports = [
+	['&', ' and '],
+	['🦄', ' unicorn '],
+	['♥', ' love ']
+];
+
+
+/***/ }),
+
+/***/ "./node_modules/@sindresorhus/slugify/replacements.js":
+/*!************************************************************!*\
+  !*** ./node_modules/@sindresorhus/slugify/replacements.js ***!
+  \************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+module.exports = [
+	// German umlauts
+	['ß', 'ss'],
+	['ä', 'ae'],
+	['Ä', 'Ae'],
+	['ö', 'oe'],
+	['Ö', 'Oe'],
+	['ü', 'ue'],
+	['Ü', 'Ue'],
+
+	// Vietnamese
+	['à', 'a'],
+	['À', 'A'],
+	['á', 'a'],
+	['Á', 'A'],
+	['â', 'a'],
+	['Â', 'A'],
+	['ã', 'a'],
+	['Ã', 'A'],
+	['è', 'e'],
+	['È', 'E'],
+	['é', 'e'],
+	['É', 'E'],
+	['ê', 'e'],
+	['Ê', 'E'],
+	['ì', 'i'],
+	['Ì', 'I'],
+	['í', 'i'],
+	['Í', 'I'],
+	['ò', 'o'],
+	['Ò', 'O'],
+	['ó', 'o'],
+	['Ó', 'O'],
+	['ô', 'o'],
+	['Ô', 'O'],
+	['õ', 'o'],
+	['Õ', 'O'],
+	['ù', 'u'],
+	['Ù', 'U'],
+	['ú', 'u'],
+	['Ú', 'U'],
+	['ý', 'y'],
+	['Ý', 'Y'],
+	['ă', 'a'],
+	['Ă', 'A'],
+	['Đ', 'D'],
+	['đ', 'd'],
+	['ĩ', 'i'],
+	['Ĩ', 'I'],
+	['ũ', 'u'],
+	['Ũ', 'U'],
+	['ơ', 'o'],
+	['Ơ', 'O'],
+	['ư', 'u'],
+	['Ư', 'U'],
+	['ạ', 'a'],
+	['Ạ', 'A'],
+	['ả', 'a'],
+	['Ả', 'A'],
+	['ấ', 'a'],
+	['Ấ', 'A'],
+	['ầ', 'a'],
+	['Ầ', 'A'],
+	['ẩ', 'a'],
+	['Ẩ', 'A'],
+	['ẫ', 'a'],
+	['Ẫ', 'A'],
+	['ậ', 'a'],
+	['Ậ', 'A'],
+	['ắ', 'a'],
+	['Ắ', 'A'],
+	['ằ', 'a'],
+	['Ằ', 'A'],
+	['ẳ', 'a'],
+	['Ẳ', 'A'],
+	['ẵ', 'a'],
+	['Ẵ', 'A'],
+	['ặ', 'a'],
+	['Ặ', 'A'],
+	['ẹ', 'e'],
+	['Ẹ', 'E'],
+	['ẻ', 'e'],
+	['Ẻ', 'E'],
+	['ẽ', 'e'],
+	['Ẽ', 'E'],
+	['ế', 'e'],
+	['Ế', 'E'],
+	['ề', 'e'],
+	['Ề', 'E'],
+	['ể', 'e'],
+	['Ể', 'E'],
+	['ễ', 'e'],
+	['Ễ', 'E'],
+	['ệ', 'e'],
+	['Ệ', 'E'],
+	['ỉ', 'i'],
+	['Ỉ', 'I'],
+	['ị', 'i'],
+	['Ị', 'I'],
+	['ọ', 'o'],
+	['Ọ', 'O'],
+	['ỏ', 'o'],
+	['Ỏ', 'O'],
+	['ố', 'o'],
+	['Ố', 'O'],
+	['ồ', 'o'],
+	['Ồ', 'O'],
+	['ổ', 'o'],
+	['Ổ', 'O'],
+	['ỗ', 'o'],
+	['Ỗ', 'O'],
+	['ộ', 'o'],
+	['Ộ', 'O'],
+	['ớ', 'o'],
+	['Ớ', 'O'],
+	['ờ', 'o'],
+	['Ờ', 'O'],
+	['ở', 'o'],
+	['Ở', 'O'],
+	['ỡ', 'o'],
+	['Ỡ', 'O'],
+	['ợ', 'o'],
+	['Ợ', 'O'],
+	['ụ', 'u'],
+	['Ụ', 'U'],
+	['ủ', 'u'],
+	['Ủ', 'U'],
+	['ứ', 'u'],
+	['Ứ', 'U'],
+	['ừ', 'u'],
+	['Ừ', 'U'],
+	['ử', 'u'],
+	['Ử', 'U'],
+	['ữ', 'u'],
+	['Ữ', 'U'],
+	['ự', 'u'],
+	['Ự', 'U'],
+	['ỳ', 'y'],
+	['Ỳ', 'Y'],
+	['ỵ', 'y'],
+	['Ỵ', 'Y'],
+	['ỷ', 'y'],
+	['Ỷ', 'Y'],
+	['ỹ', 'y'],
+	['Ỹ', 'Y'],
+
+	// Arabic
+	['ء', 'e'],
+	['آ', 'a'],
+	['أ', 'a'],
+	['ؤ', 'w'],
+	['إ', 'i'],
+	['ئ', 'y'],
+	['ا', 'a'],
+	['ب', 'b'],
+	['ة', 't'],
+	['ت', 't'],
+	['ث', 'th'],
+	['ج', 'j'],
+	['ح', 'h'],
+	['خ', 'kh'],
+	['د', 'd'],
+	['ذ', 'dh'],
+	['ر', 'r'],
+	['ز', 'z'],
+	['س', 's'],
+	['ش', 'sh'],
+	['ص', 's'],
+	['ض', 'd'],
+	['ط', 't'],
+	['ظ', 'z'],
+	['ع', 'e'],
+	['غ', 'gh'],
+	['ـ', '_'],
+	['ف', 'f'],
+	['ق', 'q'],
+	['ك', 'k'],
+	['ل', 'l'],
+	['م', 'm'],
+	['ن', 'n'],
+	['ه', 'h'],
+	['و', 'w'],
+	['ى', 'a'],
+	['ي', 'y'],
+	['َ‎', 'a'],
+	['ُ', 'u'],
+	['ِ‎', 'i'],
+	['٠', '0'],
+	['١', '1'],
+	['٢', '2'],
+	['٣', '3'],
+	['٤', '4'],
+	['٥', '5'],
+	['٦', '6'],
+	['٧', '7'],
+	['٨', '8'],
+	['٩', '9'],
+
+	// Persian / Farsi
+	['چ', 'ch'],
+	['ک', 'k'],
+	['گ', 'g'],
+	['پ', 'p'],
+	['ژ', 'zh'],
+	['ی', 'y'],
+	['۰', '0'],
+	['۱', '1'],
+	['۲', '2'],
+	['۳', '3'],
+	['۴', '4'],
+	['۵', '5'],
+	['۶', '6'],
+	['۷', '7'],
+	['۸', '8'],
+	['۹', '9'],
+
+	// Pashto
+	['ټ', 'p'],
+	['ځ', 'z'],
+	['څ', 'c'],
+	['ډ', 'd'],
+	['ﺫ', 'd'],
+	['ﺭ', 'r'],
+	['ړ', 'r'],
+	['ﺯ', 'z'],
+	['ږ', 'g'],
+	['ښ', 'x'],
+	['ګ', 'g'],
+	['ڼ', 'n'],
+	['ۀ', 'e'],
+	['ې', 'e'],
+	['ۍ', 'ai'],
+
+	// Urdu
+	['ٹ', 't'],
+	['ڈ', 'd'],
+	['ڑ', 'r'],
+	['ں', 'n'],
+	['ہ', 'h'],
+	['ھ', 'h'],
+	['ے', 'e'],
+
+	// Russian
+	['А', 'A'],
+	['а', 'a'],
+	['Б', 'B'],
+	['б', 'b'],
+	['В', 'V'],
+	['в', 'v'],
+	['Г', 'G'],
+	['г', 'g'],
+	['Д', 'D'],
+	['д', 'd'],
+	['Е', 'E'],
+	['е', 'e'],
+	['Ж', 'Zh'],
+	['ж', 'zh'],
+	['З', 'Z'],
+	['з', 'z'],
+	['И', 'I'],
+	['и', 'i'],
+	['Й', 'J'],
+	['й', 'j'],
+	['К', 'K'],
+	['к', 'k'],
+	['Л', 'L'],
+	['л', 'l'],
+	['М', 'M'],
+	['м', 'm'],
+	['Н', 'N'],
+	['н', 'n'],
+	['О', 'O'],
+	['о', 'o'],
+	['П', 'P'],
+	['п', 'p'],
+	['Р', 'R'],
+	['р', 'r'],
+	['С', 'S'],
+	['с', 's'],
+	['Т', 'T'],
+	['т', 't'],
+	['У', 'U'],
+	['у', 'u'],
+	['Ф', 'F'],
+	['ф', 'f'],
+	['Х', 'H'],
+	['х', 'h'],
+	['Ц', 'Cz'],
+	['ц', 'cz'],
+	['Ч', 'Ch'],
+	['ч', 'ch'],
+	['Ш', 'Sh'],
+	['ш', 'sh'],
+	['Щ', 'Shh'],
+	['щ', 'shh'],
+	['Ъ', ''],
+	['ъ', ''],
+	['Ы', 'Y'],
+	['ы', 'y'],
+	['Ь', ''],
+	['ь', ''],
+	['Э', 'E'],
+	['э', 'e'],
+	['Ю', 'Yu'],
+	['ю', 'yu'],
+	['Я', 'Ya'],
+	['я', 'ya'],
+	['Ё', 'Yo'],
+	['ё', 'yo'],
+
+	// Romanian
+	['ș', 's'],
+	['Ș', 's'],
+	['ț', 't'],
+	['Ț', 't'],
+
+	// Turkish
+	['ş', 's'],
+	['Ş', 's'],
+	['ç', 'c'],
+	['Ç', 'c'],
+	['ğ', 'g'],
+	['Ğ', 'g'],
+	['ı', 'i'],
+	['İ', 'i']
+];
+
 
 /***/ }),
 
@@ -2367,6 +2813,27 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 
 
@@ -2374,9 +2841,11 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
-      widget_code: 'text: text',
-      widget_style: 'style',
-      widget_script: 'script',
+      widget_provider: '',
+      widget_name: '',
+      widget_code: 'title: Hello World! # Widget title\n' + 'icon: eicon-testimonial # Widget icon',
+      widget_style: '',
+      widget_script: '',
       widgetCodeOptions: {
         tabSize: 2,
         mode: 'yaml',
@@ -2410,9 +2879,26 @@ __webpack_require__.r(__webpack_exports__);
     onCmCodeChange: function onCmCodeChange(newCode) {
       console.log('this is new code', newCode);
       this.code = newCode;
+    },
+    addWidget: function addWidget() {
+      var _this = this;
+
+      window.axios.post(dataWpseedWidgetizerAdmin.restUrl + 'widgetizer/v1/widgets/' + this.widget_provider_slug + '/' + this.widget_name_slug).then(function (response) {
+        _this.widget = response.data;
+        console.log(_this.widget);
+      })["catch"](function (e) {
+        _this.errors.push(e);
+      });
     }
   },
-  computed: {},
+  computed: {
+    widget_provider_slug: function widget_provider_slug() {
+      return window.slugify(this.widget_provider);
+    },
+    widget_name_slug: function widget_name_slug() {
+      return window.slugify(this.widget_name);
+    }
+  },
   mounted: function mounted() {}
 });
 
@@ -2629,6 +3115,16 @@ __webpack_require__.r(__webpack_exports__);
     }
   },
   computed: {},
+  created: function created() {
+    var _this = this;
+
+    window.axios.get(dataWpseedWidgetizerAdmin.restUrl + 'widgetizer/v1/widgets/' + this.$route.params.provider + '/' + this.$route.params.widget_name).then(function (response) {
+      _this.widget = response.data;
+      console.log(_this.widget);
+    })["catch"](function (e) {
+      _this.errors.push(e);
+    });
+  },
   mounted: function mounted() {}
 });
 
@@ -27867,6 +28363,298 @@ function toComment(sourceMap) {
 
 /***/ }),
 
+/***/ "./node_modules/escape-string-regexp/index.js":
+/*!****************************************************!*\
+  !*** ./node_modules/escape-string-regexp/index.js ***!
+  \****************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var matchOperatorsRe = /[|\\{}()[\]^$+*?.]/g;
+
+module.exports = function (str) {
+	if (typeof str !== 'string') {
+		throw new TypeError('Expected a string');
+	}
+
+	return str.replace(matchOperatorsRe, '\\$&');
+};
+
+
+/***/ }),
+
+/***/ "./node_modules/lodash.deburr/index.js":
+/*!*********************************************!*\
+  !*** ./node_modules/lodash.deburr/index.js ***!
+  \*********************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+/* WEBPACK VAR INJECTION */(function(global) {/**
+ * lodash (Custom Build) <https://lodash.com/>
+ * Build: `lodash modularize exports="npm" -o ./`
+ * Copyright jQuery Foundation and other contributors <https://jquery.org/>
+ * Released under MIT license <https://lodash.com/license>
+ * Based on Underscore.js 1.8.3 <http://underscorejs.org/LICENSE>
+ * Copyright Jeremy Ashkenas, DocumentCloud and Investigative Reporters & Editors
+ */
+
+/** Used as references for various `Number` constants. */
+var INFINITY = 1 / 0;
+
+/** `Object#toString` result references. */
+var symbolTag = '[object Symbol]';
+
+/** Used to match Latin Unicode letters (excluding mathematical operators). */
+var reLatin = /[\xc0-\xd6\xd8-\xf6\xf8-\xff\u0100-\u017f]/g;
+
+/** Used to compose unicode character classes. */
+var rsComboMarksRange = '\\u0300-\\u036f\\ufe20-\\ufe23',
+    rsComboSymbolsRange = '\\u20d0-\\u20f0';
+
+/** Used to compose unicode capture groups. */
+var rsCombo = '[' + rsComboMarksRange + rsComboSymbolsRange + ']';
+
+/**
+ * Used to match [combining diacritical marks](https://en.wikipedia.org/wiki/Combining_Diacritical_Marks) and
+ * [combining diacritical marks for symbols](https://en.wikipedia.org/wiki/Combining_Diacritical_Marks_for_Symbols).
+ */
+var reComboMark = RegExp(rsCombo, 'g');
+
+/** Used to map Latin Unicode letters to basic Latin letters. */
+var deburredLetters = {
+  // Latin-1 Supplement block.
+  '\xc0': 'A',  '\xc1': 'A', '\xc2': 'A', '\xc3': 'A', '\xc4': 'A', '\xc5': 'A',
+  '\xe0': 'a',  '\xe1': 'a', '\xe2': 'a', '\xe3': 'a', '\xe4': 'a', '\xe5': 'a',
+  '\xc7': 'C',  '\xe7': 'c',
+  '\xd0': 'D',  '\xf0': 'd',
+  '\xc8': 'E',  '\xc9': 'E', '\xca': 'E', '\xcb': 'E',
+  '\xe8': 'e',  '\xe9': 'e', '\xea': 'e', '\xeb': 'e',
+  '\xcc': 'I',  '\xcd': 'I', '\xce': 'I', '\xcf': 'I',
+  '\xec': 'i',  '\xed': 'i', '\xee': 'i', '\xef': 'i',
+  '\xd1': 'N',  '\xf1': 'n',
+  '\xd2': 'O',  '\xd3': 'O', '\xd4': 'O', '\xd5': 'O', '\xd6': 'O', '\xd8': 'O',
+  '\xf2': 'o',  '\xf3': 'o', '\xf4': 'o', '\xf5': 'o', '\xf6': 'o', '\xf8': 'o',
+  '\xd9': 'U',  '\xda': 'U', '\xdb': 'U', '\xdc': 'U',
+  '\xf9': 'u',  '\xfa': 'u', '\xfb': 'u', '\xfc': 'u',
+  '\xdd': 'Y',  '\xfd': 'y', '\xff': 'y',
+  '\xc6': 'Ae', '\xe6': 'ae',
+  '\xde': 'Th', '\xfe': 'th',
+  '\xdf': 'ss',
+  // Latin Extended-A block.
+  '\u0100': 'A',  '\u0102': 'A', '\u0104': 'A',
+  '\u0101': 'a',  '\u0103': 'a', '\u0105': 'a',
+  '\u0106': 'C',  '\u0108': 'C', '\u010a': 'C', '\u010c': 'C',
+  '\u0107': 'c',  '\u0109': 'c', '\u010b': 'c', '\u010d': 'c',
+  '\u010e': 'D',  '\u0110': 'D', '\u010f': 'd', '\u0111': 'd',
+  '\u0112': 'E',  '\u0114': 'E', '\u0116': 'E', '\u0118': 'E', '\u011a': 'E',
+  '\u0113': 'e',  '\u0115': 'e', '\u0117': 'e', '\u0119': 'e', '\u011b': 'e',
+  '\u011c': 'G',  '\u011e': 'G', '\u0120': 'G', '\u0122': 'G',
+  '\u011d': 'g',  '\u011f': 'g', '\u0121': 'g', '\u0123': 'g',
+  '\u0124': 'H',  '\u0126': 'H', '\u0125': 'h', '\u0127': 'h',
+  '\u0128': 'I',  '\u012a': 'I', '\u012c': 'I', '\u012e': 'I', '\u0130': 'I',
+  '\u0129': 'i',  '\u012b': 'i', '\u012d': 'i', '\u012f': 'i', '\u0131': 'i',
+  '\u0134': 'J',  '\u0135': 'j',
+  '\u0136': 'K',  '\u0137': 'k', '\u0138': 'k',
+  '\u0139': 'L',  '\u013b': 'L', '\u013d': 'L', '\u013f': 'L', '\u0141': 'L',
+  '\u013a': 'l',  '\u013c': 'l', '\u013e': 'l', '\u0140': 'l', '\u0142': 'l',
+  '\u0143': 'N',  '\u0145': 'N', '\u0147': 'N', '\u014a': 'N',
+  '\u0144': 'n',  '\u0146': 'n', '\u0148': 'n', '\u014b': 'n',
+  '\u014c': 'O',  '\u014e': 'O', '\u0150': 'O',
+  '\u014d': 'o',  '\u014f': 'o', '\u0151': 'o',
+  '\u0154': 'R',  '\u0156': 'R', '\u0158': 'R',
+  '\u0155': 'r',  '\u0157': 'r', '\u0159': 'r',
+  '\u015a': 'S',  '\u015c': 'S', '\u015e': 'S', '\u0160': 'S',
+  '\u015b': 's',  '\u015d': 's', '\u015f': 's', '\u0161': 's',
+  '\u0162': 'T',  '\u0164': 'T', '\u0166': 'T',
+  '\u0163': 't',  '\u0165': 't', '\u0167': 't',
+  '\u0168': 'U',  '\u016a': 'U', '\u016c': 'U', '\u016e': 'U', '\u0170': 'U', '\u0172': 'U',
+  '\u0169': 'u',  '\u016b': 'u', '\u016d': 'u', '\u016f': 'u', '\u0171': 'u', '\u0173': 'u',
+  '\u0174': 'W',  '\u0175': 'w',
+  '\u0176': 'Y',  '\u0177': 'y', '\u0178': 'Y',
+  '\u0179': 'Z',  '\u017b': 'Z', '\u017d': 'Z',
+  '\u017a': 'z',  '\u017c': 'z', '\u017e': 'z',
+  '\u0132': 'IJ', '\u0133': 'ij',
+  '\u0152': 'Oe', '\u0153': 'oe',
+  '\u0149': "'n", '\u017f': 'ss'
+};
+
+/** Detect free variable `global` from Node.js. */
+var freeGlobal = typeof global == 'object' && global && global.Object === Object && global;
+
+/** Detect free variable `self`. */
+var freeSelf = typeof self == 'object' && self && self.Object === Object && self;
+
+/** Used as a reference to the global object. */
+var root = freeGlobal || freeSelf || Function('return this')();
+
+/**
+ * The base implementation of `_.propertyOf` without support for deep paths.
+ *
+ * @private
+ * @param {Object} object The object to query.
+ * @returns {Function} Returns the new accessor function.
+ */
+function basePropertyOf(object) {
+  return function(key) {
+    return object == null ? undefined : object[key];
+  };
+}
+
+/**
+ * Used by `_.deburr` to convert Latin-1 Supplement and Latin Extended-A
+ * letters to basic Latin letters.
+ *
+ * @private
+ * @param {string} letter The matched letter to deburr.
+ * @returns {string} Returns the deburred letter.
+ */
+var deburrLetter = basePropertyOf(deburredLetters);
+
+/** Used for built-in method references. */
+var objectProto = Object.prototype;
+
+/**
+ * Used to resolve the
+ * [`toStringTag`](http://ecma-international.org/ecma-262/7.0/#sec-object.prototype.tostring)
+ * of values.
+ */
+var objectToString = objectProto.toString;
+
+/** Built-in value references. */
+var Symbol = root.Symbol;
+
+/** Used to convert symbols to primitives and strings. */
+var symbolProto = Symbol ? Symbol.prototype : undefined,
+    symbolToString = symbolProto ? symbolProto.toString : undefined;
+
+/**
+ * The base implementation of `_.toString` which doesn't convert nullish
+ * values to empty strings.
+ *
+ * @private
+ * @param {*} value The value to process.
+ * @returns {string} Returns the string.
+ */
+function baseToString(value) {
+  // Exit early for strings to avoid a performance hit in some environments.
+  if (typeof value == 'string') {
+    return value;
+  }
+  if (isSymbol(value)) {
+    return symbolToString ? symbolToString.call(value) : '';
+  }
+  var result = (value + '');
+  return (result == '0' && (1 / value) == -INFINITY) ? '-0' : result;
+}
+
+/**
+ * Checks if `value` is object-like. A value is object-like if it's not `null`
+ * and has a `typeof` result of "object".
+ *
+ * @static
+ * @memberOf _
+ * @since 4.0.0
+ * @category Lang
+ * @param {*} value The value to check.
+ * @returns {boolean} Returns `true` if `value` is object-like, else `false`.
+ * @example
+ *
+ * _.isObjectLike({});
+ * // => true
+ *
+ * _.isObjectLike([1, 2, 3]);
+ * // => true
+ *
+ * _.isObjectLike(_.noop);
+ * // => false
+ *
+ * _.isObjectLike(null);
+ * // => false
+ */
+function isObjectLike(value) {
+  return !!value && typeof value == 'object';
+}
+
+/**
+ * Checks if `value` is classified as a `Symbol` primitive or object.
+ *
+ * @static
+ * @memberOf _
+ * @since 4.0.0
+ * @category Lang
+ * @param {*} value The value to check.
+ * @returns {boolean} Returns `true` if `value` is a symbol, else `false`.
+ * @example
+ *
+ * _.isSymbol(Symbol.iterator);
+ * // => true
+ *
+ * _.isSymbol('abc');
+ * // => false
+ */
+function isSymbol(value) {
+  return typeof value == 'symbol' ||
+    (isObjectLike(value) && objectToString.call(value) == symbolTag);
+}
+
+/**
+ * Converts `value` to a string. An empty string is returned for `null`
+ * and `undefined` values. The sign of `-0` is preserved.
+ *
+ * @static
+ * @memberOf _
+ * @since 4.0.0
+ * @category Lang
+ * @param {*} value The value to process.
+ * @returns {string} Returns the string.
+ * @example
+ *
+ * _.toString(null);
+ * // => ''
+ *
+ * _.toString(-0);
+ * // => '-0'
+ *
+ * _.toString([1, 2, 3]);
+ * // => '1,2,3'
+ */
+function toString(value) {
+  return value == null ? '' : baseToString(value);
+}
+
+/**
+ * Deburrs `string` by converting
+ * [Latin-1 Supplement](https://en.wikipedia.org/wiki/Latin-1_Supplement_(Unicode_block)#Character_table)
+ * and [Latin Extended-A](https://en.wikipedia.org/wiki/Latin_Extended-A)
+ * letters to basic Latin letters and removing
+ * [combining diacritical marks](https://en.wikipedia.org/wiki/Combining_Diacritical_Marks).
+ *
+ * @static
+ * @memberOf _
+ * @since 3.0.0
+ * @category String
+ * @param {string} [string=''] The string to deburr.
+ * @returns {string} Returns the deburred string.
+ * @example
+ *
+ * _.deburr('déjà vu');
+ * // => 'deja vu'
+ */
+function deburr(string) {
+  string = toString(string);
+  return string && string.replace(reLatin, deburrLetter).replace(reComboMark, '');
+}
+
+module.exports = deburr;
+
+/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./../webpack/buildin/global.js */ "./node_modules/webpack/buildin/global.js")))
+
+/***/ }),
+
 /***/ "./node_modules/process/browser.js":
 /*!*****************************************!*\
   !*** ./node_modules/process/browser.js ***!
@@ -28889,6 +29677,72 @@ var render = function() {
     "section",
     [
       _c("div", { staticClass: "columns" }, [
+        _c(
+          "div",
+          { staticClass: "column" },
+          [
+            _c(
+              "b-field",
+              { attrs: { label: "Widget Provider Title" } },
+              [
+                _c("b-input", {
+                  model: {
+                    value: _vm.widget_provider,
+                    callback: function($$v) {
+                      _vm.widget_provider = $$v
+                    },
+                    expression: "widget_provider"
+                  }
+                })
+              ],
+              1
+            ),
+            _vm._v(" "),
+            _c(
+              "b-field",
+              { attrs: { label: "Widget Provider Slug" } },
+              [_c("b-input", { attrs: { value: _vm.widget_provider_slug } })],
+              1
+            )
+          ],
+          1
+        ),
+        _vm._v(" "),
+        _c(
+          "div",
+          { staticClass: "column" },
+          [
+            _c(
+              "b-field",
+              { attrs: { label: "Widget Title" } },
+              [
+                _c("b-input", {
+                  model: {
+                    value: _vm.widget_name,
+                    callback: function($$v) {
+                      _vm.widget_name = $$v
+                    },
+                    expression: "widget_name"
+                  }
+                })
+              ],
+              1
+            ),
+            _vm._v(" "),
+            _c(
+              "b-field",
+              { attrs: { label: "Widget Slug" } },
+              [_c("b-input", { attrs: { value: _vm.widget_name_slug } })],
+              1
+            )
+          ],
+          1
+        ),
+        _vm._v(" "),
+        _c("div", { staticClass: "column" })
+      ]),
+      _vm._v(" "),
+      _c("div", { staticClass: "columns" }, [
         _c("div", { staticClass: "column" }, [
           _c("div", { staticClass: "field" }, [
             _c("label", { staticClass: "label" }, [_vm._v("Widget Config")]),
@@ -28964,7 +29818,10 @@ var render = function() {
       _vm._v(" "),
       _c(
         "b-button",
-        { attrs: { type: "is-primary is-medium", expanded: "" } },
+        {
+          attrs: { type: "is-primary is-medium", expanded: "" },
+          on: { click: _vm.addWidget }
+        },
         [_vm._v("Save")]
       )
     ],
