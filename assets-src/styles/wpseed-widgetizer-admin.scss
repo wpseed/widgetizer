@@ -34,6 +34,16 @@ $colors: (
 	background-color: $primary;
 }
 
+.toplevel_page_wpseed-widgetizer-admin .button.is-success:focus,
+.toplevel_page_wpseed-widgetizer-admin .button.is-success.is-focused {
+	background-color: $success;
+}
+
+.toplevel_page_wpseed-widgetizer-admin .button.is-danger:focus,
+.toplevel_page_wpseed-widgetizer-admin .button.is-danger.is-focused {
+	background-color: $danger;
+}
+
 .toplevel_page_wpseed-widgetizer-admin #wpcontent {
 	padding-left: 0;
 }
