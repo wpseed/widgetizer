@@ -2880,32 +2880,61 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
       widgets: [],
-      columns: [{
-        field: 'widget_name',
-        label: 'Widget Name'
-      }, {
-        field: 'widget_icon',
-        label: 'Icon'
-      }, {
-        field: 'widget_path',
-        label: 'Widget Path'
-      }],
       errors: [],
       dataWpseedWidgetizerAdmin: window.dataWpseedWidgetizerAdmin
     };
   },
-  created: function created() {
-    var _this = this;
+  methods: {
+    duplicateWidget: function duplicateWidget(provider, name) {
+      console.log([provider, name]);
+    },
+    deleteWidget: function deleteWidget(index, provider, name) {
+      var _this = this;
 
-    window.axios.get(dataWpseedWidgetizerAdmin.restUrl + 'widgetizer/v1/widgets/').then(function (response) {
-      _this.widgets = response.data;
-      console.log(_this.widgets);
+      this.$buefy.dialog.confirm({
+        title: 'Deleting widget',
+        message: 'Are you sure you want to <b>delete</b> widget? This action cannot be undone.',
+        confirmText: 'Delete Widget',
+        type: 'is-danger',
+        hasIcon: true,
+        onConfirm: function onConfirm() {
+          window.axios["delete"]("".concat(dataWpseedWidgetizerAdmin.restUrl, "widgetizer/v1/widgets/").concat(provider, "/").concat(name)).then(function (response) {
+            _this.$data.widgets.splice(index, 1);
+
+            _this.$buefy.toast.open({
+              message: 'Widget deleted',
+              type: 'is-success'
+            });
+
+            console.log(index);
+          })["catch"](function (e) {
+            _this.errors.push(e);
+          });
+          console.log([provider, name]);
+        }
+      });
+    }
+  },
+  created: function created() {
+    var _this2 = this;
+
+    window.axios.get("".concat(dataWpseedWidgetizerAdmin.restUrl, "widgetizer/v1/widgets/")).then(function (response) {
+      _this2.widgets = response.data;
+      console.log(_this2.widgets);
     })["catch"](function (e) {
-      _this.errors.push(e);
+      _this2.errors.push(e);
     });
   }
 });
@@ -29749,7 +29778,6 @@ var render = function() {
       _c("b-table", {
         attrs: {
           data: _vm.widgets,
-          columns: _vm.columns,
           paginated: true,
           "per-page": 10,
           "pagination-simple": false
@@ -29765,7 +29793,8 @@ var render = function() {
                     attrs: {
                       field: "widget_name",
                       label: "Widget Name",
-                      sortable: ""
+                      sortable: "",
+                      searchable: ""
                     }
                   },
                   [
@@ -29783,8 +29812,6 @@ var render = function() {
                       [
                         _vm._v(
                           "\n          " +
-                            _vm._s(props.row.widget_provider) +
-                            "/" +
                             _vm._s(props.row.widget_name) +
                             "\n        "
                         )
@@ -29796,7 +29823,28 @@ var render = function() {
                 _vm._v(" "),
                 _c(
                   "b-table-column",
-                  { attrs: { field: "widget_actions", width: "300" } },
+                  {
+                    attrs: {
+                      field: "widget_provider",
+                      label: "Widget Provider",
+                      sortable: "",
+                      searchable: ""
+                    }
+                  },
+                  [
+                    _vm._v(
+                      "\n        " +
+                        _vm._s(props.row.widget_provider) +
+                        "\n      "
+                    )
+                  ]
+                ),
+                _vm._v(" "),
+                _c(
+                  "b-table-column",
+                  {
+                    attrs: { field: "widget_actions", label: "", width: "220" }
+                  },
                   [
                     _c(
                       "div",
@@ -29808,18 +29856,40 @@ var render = function() {
                             attrs: {
                               type: "is-success",
                               "icon-left": "content-copy"
+                            },
+                            on: {
+                              click: function($event) {
+                                return _vm.duplicateWidget(
+                                  props.row.widget_provider,
+                                  props.row.widget_name
+                                )
+                              }
                             }
                           },
-                          [_vm._v("Duplicate")]
+                          [_vm._v("\n            Duplicate\n          ")]
                         ),
                         _vm._v(" "),
-                        _c(
-                          "b-button",
-                          {
-                            attrs: { type: "is-danger", "icon-left": "delete" }
-                          },
-                          [_vm._v("Delete")]
-                        )
+                        props.row.widget_provider !== "widgetizer"
+                          ? _c(
+                              "b-button",
+                              {
+                                attrs: {
+                                  type: "is-danger",
+                                  "icon-left": "delete"
+                                },
+                                on: {
+                                  click: function($event) {
+                                    return _vm.deleteWidget(
+                                      props.index,
+                                      props.row.widget_provider,
+                                      props.row.widget_name
+                                    )
+                                  }
+                                }
+                              },
+                              [_vm._v("\n            Delete\n          ")]
+                            )
+                          : _vm._e()
                       ],
                       1
                     )

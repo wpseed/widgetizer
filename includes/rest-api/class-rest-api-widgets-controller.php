@@ -7,6 +7,7 @@
 
 namespace Wpseed\Widgetizer\Rest_Api;
 
+use mysql_xdevapi\Exception;
 use WP_REST_Server;
 use Symfony\Component\Filesystem\Filesystem;
 use Wpseed\Widgetizer\Elementor\Elementor_Builder;
@@ -151,6 +152,7 @@ class Rest_Api_Widgets_Controller extends Rest_Api_Controller {
 		}
 		$filesystem = new Filesystem();
 		$filesystem->mkdir( $dir, 0755 );
+		do_action( 'mc_debug', 'Усё пропало, шеф!', array( 1, 2 ) );
 		return new \WP_REST_Response(
 			array(
 				'widget_provider' => $request['widget_provider'],
@@ -201,15 +203,19 @@ class Rest_Api_Widgets_Controller extends Rest_Api_Controller {
 		}
 		$dir = get_stylesheet_directory() . '/widgetizer/elementor/' . $request['widget_provider'] . '/' . $request['widget_name'];
 		if ( ! is_dir( $dir ) ) {
-			return new \WP_Error( 'widget_not_exists', __( 'Widget not exists' ), array('status' => 403));
+			return new \WP_Error( 'widget_not_found', __( 'Widget not found' ), array('status' => 404));
 		}
 		$filesystem = new Filesystem();
-		$remove_result = $filesystem->remove( array( $dir ) );
+		try {
+			$filesystem->remove( array( $dir ) );
+		} catch ( \Exception $exception ) {
+			return new \WP_Error( 'widget_delete_failed', __( 'Widget delete failed' ), array('status' => 403));
+		}
 		return new \WP_REST_Response(
 			array(
 				'widget_provider' => $request['widget_provider'],
 				'widget_name'     => $request['widget_name'],
-				'remove_result'   => $remove_result,
+				'dir'             => $dir
 			)
 		);
 	}
