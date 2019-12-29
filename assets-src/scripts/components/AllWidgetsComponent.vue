@@ -6,7 +6,7 @@
       :per-page=10
       :pagination-simple=false>
       <template slot-scope="props">
-        <b-table-column field="widget_name" label="Widget Name" sortable searchable>
+        <b-table-column field="widget_name" label="Widget Name" :id="props.row.id" sortable searchable>
           <router-link :to="'/widgets/' + props.row.widget_provider + '/' + props.row.widget_name">
             {{ props.row.widget_name }}
           </router-link>
@@ -21,7 +21,7 @@
               Duplicate
             </b-button>
             <b-button type="is-danger" icon-left="delete" v-if="props.row.widget_provider !== 'widgetizer'"
-              v-on:click="deleteWidget(props.index, props.row.widget_provider, props.row.widget_name)">
+              v-on:click="deleteWidget(props.row.id, props.row.widget_provider, props.row.widget_name)">
               Delete
             </b-button>
           </div>
@@ -44,7 +44,7 @@ export default {
     duplicateWidget(provider, name) {
       console.log([provider, name]);
     },
-    deleteWidget(index, provider, name) {
+    deleteWidget(id, provider, name) {
       this.$buefy.dialog.confirm({
         title: 'Deleting widget',
         message: 'Are you sure you want to <b>delete</b> widget? This action cannot be undone.',
@@ -56,7 +56,7 @@ export default {
             .delete(`${dataWpseedWidgetizerAdmin.restUrl}widgetizer/v1/widgets/${provider}/${name}`)
             .then(
               (response) => {
-                this.$data.widgets.splice(index, 1);
+                this.$data.widgets.splice(id, 1);
                 this.$buefy.toast.open({
                   message: 'Widget deleted',
                   type: 'is-success',

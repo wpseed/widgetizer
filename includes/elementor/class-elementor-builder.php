@@ -118,14 +118,17 @@ class Elementor_Builder {
 	 */
 	public function get_widgets() {
 		$output = array();
+		$id = 0;
 		foreach ( $this->config as $provider_name => $provider_content ) {
 			foreach ( $provider_content as $widget_name => $widget_content ) {
 				$output[] = array(
+					'id'              => $id,
 					'widget_provider' => $provider_name,
 					'widget_name'     => $widget_name,
 					'widget_icon'     => $widget_content['config']['icon'],
 					'widget_path'     => $widget_content['path'],
 				);
+				$id++;
 			}
 		}
 		return $output;

@@ -2900,7 +2900,7 @@ __webpack_require__.r(__webpack_exports__);
     duplicateWidget: function duplicateWidget(provider, name) {
       console.log([provider, name]);
     },
-    deleteWidget: function deleteWidget(index, provider, name) {
+    deleteWidget: function deleteWidget(id, provider, name) {
       var _this = this;
 
       this.$buefy.dialog.confirm({
@@ -2911,7 +2911,7 @@ __webpack_require__.r(__webpack_exports__);
         hasIcon: true,
         onConfirm: function onConfirm() {
           window.axios["delete"]("".concat(dataWpseedWidgetizerAdmin.restUrl, "widgetizer/v1/widgets/").concat(provider, "/").concat(name)).then(function (response) {
-            _this.$data.widgets.splice(index, 1);
+            _this.$data.widgets.splice(id, 1);
 
             _this.$buefy.toast.open({
               message: 'Widget deleted',
@@ -29793,6 +29793,7 @@ var render = function() {
                     attrs: {
                       field: "widget_name",
                       label: "Widget Name",
+                      id: props.row.id,
                       sortable: "",
                       searchable: ""
                     }
@@ -29880,7 +29881,7 @@ var render = function() {
                                 on: {
                                   click: function($event) {
                                     return _vm.deleteWidget(
-                                      props.index,
+                                      props.row.id,
                                       props.row.widget_provider,
                                       props.row.widget_name
                                     )
