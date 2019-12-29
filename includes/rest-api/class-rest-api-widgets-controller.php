@@ -130,7 +130,39 @@ class Rest_Api_Widgets_Controller extends Rest_Api_Controller {
 	 * @return \WP_REST_Response|\WP_Error Response object on success, or WP_Error object on failure.
 	 */
 	public function get_item( $request ) {
-		return new \WP_REST_Response( 'current widget' );
+		$item = [
+			'widget_config' => '',
+			'widget_style'  => '',
+			'widget_script' => '',
+		];
+		if ( ! isset( $request['widget_provider'] ) || ! ( isset( $request['widget_name'] ) ) ) {
+			return new \WP_Error( 'fields_cannot_be_empty', __( 'Fields cannot be empty' ) );
+		}
+		$dir = get_stylesheet_directory() . '/widgetizer/elementor/' . $request['widget_provider'] . '/' . $request['widget_name'];
+		if ( ! is_dir( $dir ) ) {
+			return new \WP_Error( 'widget_not_found', __( 'Widget not found' ), array('status' => 404));
+		}
+		$widget_config_file = $dir . '/' . $request['widget_name'] . '.neon';
+		if ( is_file( $widget_config_file ) ) {
+			$item['widget_config'] = file_get_contents( $widget_config_file );
+		}
+		$widget_style_file = $dir . '/' . $request['widget_name'] . '.css';
+		if ( is_file( $widget_style_file ) ) {
+			$item['widget_style'] = file_get_contents( $widget_style_file );
+		}
+		$widget_script_file = $dir . '/' . $request['widget_name'] . '.js';
+		if ( is_file( $widget_script_file ) ) {
+			$item['widget_script'] = file_get_contents( $widget_script_file );
+		}
+		return new \WP_REST_Response(
+			array_merge(
+				array(
+					'widget_provider' => $request['widget_provider'],
+					'widget_name'     => $request['widget_name']
+				),
+				$item
+			)
+		);
 	}
 
 
@@ -152,7 +184,6 @@ class Rest_Api_Widgets_Controller extends Rest_Api_Controller {
 		}
 		$filesystem = new Filesystem();
 		$filesystem->mkdir( $dir, 0755 );
-		do_action( 'mc_debug', 'Усё пропало, шеф!', array( 1, 2 ) );
 		return new \WP_REST_Response(
 			array(
 				'widget_provider' => $request['widget_provider'],
@@ -175,16 +206,13 @@ class Rest_Api_Widgets_Controller extends Rest_Api_Controller {
 			return new \WP_Error( 'fields_cannot_be_empty', __( 'Fields cannot be empty' ) );
 		}
 		$dir = get_stylesheet_directory() . '/widgetizer/elementor/' . $request['widget_provider'] . '/' . $request['widget_name'];
-		if ( is_dir( $dir ) ) {
-			return new \WP_Error( 'widget_already_exists', __( 'Widget already exists' ), array('status' => 403));
+		if ( ! is_dir( $dir ) ) {
+			return new \WP_Error( 'widget_not_found', __( 'Widget not found' ), array('status' => 404));
 		}
-		$filesystem = new Filesystem();
-		$remove_result = $filesystem->remove( array( $dir ) );
 		return new \WP_REST_Response(
 			array(
 				'widget_provider' => $request['widget_provider'],
 				'widget_name'     => $request['widget_name'],
-				'remove_result'   => $remove_result,
 			)
 		);
 	}

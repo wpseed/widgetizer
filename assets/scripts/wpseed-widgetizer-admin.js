@@ -2990,16 +2990,31 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+ // eslint-disable-next-line import/extensions
 
+ // eslint-disable-next-line import/extensions
 
+ // eslint-disable-next-line import/extensions
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
-      widget_code: 'text: text',
-      widget_style: 'style',
-      widget_script: 'script',
+      widget: [],
       widgetCodeOptions: {
         tabSize: 2,
         mode: 'yaml',
@@ -3024,26 +3039,31 @@ __webpack_require__.r(__webpack_exports__);
     };
   },
   methods: {
-    onCmReady: function onCmReady(cm) {
-      console.log('the editor is readied!', cm);
-    },
-    onCmFocus: function onCmFocus(cm) {
-      console.log('the editor is focus!', cm);
-    },
-    onCmCodeChange: function onCmCodeChange(newCode) {
-      console.log('this is new code', newCode);
-      this.code = newCode;
+    updateWidget: function updateWidget(provider, name) {
+      var _this = this;
+
+      window.axios.patch("".concat(dataWpseedWidgetizerAdmin.restUrl, "widgetizer/v1/widgets/").concat(provider, "/").concat(name)).then(function (response) {
+        _this.$buefy.toast.open({
+          message: 'Widget updated',
+          type: 'is-success'
+        });
+
+        console.log(index);
+      })["catch"](function (e) {
+        _this.errors.push(e);
+      });
+      console.log([provider, name]);
     }
   },
   computed: {},
   created: function created() {
-    var _this = this;
+    var _this2 = this;
 
-    window.axios.get(dataWpseedWidgetizerAdmin.restUrl + 'widgetizer/v1/widgets/' + this.$route.params.provider + '/' + this.$route.params.widget_name).then(function (response) {
-      _this.widget = response.data;
-      console.log(_this.widget);
+    window.axios.get("".concat(dataWpseedWidgetizerAdmin.restUrl, "widgetizer/v1/widgets/").concat(this.$route.params.widget_provider, "/").concat(this.$route.params.widget_name)).then(function (response) {
+      _this2.widget = response.data;
+      console.log(_this2.widget);
     })["catch"](function (e) {
-      _this.errors.push(e);
+      _this2.errors.push(e);
     });
   },
   mounted: function mounted() {}
@@ -29964,6 +29984,28 @@ var render = function() {
       _c("div", { staticClass: "columns" }, [
         _c("div", { staticClass: "column" }, [
           _c("div", { staticClass: "field" }, [
+            _c("label", { staticClass: "label" }, [_vm._v("Widget Name")]),
+            _vm._v(" "),
+            _c("div", { staticClass: "control" }, [
+              _vm._v(_vm._s(_vm.widget.widget_name))
+            ])
+          ]),
+          _vm._v(" "),
+          _c("div", { staticClass: "field" }, [
+            _c("label", { staticClass: "label" }, [_vm._v("Widget Provider")]),
+            _vm._v(" "),
+            _c("div", { staticClass: "control" }, [
+              _vm._v(_vm._s(_vm.widget.widget_provider))
+            ])
+          ])
+        ]),
+        _vm._v(" "),
+        _c("div", { staticClass: "column" })
+      ]),
+      _vm._v(" "),
+      _c("div", { staticClass: "columns" }, [
+        _c("div", { staticClass: "column" }, [
+          _c("div", { staticClass: "field" }, [
             _c("label", { staticClass: "label" }, [_vm._v("Widget Config")]),
             _vm._v(" "),
             _c(
@@ -29973,11 +30015,11 @@ var render = function() {
                 _c("codemirror", {
                   attrs: { options: _vm.widgetCodeOptions },
                   model: {
-                    value: _vm.widget_code,
+                    value: _vm.widget.widget_config,
                     callback: function($$v) {
-                      _vm.widget_code = $$v
+                      _vm.$set(_vm.widget, "widget_config", $$v)
                     },
-                    expression: "widget_code"
+                    expression: "widget.widget_config"
                   }
                 })
               ],
@@ -29997,11 +30039,11 @@ var render = function() {
                 _c("codemirror", {
                   attrs: { options: _vm.widgetStyleOptions },
                   model: {
-                    value: _vm.widget_style,
+                    value: _vm.widget.widget_style,
                     callback: function($$v) {
-                      _vm.widget_style = $$v
+                      _vm.$set(_vm.widget, "widget_style", $$v)
                     },
-                    expression: "widget_style"
+                    expression: "widget.widget_style"
                   }
                 })
               ],
@@ -30021,11 +30063,11 @@ var render = function() {
                 _c("codemirror", {
                   attrs: { options: _vm.widgetScriptOptions },
                   model: {
-                    value: _vm.widget_script,
+                    value: _vm.widget.widget_script,
                     callback: function($$v) {
-                      _vm.widget_script = $$v
+                      _vm.$set(_vm.widget, "widget_script", $$v)
                     },
-                    expression: "widget_script"
+                    expression: "widget.widget_script"
                   }
                 })
               ],
@@ -30037,7 +30079,17 @@ var render = function() {
       _vm._v(" "),
       _c(
         "b-button",
-        { attrs: { type: "is-primary is-medium", expanded: "" } },
+        {
+          attrs: { type: "is-primary is-medium", expanded: "" },
+          on: {
+            click: function($event) {
+              return _vm.updateWidget(
+                _vm.widget.widget_provider,
+                _vm.widget.widget_name
+              )
+            }
+          }
+        },
         [_vm._v("Save")]
       )
     ],
