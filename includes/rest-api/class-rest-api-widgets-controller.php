@@ -7,6 +7,8 @@
 
 namespace Wpseed\Widgetizer\Rest_Api;
 
+use mysql_xdevapi\Exception;
+use WP_REST_Server;
 use Symfony\Component\Filesystem\Filesystem;
 use Wpseed\Widgetizer\Elementor\Elementor_Builder;
 
@@ -30,7 +32,7 @@ class Rest_Api_Widgets_Controller extends Rest_Api_Controller {
 			'/widgets',
 			array(
 				array(
-					'methods'             => \WP_REST_Server::READABLE,
+					'methods'             => WP_REST_Server::READABLE,
 					'callback'            => array( $this, 'get_items' ),
 					'permission_callback' => array( $this, 'permissions_check' ),
 					'args'                => $this->get_collection_params(),
@@ -54,20 +56,26 @@ class Rest_Api_Widgets_Controller extends Rest_Api_Controller {
 					),
 				),
 				array(
-					'methods'             => \WP_REST_Server::READABLE,
+					'methods'             => WP_REST_Server::READABLE,
 					'callback'            => array( $this, 'get_item' ),
 					'permission_callback' => array( $this, 'permissions_check' ),
 					'args'                => $this->get_collection_params(),
 				),
 				array(
-					'methods'             => \WP_REST_Server::CREATABLE,
+					'methods'             => WP_REST_Server::CREATABLE,
 					'callback'            => array( $this, 'create_item' ),
 					'permission_callback' => array( $this, 'permissions_check' ),
 					'args'                => $this->get_collection_params(),
 				),
 				array(
-					'methods'             => \WP_REST_Server::EDITABLE,
+					'methods'             => WP_REST_Server::EDITABLE,
 					'callback'            => array( $this, 'update_item' ),
+					'permission_callback' => array( $this, 'permissions_check' ),
+					'args'                => $this->get_collection_params(),
+				),
+				array(
+					'methods'             => WP_REST_Server::DELETABLE,
+					'callback'            => array( $this, 'delete_item' ),
 					'permission_callback' => array( $this, 'permissions_check' ),
 					'args'                => $this->get_collection_params(),
 				),
@@ -122,7 +130,39 @@ class Rest_Api_Widgets_Controller extends Rest_Api_Controller {
 	 * @return \WP_REST_Response|\WP_Error Response object on success, or WP_Error object on failure.
 	 */
 	public function get_item( $request ) {
-		return new \WP_REST_Response( 'current widget' );
+		$item = [
+			'widget_config' => '',
+			'widget_style'  => '',
+			'widget_script' => '',
+		];
+		if ( ! isset( $request['widget_provider'] ) || ! ( isset( $request['widget_name'] ) ) ) {
+			return new \WP_Error( 'fields_cannot_be_empty', __( 'Fields cannot be empty' ) );
+		}
+		$widget_dir = get_stylesheet_directory() . '/widgetizer/elementor/' . $request['widget_provider'] . '/' . $request['widget_name'];
+		if ( ! is_dir( $widget_dir ) ) {
+			return new \WP_Error( 'widget_not_found', __( 'Widget not found' ), array('status' => 404));
+		}
+		$widget_config_file = $widget_dir . '/' . $request['widget_name'] . '.neon';
+		if ( is_file( $widget_config_file ) ) {
+			$item['widget_config'] = file_get_contents( $widget_config_file );
+		}
+		$widget_style_file = $widget_dir . '/' . $request['widget_name'] . '.css';
+		if ( is_file( $widget_style_file ) ) {
+			$item['widget_style'] = file_get_contents( $widget_style_file );
+		}
+		$widget_script_file = $widget_dir . '/' . $request['widget_name'] . '.js';
+		if ( is_file( $widget_script_file ) ) {
+			$item['widget_script'] = file_get_contents( $widget_script_file );
+		}
+		return new \WP_REST_Response(
+			array_merge(
+				array(
+					'widget_provider' => $request['widget_provider'],
+					'widget_name'     => $request['widget_name'],
+				),
+				$item
+			)
+		);
 	}
 
 
@@ -136,19 +176,18 @@ class Rest_Api_Widgets_Controller extends Rest_Api_Controller {
 	 */
 	public function create_item( $request ) {
 		if ( ! isset( $request['widget_provider'] ) || ! ( isset( $request['widget_name'] ) ) ) {
-			return false;
+			return new \WP_Error( 'fields_cannot_be_empty', __( 'Fields cannot be empty' ) );
 		}
-		$dir = get_stylesheet_directory() . '/widgetizer/elementor/' . $request['widget_provider'] . '/' . $request['widget_name'];
-		if ( is_dir( $dir ) ) {
-			return false;
+		$widget_dir = get_stylesheet_directory() . '/widgetizer/elementor/' . $request['widget_provider'] . '/' . $request['widget_name'];
+		if ( is_dir( $widget_dir ) ) {
+			return new \WP_Error( 'widget_already_exists', __( 'Widget already exists' ), array('status' => 403));
 		}
 		$filesystem = new Filesystem();
-		$filesystem->mkdir( $dir, 0755 );
+		$filesystem->mkdir( $widget_dir, 0755 );
 		return new \WP_REST_Response(
 			array(
 				'widget_provider' => $request['widget_provider'],
 				'widget_name'     => $request['widget_name'],
-				'dir'             => $dir,
 			)
 		);
 	}
@@ -162,15 +201,60 @@ class Rest_Api_Widgets_Controller extends Rest_Api_Controller {
 	 * @return \WP_REST_Response|\WP_Error Response object on success, or WP_Error object on failure.
 	 */
 	public function update_item( \WP_REST_Request $request ) {
-		if ( isset( $request['widget_provider'] ) && ( isset( $request['widget_name'] ) ) ) {
-			return new \WP_REST_Response(
-				array(
-					'widget_provider' => $request['widget_provider'],
-					'widget_name'     => $request['widget_name'],
-				)
-			);
+		$filesystem = new Filesystem();
+		if ( ! isset( $request['widget_provider'] ) || ! isset( $request['widget_name']  ) ) {
+			return new \WP_Error( 'fields_cannot_be_empty', __( 'Fields cannot be empty' ) );
 		}
-		return false;
+		$widget_dir = get_stylesheet_directory() . '/widgetizer/elementor/' . $request['widget_provider'] . '/' . $request['widget_name'];
+		if ( ! is_dir( $widget_dir ) ) {
+			return new \WP_Error( 'widget_not_found', __( 'Widget not found' ), array('status' => 404));
+		}
+		$widget_config_file = $widget_dir . '/' . $request['widget_name'] . '.neon';
+		$filesystem->dumpFile($widget_config_file, $request['params']['widget_config']);
+		$widget_style_file = $widget_dir . '/' . $request['widget_name'] . '.css';
+		$filesystem->dumpFile($widget_style_file, $request['params']['widget_style']);
+		$widget_script_file = $widget_dir . '/' . $request['widget_name'] . '.js';
+		$filesystem->dumpFile($widget_script_file, $request['params']['widget_script']);
+		return new \WP_REST_Response(
+			array(
+				'widget_provider' => $request['widget_provider'],
+				'widget_name'     => $request['widget_name'],
+				'widget_config'   => $request['params']['widget_config'],
+				'widget_style'    => $request['params']['widget_style'],
+				'widget_script'   => $request['params']['widget_script'],
+			)
+		);
+	}
+
+	/**
+	 * Delete one item from the collection.
+	 *
+	 * @since 4.7.0
+	 *
+	 * @param \WP_REST_Request $request Full data about the request.
+	 * @return \WP_REST_Response|\WP_Error Response object on success, or WP_Error object on failure.
+	 */
+	public function delete_item( \WP_REST_Request $request ) {
+		if ( ! isset( $request['widget_provider'] ) || ! isset( $request['widget_name']  ) ) {
+			return new \WP_Error( 'fields_cannot_be_empty', __( 'Fields cannot be empty' ) );
+		}
+		$dir = get_stylesheet_directory() . '/widgetizer/elementor/' . $request['widget_provider'] . '/' . $request['widget_name'];
+		if ( ! is_dir( $dir ) ) {
+			return new \WP_Error( 'widget_not_found', __( 'Widget not found' ), array('status' => 404));
+		}
+		$filesystem = new Filesystem();
+		try {
+			$filesystem->remove( array( $dir ) );
+		} catch ( \Exception $exception ) {
+			return new \WP_Error( 'widget_delete_failed', __( 'Widget delete failed' ), array('status' => 403));
+		}
+		return new \WP_REST_Response(
+			array(
+				'widget_provider' => $request['widget_provider'],
+				'widget_name'     => $request['widget_name'],
+				'dir'             => $dir
+			)
+		);
 	}
 
 }
