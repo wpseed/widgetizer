@@ -137,7 +137,6 @@ class Rest_Api_Widgets_Controller extends Rest_Api_Controller {
 	 * @return \WP_REST_Response|WP_Error Response object on success, or WP_Error object on failure.
 	 */
 	public function get_item( $request ) {
-		$nette_filesystem = new \Nette\Utils\FileSystem();
 		$item             = array(
 			'widget_config' => '',
 			'widget_style'  => '',
@@ -152,15 +151,15 @@ class Rest_Api_Widgets_Controller extends Rest_Api_Controller {
 		}
 		$widget_config_file = $widget_dir . '/' . $request['widget_name'] . '.neon';
 		if ( is_file( $widget_config_file ) ) {
-			$item['widget_config'] = $nette_filesystem::read( $widget_config_file );
+			$item['widget_config'] = \Nette\Utils\FileSystem::read( $widget_config_file );
 		}
 		$widget_style_file = $widget_dir . '/' . $request['widget_name'] . '.css';
 		if ( is_file( $widget_style_file ) ) {
-			$item['widget_style'] = $nette_filesystem::read( $widget_style_file );
+			$item['widget_style'] = \Nette\Utils\FileSystem::read( $widget_style_file );
 		}
 		$widget_script_file = $widget_dir . '/' . $request['widget_name'] . '.js';
 		if ( is_file( $widget_script_file ) ) {
-			$item['widget_script'] = $nette_filesystem::read( $widget_script_file );
+			$item['widget_script'] = \Nette\Utils\FileSystem::read( $widget_script_file );
 		}
 		return new \WP_REST_Response(
 			array_merge(
