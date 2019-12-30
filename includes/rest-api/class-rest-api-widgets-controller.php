@@ -155,7 +155,7 @@ class Rest_Api_Widgets_Controller extends Rest_Api_Controller {
 		}
 		$widget_template_file = $widget_dir . '/' . $request['widget_name'] . '.latte';
 		if ( is_file( $widget_template_file ) ) {
-			$widget_template_file = \Nette\Utils\FileSystem::read( $widget_template_file );
+			$item['widget_template'] = \Nette\Utils\FileSystem::read( $widget_template_file );
 		}
 		$widget_style_file = $widget_dir . '/' . $request['widget_name'] . '.css';
 		if ( is_file( $widget_style_file ) ) {
