@@ -99,6 +99,7 @@ class Elementor_Builder {
 									try {
 										$current_widget_config = $neon::decode( \Nette\Utils\FileSystem::read( $current_widget_config_path ) );
 									} catch ( \Exception $exception ) {
+										unset( $exception );
 									}
 									if ( ! isset( $exception ) ) {
 										$current_config[ $current_provider ][ $current_widget ]['config'] = $current_widget_config;

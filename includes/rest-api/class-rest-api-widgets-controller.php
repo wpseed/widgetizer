@@ -7,11 +7,18 @@
 
 namespace Wpseed\Widgetizer\Rest_Api;
 
-use mysql_xdevapi\Exception;
 use WP_REST_Server;
+use WP_Error;
 use Symfony\Component\Filesystem\Filesystem;
 use Wpseed\Widgetizer\Elementor\Elementor_Builder;
 
+/**
+ * Rest API class for widgets
+ *
+ * Class Rest_Api_Widgets_Controller
+ *
+ * @package Wpseed\Widgetizer\Rest_Api
+ */
 class Rest_Api_Widgets_Controller extends Rest_Api_Controller {
 
 	/**
@@ -47,11 +54,11 @@ class Rest_Api_Widgets_Controller extends Rest_Api_Controller {
 			array(
 				'args'   => array(
 					'widget_provider' => array(
-						'description' => __( 'Widget provider identifier.' ),
+						'description' => __( 'Widget provider identifier.', 'wpseed-widgetizer' ),
 						'type'        => 'string',
 					),
 					'widget_name'     => array(
-						'description' => __( 'Widget name identifier.' ),
+						'description' => __( 'Widget name identifier.', 'wpseed-widgetizer' ),
 						'type'        => 'string',
 					),
 				),
@@ -87,18 +94,18 @@ class Rest_Api_Widgets_Controller extends Rest_Api_Controller {
 	/**
 	 * Check user permissions
 	 *
-	 * @param $request
+	 * @param \WP_REST_Request $request Request.
 	 *
 	 * @return bool|WP_Error
 	 */
-	public function permissions_check( \WP_REST_Request $request ) {
-		// if ( ! current_user_can( 'edit_others_pages' ) ) {
-		// return new \WP_Error(
-		// 'rest_forbidden_context',
-		// __( 'Sorry, you are not allowed to use Widgetizer API.' ),
-		// array( 'status' => rest_authorization_required_code() )
-		// );
-		// }
+	final public function permissions_check( \WP_REST_Request $request ) {
+		if ( ! current_user_can( 'edit_others_pages' ) ) {
+			return new WP_Error(
+				'rest_forbidden_context',
+				__( 'Sorry, you are not allowed to use Widgetizer API.', 'wpseed-widgetizer' ),
+				array( 'status' => rest_authorization_required_code() )
+			);
+		}
 		return true;
 	}
 
@@ -108,7 +115,7 @@ class Rest_Api_Widgets_Controller extends Rest_Api_Controller {
 	 * @since 4.7.0
 	 *
 	 * @param \WP_REST_Request $request Full data about the request.
-	 * @return \WP_REST_Response|\WP_Error Response object on success, or WP_Error object on failure.
+	 * @return \WP_REST_Response|WP_Error Response object on success, or WP_Error object on failure.
 	 */
 	public function get_items( $request ) {
 		$widgets_parser = new Elementor_Builder(
@@ -127,32 +134,33 @@ class Rest_Api_Widgets_Controller extends Rest_Api_Controller {
 	 * @since 4.7.0
 	 *
 	 * @param \WP_REST_Request $request Full data about the request.
-	 * @return \WP_REST_Response|\WP_Error Response object on success, or WP_Error object on failure.
+	 * @return \WP_REST_Response|WP_Error Response object on success, or WP_Error object on failure.
 	 */
 	public function get_item( $request ) {
-		$item = array(
+		$nette_filesystem = new \Nette\Utils\FileSystem();
+		$item             = array(
 			'widget_config' => '',
 			'widget_style'  => '',
 			'widget_script' => '',
 		);
 		if ( ! isset( $request['widget_provider'] ) || ! ( isset( $request['widget_name'] ) ) ) {
-			return new \WP_Error( 'fields_cannot_be_empty', __( 'Fields cannot be empty' ) );
+			return new WP_Error( 'fields_cannot_be_empty', __( 'Fields cannot be empty', 'wpseed-widgetizer' ) );
 		}
 		$widget_dir = get_stylesheet_directory() . '/widgetizer/elementor/' . $request['widget_provider'] . '/' . $request['widget_name'];
 		if ( ! is_dir( $widget_dir ) ) {
-			return new \WP_Error( 'widget_not_found', __( 'Widget not found' ), array( 'status' => 404 ) );
+			return new WP_Error( 'widget_not_found', __( 'Widget not found', 'wpseed-widgetizer' ), array( 'status' => 404 ) );
 		}
 		$widget_config_file = $widget_dir . '/' . $request['widget_name'] . '.neon';
 		if ( is_file( $widget_config_file ) ) {
-			$item['widget_config'] = file_get_contents( $widget_config_file );
+			$item['widget_config'] = $nette_filesystem::read( $widget_config_file );
 		}
 		$widget_style_file = $widget_dir . '/' . $request['widget_name'] . '.css';
 		if ( is_file( $widget_style_file ) ) {
-			$item['widget_style'] = file_get_contents( $widget_style_file );
+			$item['widget_style'] = $nette_filesystem::read( $widget_style_file );
 		}
 		$widget_script_file = $widget_dir . '/' . $request['widget_name'] . '.js';
 		if ( is_file( $widget_script_file ) ) {
-			$item['widget_script'] = file_get_contents( $widget_script_file );
+			$item['widget_script'] = $nette_filesystem::read( $widget_script_file );
 		}
 		return new \WP_REST_Response(
 			array_merge(
@@ -172,15 +180,15 @@ class Rest_Api_Widgets_Controller extends Rest_Api_Controller {
 	 * @since 4.7.0
 	 *
 	 * @param \WP_REST_Request $request Full data about the request.
-	 * @return \WP_REST_Response|\WP_Error Response object on success, or WP_Error object on failure.
+	 * @return \WP_REST_Response|WP_Error Response object on success, or WP_Error object on failure.
 	 */
 	public function create_item( $request ) {
 		if ( ! isset( $request['widget_provider'] ) || ! ( isset( $request['widget_name'] ) ) ) {
-			return new \WP_Error( 'fields_cannot_be_empty', __( 'Fields cannot be empty' ) );
+			return new WP_Error( 'fields_cannot_be_empty', __( 'Fields cannot be empty', 'wpseed-widgetizer' ) );
 		}
 		$widget_dir = get_stylesheet_directory() . '/widgetizer/elementor/' . $request['widget_provider'] . '/' . $request['widget_name'];
 		if ( is_dir( $widget_dir ) ) {
-			return new \WP_Error( 'widget_already_exists', __( 'Widget already exists' ), array( 'status' => 403 ) );
+			return new WP_Error( 'widget_already_exists', __( 'Widget already exists', 'wpseed-widgetizer' ), array( 'status' => 403 ) );
 		}
 		$filesystem = new Filesystem();
 		$filesystem->mkdir( $widget_dir, 0755 );
@@ -198,16 +206,16 @@ class Rest_Api_Widgets_Controller extends Rest_Api_Controller {
 	 * @since 4.7.0
 	 *
 	 * @param \WP_REST_Request $request Full data about the request.
-	 * @return \WP_REST_Response|\WP_Error Response object on success, or WP_Error object on failure.
+	 * @return \WP_REST_Response|WP_Error Response object on success, or WP_Error object on failure.
 	 */
 	public function update_item( \WP_REST_Request $request ) {
 		$filesystem = new Filesystem();
 		if ( ! isset( $request['widget_provider'] ) || ! isset( $request['widget_name'] ) ) {
-			return new \WP_Error( 'fields_cannot_be_empty', __( 'Fields cannot be empty' ) );
+			return new WP_Error( 'fields_cannot_be_empty', __( 'Fields cannot be empty', 'wpseed-widgetizer' ) );
 		}
 		$widget_dir = get_stylesheet_directory() . '/widgetizer/elementor/' . $request['widget_provider'] . '/' . $request['widget_name'];
 		if ( ! is_dir( $widget_dir ) ) {
-			return new \WP_Error( 'widget_not_found', __( 'Widget not found' ), array( 'status' => 404 ) );
+			return new WP_Error( 'widget_not_found', __( 'Widget not found', 'wpseed-widgetizer' ), array( 'status' => 404 ) );
 		}
 		$widget_config_file = $widget_dir . '/' . $request['widget_name'] . '.neon';
 		$filesystem->dumpFile( $widget_config_file, $request['params']['widget_config'] );
@@ -232,21 +240,21 @@ class Rest_Api_Widgets_Controller extends Rest_Api_Controller {
 	 * @since 4.7.0
 	 *
 	 * @param \WP_REST_Request $request Full data about the request.
-	 * @return \WP_REST_Response|\WP_Error Response object on success, or WP_Error object on failure.
+	 * @return \WP_REST_Response|WP_Error Response object on success, or WP_Error object on failure.
 	 */
 	public function delete_item( \WP_REST_Request $request ) {
 		if ( ! isset( $request['widget_provider'] ) || ! isset( $request['widget_name'] ) ) {
-			return new \WP_Error( 'fields_cannot_be_empty', __( 'Fields cannot be empty' ) );
+			return new WP_Error( 'fields_cannot_be_empty', __( 'Fields cannot be empty', 'wpseed-widgetizer' ) );
 		}
 		$dir = get_stylesheet_directory() . '/widgetizer/elementor/' . $request['widget_provider'] . '/' . $request['widget_name'];
 		if ( ! is_dir( $dir ) ) {
-			return new \WP_Error( 'widget_not_found', __( 'Widget not found' ), array( 'status' => 404 ) );
+			return new WP_Error( 'widget_not_found', __( 'Widget not found', 'wpseed-widgetizer' ), array( 'status' => 404 ) );
 		}
 		$filesystem = new Filesystem();
 		try {
 			$filesystem->remove( array( $dir ) );
 		} catch ( \Exception $exception ) {
-			return new \WP_Error( 'widget_delete_failed', __( 'Widget delete failed' ), array( 'status' => 403 ) );
+			return new WP_Error( 'widget_delete_failed', __( 'Widget delete failed', 'wpseed-widgetizer' ), array( 'status' => 403 ) );
 		}
 		return new \WP_REST_Response(
 			array(
