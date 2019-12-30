@@ -3025,21 +3025,27 @@ __webpack_require__.r(__webpack_exports__);
       errors: [],
       widget: [],
       widgetCodeOptions: {
+        indentWithTabs: true,
         tabSize: 2,
+        indentUnit: 2,
         mode: 'yaml',
         theme: 'monokai',
         lineNumbers: true,
         line: true
       },
       widgetStyleOptions: {
+        indentWithTabs: true,
         tabSize: 2,
+        indentUnit: 2,
         mode: 'css',
         theme: 'monokai',
         lineNumbers: true,
         line: true
       },
       widgetScriptOptions: {
+        indentWithTabs: true,
         tabSize: 2,
+        indentUnit: 2,
         mode: 'javascript',
         theme: 'monokai',
         lineNumbers: true,
