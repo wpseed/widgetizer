@@ -1,0 +1,73 @@
+@import "~@mdi/font/scss/materialdesignicons";
+
+// Import Bulma and Buefy styles
+@import "~bulma/sass/utilities/_all";
+
+$primary: #8c67ef;
+$primary-invert: findColorInvert($primary);
+
+$colors: (
+	"white": ($white, $black),
+	"black": ($black, $white),
+	"light": ($light, $light-invert),
+	"dark": ($dark, $dark-invert),
+	"primary": ($primary, $primary-invert),
+	"info": ($info, $info-invert),
+	"success": ($success, $success-invert),
+	"warning": ($warning, $warning-invert),
+	"danger": ($danger, $danger-invert)
+);
+
+@import "~bulma/sass/base/_all";
+@import "~bulma/sass/elements/_all";
+@import "~bulma/sass/form/_all";
+@import "~bulma/sass/components/_all";
+@import "~bulma/sass/grid/_all";
+@import "~bulma/sass/layout/_all";
+
+@import "~buefy/src/scss/buefy";
+@import '~codemirror/lib/codemirror.css';
+@import '~codemirror/theme/monokai.css';
+
+.toplevel_page_wpseed-widgetizer-admin .button.is-primary:focus,
+.toplevel_page_wpseed-widgetizer-admin .button.is-primary.is-focused {
+	background-color: $primary;
+}
+
+.toplevel_page_wpseed-widgetizer-admin .button.is-success:focus,
+.toplevel_page_wpseed-widgetizer-admin .button.is-success.is-focused {
+	background-color: $success;
+}
+
+.toplevel_page_wpseed-widgetizer-admin .button.is-danger:focus,
+.toplevel_page_wpseed-widgetizer-admin .button.is-danger.is-focused {
+	background-color: $danger;
+}
+
+.toplevel_page_wpseed-widgetizer-admin #wpcontent {
+	padding-left: 0;
+}
+
+.wpseed-widgetizer-admin-header {
+	background-color: #fff;
+	box-shadow: 0 1px 0 #ccd0d4, 0 1px 1px 1px rgba(0, 0, 0, 0.05);
+	padding: 1rem 0;
+}
+
+.wpseed-widgetizer-admin-header h1 {
+	font-size: 2rem;
+	font-weight: 300;
+	line-height: 1;
+	text-transform: uppercase;
+	vertical-align: center;
+}
+
+.wpseed-widgetizer-admin-header h1 > span {
+	font-size: 2.5rem;
+	line-height: 1;
+	margin-right: 2rem;
+}
+
+.wpseed-widgetizer-admin-breadcrumb {
+	padding: 1rem 0 2rem;
+}

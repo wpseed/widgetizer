@@ -12,15 +12,15 @@ namespace Wpseed\Widgetizer;
  *
  * @since  1.0.0
  */
-final class Validate {
+final class Validator {
 	/**
 	 * Check that given name only uses latin characters, digits, and dash
 	 *
 	 * @param string $string String to validate.
 	 * @return boolean True if latin only, false otherwise.
 	 */
-	public static function name( $string ) {
-		if ( preg_match( '/^[\w\d\s-]*$/', $string ) ) {
+	public static function is_widgetizer_slug( $string ) {
+		if ( preg_match( '/^[a-z][-a-z0-9]*$/', $string ) ) {
 			return true;
 		}
 		return false;

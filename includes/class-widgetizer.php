@@ -7,8 +7,8 @@
 
 namespace Wpseed\Widgetizer;
 
-use Wpseed\Widgetizer\Admin\Pages;
 use Wpseed\Widgetizer\Elementor\Elementor_Builder;
+use Wpseed\Widgetizer\Rest_Api\Rest_Api_Widgets_Controller;
 
 /**
  * Main initiation plugin class
@@ -43,9 +43,9 @@ final class Widgetizer {
 	 */
 	public function __construct() {
 		if ( ! $this->admin_pages ) {
-			$this->admin_pages = new Pages();
+			$this->admin_pages = new Admin();
 		}
-		add_action( 'plugins_loaded', array( $this, 'init' ) );
+		$this->init_hooks();
 	}
 
 	/**
@@ -74,5 +74,21 @@ final class Widgetizer {
 			);
 			$this->elementor_builder->init();
 		}
+	}
+
+	/**
+	 * Init hooks
+	 */
+	private function init_hooks() {
+		add_action( 'rest_api_init', array( $this, 'init_rest_api_routes' ) );
+		add_action( 'plugins_loaded', array( $this, 'init' ) );
+	}
+
+	/**
+	 * Init Rest API routes
+	 */
+	public function init_rest_api_routes() {
+		$rest_api_widgets = new Rest_Api_Widgets_Controller();
+		$rest_api_widgets->register_routes();
 	}
 }

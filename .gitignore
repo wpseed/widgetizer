@@ -47,3 +47,5 @@ pids
 
 # Nette Tester
 tests/tester/tests/output/
+
+mix-manifest.json
