@@ -1,5 +1,5 @@
 <template>
     <section>
-        <h1>404</h1>
+        <h1>Widgets Not Found</h1>
     </section>
 </template>

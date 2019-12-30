@@ -153,6 +153,10 @@ class Rest_Api_Widgets_Controller extends Rest_Api_Controller {
 		if ( is_file( $widget_config_file ) ) {
 			$item['widget_config'] = \Nette\Utils\FileSystem::read( $widget_config_file );
 		}
+		$widget_template_file = $widget_dir . '/' . $request['widget_name'] . '.latte';
+		if ( is_file( $widget_template_file ) ) {
+			$widget_template_file = \Nette\Utils\FileSystem::read( $widget_template_file );
+		}
 		$widget_style_file = $widget_dir . '/' . $request['widget_name'] . '.css';
 		if ( is_file( $widget_style_file ) ) {
 			$item['widget_style'] = \Nette\Utils\FileSystem::read( $widget_style_file );
@@ -218,6 +222,8 @@ class Rest_Api_Widgets_Controller extends Rest_Api_Controller {
 		}
 		$widget_config_file = $widget_dir . '/' . $request['widget_name'] . '.neon';
 		$filesystem->dumpFile( $widget_config_file, $request['params']['widget_config'] );
+		$widget_template_file = $widget_dir . '/' . $request['widget_name'] . '.latte';
+		$filesystem->dumpFile( $widget_template_file, $request['params']['widget_template'] );
 		$widget_style_file = $widget_dir . '/' . $request['widget_name'] . '.css';
 		$filesystem->dumpFile( $widget_style_file, $request['params']['widget_style'] );
 		$widget_script_file = $widget_dir . '/' . $request['widget_name'] . '.js';
@@ -227,6 +233,7 @@ class Rest_Api_Widgets_Controller extends Rest_Api_Controller {
 				'widget_provider' => $request['widget_provider'],
 				'widget_name'     => $request['widget_name'],
 				'widget_config'   => $request['params']['widget_config'],
+				'widget_template'   => $request['params']['widget_template'],
 				'widget_style'    => $request['params']['widget_style'],
 				'widget_script'   => $request['params']['widget_script'],
 			)
