@@ -15,11 +15,11 @@ use Wpseed\Widgetizer\Helpers;
 use Wpseed\Widgetizer\Validator;
 
 /**
- * Class Elementor_Builder
+ * Class ElementorBuilder
  *
  * @package Wpseed\Widgetizer\Elementor
  */
-class Elementor_Builder {
+class ElementorBuilder {
 
 	/**
 	 * Elementor widgets directories list
@@ -83,7 +83,7 @@ class Elementor_Builder {
 			foreach ( $folders as $folders_item ) {
 				$current_provider                    = $folders_item->getFileName();
 				$current_config[ $current_provider ] = false;
-				if ( Validator::is_widgetizer_slug( $current_provider ) ) {
+				if ( Helpers\StringHelper::is_widgetizer_slug( $current_provider ) ) {
 					$subfolders_finder                   = new Finder();
 					$subfolders                          = $subfolders_finder->directories()->in( $dir . '/' . $current_provider )->depth( '== 0' )->sortByName();
 					$current_config[ $current_provider ] = array();
@@ -91,7 +91,7 @@ class Elementor_Builder {
 						foreach ( $subfolders as $subfolders_item ) {
 							$current_widget = $subfolders_item->getFileName();
 							$current_config[ $current_provider ][ $current_widget ] = false;
-							if ( Validator::is_widgetizer_slug( $current_widget ) ) {
+							if ( Helpers\StringHelper::is_widgetizer_slug( $current_widget ) ) {
 								$current_widget_config      = array();
 								$current_widget_config_path = $dir . '/' . $current_provider . '/' . $current_widget . '/' . $current_widget . '.neon';
 								$current_config[ $current_provider ][ $current_widget ]['path'] = str_replace( '\\', '/', str_replace( realpath( WP_CONTENT_DIR ), '', realpath( $dir . '/' . $current_provider . '/' . $current_widget ) ) );

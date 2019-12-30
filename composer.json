@@ -43,14 +43,13 @@
     "php-coveralls/php-coveralls": "^2.1"
   },
   "autoload": {
-    "classmap": [
-      "includes"
-    ]
+    "psr-4": {
+      "Wpseed\\Widgetizer\\": "includes"
+    }
   },
   "autoload-dev": {
-    "classmap": [
-      "includes",
-      "tests"
-    ]
+    "psr-4": {
+      "Wpseed\\Widgetizer\\": "includes"
+    }
   }
 }

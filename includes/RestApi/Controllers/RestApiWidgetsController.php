@@ -5,7 +5,7 @@
  * @package Widgetizer
  */
 
-namespace Wpseed\Widgetizer\Rest_Api;
+namespace Wpseed\Widgetizer\Rest_Api\Controllers;
 
 use WP_REST_Server;
 use WP_Error;
@@ -19,7 +19,7 @@ use Wpseed\Widgetizer\Elementor\Elementor_Builder;
  *
  * @package Wpseed\Widgetizer\Rest_Api
  */
-class Rest_Api_Widgets_Controller extends Rest_Api_Controller {
+class RestApiWidgetsController extends Rest_Api_Controller {
 
 	/**
 	 * Constructor.

@@ -5,7 +5,7 @@
  * @package Widgetizer
  */
 
-namespace Wpseed\Widgetizer\Rest_Api;
+namespace Wpseed\Widgetizer\RestApi\Controllers;
 
 /**
  * Rest API Controller class
@@ -14,7 +14,7 @@ namespace Wpseed\Widgetizer\Rest_Api;
  *
  * @package Wpseed\Widgetizer\Rest_Api
  */
-class Rest_Api_Controller extends \WP_REST_Controller {
+class RestApiController extends \WP_REST_Controller {
 
 	/**
 	 * Plugin Rest API namespace

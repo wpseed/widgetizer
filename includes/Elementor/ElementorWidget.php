@@ -12,13 +12,13 @@ use Nette\Neon\Neon;
 use Nette\Utils\FileSystem;
 
 /**
- * Elementor Widget class
+ * ElementorWidget class
  *
- * Class Elementor_Widget
+ * Class ElementorWidget
  *
  * @package Wpseed\Widgetizer
  */
-class Elementor_Widget extends \Elementor\Widget_Base {
+class ElementorWidget extends \Elementor\Widget_Base {
 
 	/**
 	 * Widget provider
@@ -133,7 +133,7 @@ class Elementor_Widget extends \Elementor\Widget_Base {
 	/**
 	 * Register widget controls
 	 */
-	protected function _register_controls() { // phpcs:ignore
+	final protected function _register_controls() { // phpcs:ignore
 		$widget_config  = $this->widget_config;
 		$widget_content = array_key_exists( 'content', $widget_config ) ? $widget_config['content'] : array();
 		foreach ( $widget_content as $widget_content_item_index => $widget_content_item_value ) {

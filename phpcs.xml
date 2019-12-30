@@ -29,7 +29,10 @@
 	<!-- https://github.com/WordPress-Coding-Standards/WordPress-Coding-Standards -->
 	<!-- https://github.com/WordPress-Coding-Standards/WordPress-Coding-Standards/wiki/Customizable-sniff-properties -->
 	<config name="minimum_supported_wp_version" value="4.6"/>
-	<rule ref="WordPress" />
+	<rule ref="WordPress">
+    <!-- Rules: Ignore WordPress FileNames Coding Standards -->
+		<exclude name="WordPress.Files.FileName"/>
+	</rule>
 	<rule ref="WordPress.WP.I18n">
 		<properties>
 			<!-- Value: replace the text domain used. -->
