@@ -2878,10 +2878,6 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
-//
-//
-//
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
@@ -30483,25 +30479,6 @@ var render = function() {
                       "div",
                       { staticClass: "buttons" },
                       [
-                        _c(
-                          "b-button",
-                          {
-                            attrs: {
-                              type: "is-success",
-                              "icon-left": "content-copy"
-                            },
-                            on: {
-                              click: function($event) {
-                                return _vm.duplicateWidget(
-                                  props.row.widget_provider,
-                                  props.row.widget_name
-                                )
-                              }
-                            }
-                          },
-                          [_vm._v("\n            Duplicate\n          ")]
-                        ),
-                        _vm._v(" "),
                         props.row.widget_provider !== "widgetizer"
                           ? _c(
                               "b-button",

@@ -137,7 +137,7 @@ class Rest_Api_Widgets_Controller extends Rest_Api_Controller {
 	 * @return \WP_REST_Response|WP_Error Response object on success, or WP_Error object on failure.
 	 */
 	public function get_item( $request ) {
-		$item             = array(
+		$item = array(
 			'widget_config' => '',
 			'widget_style'  => '',
 			'widget_script' => '',
@@ -233,7 +233,7 @@ class Rest_Api_Widgets_Controller extends Rest_Api_Controller {
 				'widget_provider' => $request['widget_provider'],
 				'widget_name'     => $request['widget_name'],
 				'widget_config'   => $request['params']['widget_config'],
-				'widget_template'   => $request['params']['widget_template'],
+				'widget_template' => $request['params']['widget_template'],
 				'widget_style'    => $request['params']['widget_style'],
 				'widget_script'   => $request['params']['widget_script'],
 			)

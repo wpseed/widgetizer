@@ -54,7 +54,7 @@ class Admin {
 	 * Check is plugin page or not
 	 */
 	public function is_plugin_page() {
-		$page = isset( $_GET['page'] ) ? trim( $_GET['page'] ) : null;
+		$page = isset( $_GET['page'] ) ? trim( $_GET['page'] ) : null; // phpcs:disable WordPress.Security.NonceVerification.Recommended
 		if ( in_array( $page, $this->pages, true ) ) {
 			return true;
 		}

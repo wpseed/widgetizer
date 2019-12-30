@@ -16,10 +16,6 @@
         </b-table-column>
         <b-table-column field="widget_actions" label="" width="220">
           <div class="buttons">
-            <b-button type="is-success" icon-left="content-copy"
-              v-on:click="duplicateWidget(props.row.widget_provider, props.row.widget_name)">
-              Duplicate
-            </b-button>
             <b-button type="is-danger" icon-left="delete" v-if="props.row.widget_provider !== 'widgetizer'"
               v-on:click="deleteWidget(props.row.id, props.row.widget_provider, props.row.widget_name)">
               Delete

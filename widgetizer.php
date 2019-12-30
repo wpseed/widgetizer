@@ -10,7 +10,7 @@
  * Plugin Name: Widgetizer
  * Plugin URI:  https://github.com/wpseed/widgetizer
  * Description: Widgets Generator for Page Builders.
- * Version:     1.0.2
+ * Version:     1.0.3
  * Author:      WP Seed
  * Author URI:  https://wpseed.io/
  * Donate link: https://wpseed.io/donate/
@@ -28,7 +28,7 @@
  * Currently plugin version.
  * Starts at version 1.0.0 and uses SemVer - https://semver.org
  */
-define( 'WPSEED_WIDGETIZER_VERSION', '1.0.2' );
+define( 'WPSEED_WIDGETIZER_VERSION', '1.0.3' );
 
 /**
  * Minimum required php version.
