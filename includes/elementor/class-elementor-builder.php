@@ -92,12 +92,16 @@ class Elementor_Builder {
 							$current_widget = $subfolders_item->getFileName();
 							$current_config[ $current_provider ][ $current_widget ] = false;
 							if ( Validator::is_widgetizer_slug( $current_widget ) ) {
-								$current_config[ $current_provider ][ $current_widget ]         = array();
+								$current_widget_config        = array();
 								$current_widget_config_path                                     = $dir . '/' . $current_provider . '/' . $current_widget . '/' . $current_widget . '.neon';
 								$current_config[ $current_provider ][ $current_widget ]['path'] = str_replace( '\\', '/', str_replace( realpath( WP_CONTENT_DIR ), '', realpath( $dir . '/' . $current_provider . '/' . $current_widget ) ) );
 								if ( $fs->exists( $current_widget_config_path ) ) {
-									$current_widget_config = $neon::decode( \Nette\Utils\FileSystem::read( $current_widget_config_path ) );
-									$current_config[ $current_provider ][ $current_widget ]['config'] = $current_widget_config;
+									try {
+										$current_widget_config = $neon::decode( \Nette\Utils\FileSystem::read( $current_widget_config_path ) );
+									} catch ( \Exception $exception ) {}
+									if ( ! isset( $exception ) ) {
+										$current_config[ $current_provider ][ $current_widget ]['config'] = $current_widget_config;
+									}
 								}
 							}
 						}
