@@ -138,19 +138,19 @@ class Rest_Api_Widgets_Controller extends Rest_Api_Controller {
 		if ( ! isset( $request['widget_provider'] ) || ! ( isset( $request['widget_name'] ) ) ) {
 			return new \WP_Error( 'fields_cannot_be_empty', __( 'Fields cannot be empty' ) );
 		}
-		$dir = get_stylesheet_directory() . '/widgetizer/elementor/' . $request['widget_provider'] . '/' . $request['widget_name'];
-		if ( ! is_dir( $dir ) ) {
+		$widget_dir = get_stylesheet_directory() . '/widgetizer/elementor/' . $request['widget_provider'] . '/' . $request['widget_name'];
+		if ( ! is_dir( $widget_dir ) ) {
 			return new \WP_Error( 'widget_not_found', __( 'Widget not found' ), array('status' => 404));
 		}
-		$widget_config_file = $dir . '/' . $request['widget_name'] . '.neon';
+		$widget_config_file = $widget_dir . '/' . $request['widget_name'] . '.neon';
 		if ( is_file( $widget_config_file ) ) {
 			$item['widget_config'] = file_get_contents( $widget_config_file );
 		}
-		$widget_style_file = $dir . '/' . $request['widget_name'] . '.css';
+		$widget_style_file = $widget_dir . '/' . $request['widget_name'] . '.css';
 		if ( is_file( $widget_style_file ) ) {
 			$item['widget_style'] = file_get_contents( $widget_style_file );
 		}
-		$widget_script_file = $dir . '/' . $request['widget_name'] . '.js';
+		$widget_script_file = $widget_dir . '/' . $request['widget_name'] . '.js';
 		if ( is_file( $widget_script_file ) ) {
 			$item['widget_script'] = file_get_contents( $widget_script_file );
 		}
@@ -158,7 +158,7 @@ class Rest_Api_Widgets_Controller extends Rest_Api_Controller {
 			array_merge(
 				array(
 					'widget_provider' => $request['widget_provider'],
-					'widget_name'     => $request['widget_name']
+					'widget_name'     => $request['widget_name'],
 				),
 				$item
 			)
@@ -178,17 +178,16 @@ class Rest_Api_Widgets_Controller extends Rest_Api_Controller {
 		if ( ! isset( $request['widget_provider'] ) || ! ( isset( $request['widget_name'] ) ) ) {
 			return new \WP_Error( 'fields_cannot_be_empty', __( 'Fields cannot be empty' ) );
 		}
-		$dir = get_stylesheet_directory() . '/widgetizer/elementor/' . $request['widget_provider'] . '/' . $request['widget_name'];
-		if ( is_dir( $dir ) ) {
+		$widget_dir = get_stylesheet_directory() . '/widgetizer/elementor/' . $request['widget_provider'] . '/' . $request['widget_name'];
+		if ( is_dir( $widget_dir ) ) {
 			return new \WP_Error( 'widget_already_exists', __( 'Widget already exists' ), array('status' => 403));
 		}
 		$filesystem = new Filesystem();
-		$filesystem->mkdir( $dir, 0755 );
+		$filesystem->mkdir( $widget_dir, 0755 );
 		return new \WP_REST_Response(
 			array(
 				'widget_provider' => $request['widget_provider'],
 				'widget_name'     => $request['widget_name'],
-				'dir'             => $dir,
 			)
 		);
 	}
@@ -202,17 +201,27 @@ class Rest_Api_Widgets_Controller extends Rest_Api_Controller {
 	 * @return \WP_REST_Response|\WP_Error Response object on success, or WP_Error object on failure.
 	 */
 	public function update_item( \WP_REST_Request $request ) {
+		$filesystem = new Filesystem();
 		if ( ! isset( $request['widget_provider'] ) || ! isset( $request['widget_name']  ) ) {
 			return new \WP_Error( 'fields_cannot_be_empty', __( 'Fields cannot be empty' ) );
 		}
-		$dir = get_stylesheet_directory() . '/widgetizer/elementor/' . $request['widget_provider'] . '/' . $request['widget_name'];
-		if ( ! is_dir( $dir ) ) {
+		$widget_dir = get_stylesheet_directory() . '/widgetizer/elementor/' . $request['widget_provider'] . '/' . $request['widget_name'];
+		if ( ! is_dir( $widget_dir ) ) {
 			return new \WP_Error( 'widget_not_found', __( 'Widget not found' ), array('status' => 404));
 		}
+		$widget_config_file = $widget_dir . '/' . $request['widget_name'] . '.neon';
+		$filesystem->dumpFile($widget_config_file, $request['params']['widget_config']);
+		$widget_style_file = $widget_dir . '/' . $request['widget_name'] . '.css';
+		$filesystem->dumpFile($widget_style_file, $request['params']['widget_style']);
+		$widget_script_file = $widget_dir . '/' . $request['widget_name'] . '.js';
+		$filesystem->dumpFile($widget_script_file, $request['params']['widget_script']);
 		return new \WP_REST_Response(
 			array(
 				'widget_provider' => $request['widget_provider'],
 				'widget_name'     => $request['widget_name'],
+				'widget_config'   => $request['params']['widget_config'],
+				'widget_style'    => $request['params']['widget_style'],
+				'widget_script'   => $request['params']['widget_script'],
 			)
 		);
 	}

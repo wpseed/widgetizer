@@ -2785,7 +2785,6 @@ __webpack_require__.r(__webpack_exports__);
     createWidget: function createWidget() {
       var _this = this;
 
-      console.log('submit!');
       this.$v.$touch();
 
       if (this.$v.$invalid) {
@@ -3004,6 +3003,15 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
  // eslint-disable-next-line import/extensions
 
  // eslint-disable-next-line import/extensions
@@ -3014,6 +3022,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
+      errors: [],
       widget: [],
       widgetCodeOptions: {
         tabSize: 2,
@@ -3039,20 +3048,25 @@ __webpack_require__.r(__webpack_exports__);
     };
   },
   methods: {
-    updateWidget: function updateWidget(provider, name) {
+    updateWidget: function updateWidget(provider, name, widget_config, widget_style, widget_script) {
       var _this = this;
 
-      window.axios.patch("".concat(dataWpseedWidgetizerAdmin.restUrl, "widgetizer/v1/widgets/").concat(provider, "/").concat(name)).then(function (response) {
+      window.axios.put("".concat(dataWpseedWidgetizerAdmin.restUrl, "widgetizer/v1/widgets/").concat(provider, "/").concat(name), {
+        params: {
+          widget_config: widget_config,
+          widget_style: widget_style,
+          widget_script: widget_script
+        }
+      }).then(function (response) {
+        console.log(response.data);
+
         _this.$buefy.toast.open({
           message: 'Widget updated',
           type: 'is-success'
         });
-
-        console.log(index);
       })["catch"](function (e) {
         _this.errors.push(e);
       });
-      console.log([provider, name]);
     }
   },
   computed: {},
@@ -3061,7 +3075,6 @@ __webpack_require__.r(__webpack_exports__);
 
     window.axios.get("".concat(dataWpseedWidgetizerAdmin.restUrl, "widgetizer/v1/widgets/").concat(this.$route.params.widget_provider, "/").concat(this.$route.params.widget_name)).then(function (response) {
       _this2.widget = response.data;
-      console.log(_this2.widget);
     })["catch"](function (e) {
       _this2.errors.push(e);
     });
@@ -29978,123 +29991,139 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c(
-    "section",
-    [
-      _c("div", { staticClass: "columns" }, [
-        _c("div", { staticClass: "column" }, [
-          _c("div", { staticClass: "field" }, [
-            _c("label", { staticClass: "label" }, [_vm._v("Widget Name")]),
+  return _c("section", [
+    _c("div", { staticClass: "columns" }, [
+      _c(
+        "div",
+        { staticClass: "column" },
+        [
+          _c("div", { staticClass: "columns" }, [
+            _c("div", { staticClass: "column" }, [
+              _c("div", { staticClass: "field" }, [
+                _c("label", { staticClass: "label" }, [_vm._v("Widget Name")]),
+                _vm._v(" "),
+                _c("div", { staticClass: "control" }, [
+                  _vm._v(_vm._s(_vm.widget.widget_name))
+                ])
+              ])
+            ]),
             _vm._v(" "),
-            _c("div", { staticClass: "control" }, [
-              _vm._v(_vm._s(_vm.widget.widget_name))
+            _c("div", { staticClass: "column" }, [
+              _c("div", { staticClass: "field" }, [
+                _c("label", { staticClass: "label" }, [
+                  _vm._v("Widget Provider")
+                ]),
+                _vm._v(" "),
+                _c("div", { staticClass: "control" }, [
+                  _vm._v(_vm._s(_vm.widget.widget_provider))
+                ])
+              ])
             ])
           ]),
           _vm._v(" "),
-          _c("div", { staticClass: "field" }, [
-            _c("label", { staticClass: "label" }, [_vm._v("Widget Provider")]),
+          _c("div", { staticClass: "columns" }, [
+            _c("div", { staticClass: "column" }, [
+              _c("div", { staticClass: "field" }, [
+                _c("label", { staticClass: "label" }, [
+                  _vm._v("Widget Config")
+                ]),
+                _vm._v(" "),
+                _c(
+                  "div",
+                  { staticClass: "control" },
+                  [
+                    _c("codemirror", {
+                      attrs: { options: _vm.widgetCodeOptions },
+                      model: {
+                        value: _vm.widget.widget_config,
+                        callback: function($$v) {
+                          _vm.$set(_vm.widget, "widget_config", $$v)
+                        },
+                        expression: "widget.widget_config"
+                      }
+                    })
+                  ],
+                  1
+                )
+              ])
+            ]),
             _vm._v(" "),
-            _c("div", { staticClass: "control" }, [
-              _vm._v(_vm._s(_vm.widget.widget_provider))
+            _c("div", { staticClass: "column" }, [
+              _c("div", { staticClass: "field" }, [
+                _c("label", { staticClass: "label" }, [_vm._v("Widget Style")]),
+                _vm._v(" "),
+                _c(
+                  "div",
+                  { staticClass: "control" },
+                  [
+                    _c("codemirror", {
+                      attrs: { options: _vm.widgetStyleOptions },
+                      model: {
+                        value: _vm.widget.widget_style,
+                        callback: function($$v) {
+                          _vm.$set(_vm.widget, "widget_style", $$v)
+                        },
+                        expression: "widget.widget_style"
+                      }
+                    })
+                  ],
+                  1
+                )
+              ])
+            ]),
+            _vm._v(" "),
+            _c("div", { staticClass: "column" }, [
+              _c("div", { staticClass: "field" }, [
+                _c("label", { staticClass: "label" }, [
+                  _vm._v("Widget Script")
+                ]),
+                _vm._v(" "),
+                _c(
+                  "div",
+                  { staticClass: "control" },
+                  [
+                    _c("codemirror", {
+                      attrs: { options: _vm.widgetScriptOptions },
+                      model: {
+                        value: _vm.widget.widget_script,
+                        callback: function($$v) {
+                          _vm.$set(_vm.widget, "widget_script", $$v)
+                        },
+                        expression: "widget.widget_script"
+                      }
+                    })
+                  ],
+                  1
+                )
+              ])
             ])
-          ])
-        ]),
-        _vm._v(" "),
-        _c("div", { staticClass: "column" })
-      ]),
+          ]),
+          _vm._v(" "),
+          _c(
+            "b-button",
+            {
+              attrs: { type: "is-primary is-medium", expanded: "" },
+              on: {
+                click: function($event) {
+                  return _vm.updateWidget(
+                    _vm.widget.widget_provider,
+                    _vm.widget.widget_name,
+                    _vm.widget.widget_config,
+                    _vm.widget.widget_style,
+                    _vm.widget.widget_script
+                  )
+                }
+              }
+            },
+            [_vm._v("Save")]
+          )
+        ],
+        1
+      ),
       _vm._v(" "),
-      _c("div", { staticClass: "columns" }, [
-        _c("div", { staticClass: "column" }, [
-          _c("div", { staticClass: "field" }, [
-            _c("label", { staticClass: "label" }, [_vm._v("Widget Config")]),
-            _vm._v(" "),
-            _c(
-              "div",
-              { staticClass: "control" },
-              [
-                _c("codemirror", {
-                  attrs: { options: _vm.widgetCodeOptions },
-                  model: {
-                    value: _vm.widget.widget_config,
-                    callback: function($$v) {
-                      _vm.$set(_vm.widget, "widget_config", $$v)
-                    },
-                    expression: "widget.widget_config"
-                  }
-                })
-              ],
-              1
-            )
-          ])
-        ]),
-        _vm._v(" "),
-        _c("div", { staticClass: "column" }, [
-          _c("div", { staticClass: "field" }, [
-            _c("label", { staticClass: "label" }, [_vm._v("Widget Style")]),
-            _vm._v(" "),
-            _c(
-              "div",
-              { staticClass: "control" },
-              [
-                _c("codemirror", {
-                  attrs: { options: _vm.widgetStyleOptions },
-                  model: {
-                    value: _vm.widget.widget_style,
-                    callback: function($$v) {
-                      _vm.$set(_vm.widget, "widget_style", $$v)
-                    },
-                    expression: "widget.widget_style"
-                  }
-                })
-              ],
-              1
-            )
-          ])
-        ]),
-        _vm._v(" "),
-        _c("div", { staticClass: "column" }, [
-          _c("div", { staticClass: "field" }, [
-            _c("label", { staticClass: "label" }, [_vm._v("Widget Script")]),
-            _vm._v(" "),
-            _c(
-              "div",
-              { staticClass: "control" },
-              [
-                _c("codemirror", {
-                  attrs: { options: _vm.widgetScriptOptions },
-                  model: {
-                    value: _vm.widget.widget_script,
-                    callback: function($$v) {
-                      _vm.$set(_vm.widget, "widget_script", $$v)
-                    },
-                    expression: "widget.widget_script"
-                  }
-                })
-              ],
-              1
-            )
-          ])
-        ])
-      ]),
-      _vm._v(" "),
-      _c(
-        "b-button",
-        {
-          attrs: { type: "is-primary is-medium", expanded: "" },
-          on: {
-            click: function($event) {
-              return _vm.updateWidget(
-                _vm.widget.widget_provider,
-                _vm.widget.widget_name
-              )
-            }
-          }
-        },
-        [_vm._v("Save")]
-      )
-    ],
-    1
-  )
+      _c("div", { staticClass: "column is-one-quarter" })
+    ])
+  ])
 }
 var staticRenderFns = []
 render._withStripped = true
