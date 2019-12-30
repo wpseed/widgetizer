@@ -78,7 +78,6 @@ export default {
   },
   methods: {
     createWidget() {
-      console.log('submit!');
       this.$v.$touch();
       if (this.$v.$invalid) {
         this.submitStatus = 'Invalid fields detected';
