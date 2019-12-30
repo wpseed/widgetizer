@@ -130,17 +130,17 @@ class Rest_Api_Widgets_Controller extends Rest_Api_Controller {
 	 * @return \WP_REST_Response|\WP_Error Response object on success, or WP_Error object on failure.
 	 */
 	public function get_item( $request ) {
-		$item = [
+		$item = array(
 			'widget_config' => '',
 			'widget_style'  => '',
 			'widget_script' => '',
-		];
+		);
 		if ( ! isset( $request['widget_provider'] ) || ! ( isset( $request['widget_name'] ) ) ) {
 			return new \WP_Error( 'fields_cannot_be_empty', __( 'Fields cannot be empty' ) );
 		}
 		$widget_dir = get_stylesheet_directory() . '/widgetizer/elementor/' . $request['widget_provider'] . '/' . $request['widget_name'];
 		if ( ! is_dir( $widget_dir ) ) {
-			return new \WP_Error( 'widget_not_found', __( 'Widget not found' ), array('status' => 404));
+			return new \WP_Error( 'widget_not_found', __( 'Widget not found' ), array( 'status' => 404 ) );
 		}
 		$widget_config_file = $widget_dir . '/' . $request['widget_name'] . '.neon';
 		if ( is_file( $widget_config_file ) ) {
@@ -180,7 +180,7 @@ class Rest_Api_Widgets_Controller extends Rest_Api_Controller {
 		}
 		$widget_dir = get_stylesheet_directory() . '/widgetizer/elementor/' . $request['widget_provider'] . '/' . $request['widget_name'];
 		if ( is_dir( $widget_dir ) ) {
-			return new \WP_Error( 'widget_already_exists', __( 'Widget already exists' ), array('status' => 403));
+			return new \WP_Error( 'widget_already_exists', __( 'Widget already exists' ), array( 'status' => 403 ) );
 		}
 		$filesystem = new Filesystem();
 		$filesystem->mkdir( $widget_dir, 0755 );
@@ -202,19 +202,19 @@ class Rest_Api_Widgets_Controller extends Rest_Api_Controller {
 	 */
 	public function update_item( \WP_REST_Request $request ) {
 		$filesystem = new Filesystem();
-		if ( ! isset( $request['widget_provider'] ) || ! isset( $request['widget_name']  ) ) {
+		if ( ! isset( $request['widget_provider'] ) || ! isset( $request['widget_name'] ) ) {
 			return new \WP_Error( 'fields_cannot_be_empty', __( 'Fields cannot be empty' ) );
 		}
 		$widget_dir = get_stylesheet_directory() . '/widgetizer/elementor/' . $request['widget_provider'] . '/' . $request['widget_name'];
 		if ( ! is_dir( $widget_dir ) ) {
-			return new \WP_Error( 'widget_not_found', __( 'Widget not found' ), array('status' => 404));
+			return new \WP_Error( 'widget_not_found', __( 'Widget not found' ), array( 'status' => 404 ) );
 		}
 		$widget_config_file = $widget_dir . '/' . $request['widget_name'] . '.neon';
-		$filesystem->dumpFile($widget_config_file, $request['params']['widget_config']);
+		$filesystem->dumpFile( $widget_config_file, $request['params']['widget_config'] );
 		$widget_style_file = $widget_dir . '/' . $request['widget_name'] . '.css';
-		$filesystem->dumpFile($widget_style_file, $request['params']['widget_style']);
+		$filesystem->dumpFile( $widget_style_file, $request['params']['widget_style'] );
 		$widget_script_file = $widget_dir . '/' . $request['widget_name'] . '.js';
-		$filesystem->dumpFile($widget_script_file, $request['params']['widget_script']);
+		$filesystem->dumpFile( $widget_script_file, $request['params']['widget_script'] );
 		return new \WP_REST_Response(
 			array(
 				'widget_provider' => $request['widget_provider'],
@@ -235,24 +235,24 @@ class Rest_Api_Widgets_Controller extends Rest_Api_Controller {
 	 * @return \WP_REST_Response|\WP_Error Response object on success, or WP_Error object on failure.
 	 */
 	public function delete_item( \WP_REST_Request $request ) {
-		if ( ! isset( $request['widget_provider'] ) || ! isset( $request['widget_name']  ) ) {
+		if ( ! isset( $request['widget_provider'] ) || ! isset( $request['widget_name'] ) ) {
 			return new \WP_Error( 'fields_cannot_be_empty', __( 'Fields cannot be empty' ) );
 		}
 		$dir = get_stylesheet_directory() . '/widgetizer/elementor/' . $request['widget_provider'] . '/' . $request['widget_name'];
 		if ( ! is_dir( $dir ) ) {
-			return new \WP_Error( 'widget_not_found', __( 'Widget not found' ), array('status' => 404));
+			return new \WP_Error( 'widget_not_found', __( 'Widget not found' ), array( 'status' => 404 ) );
 		}
 		$filesystem = new Filesystem();
 		try {
 			$filesystem->remove( array( $dir ) );
 		} catch ( \Exception $exception ) {
-			return new \WP_Error( 'widget_delete_failed', __( 'Widget delete failed' ), array('status' => 403));
+			return new \WP_Error( 'widget_delete_failed', __( 'Widget delete failed' ), array( 'status' => 403 ) );
 		}
 		return new \WP_REST_Response(
 			array(
 				'widget_provider' => $request['widget_provider'],
 				'widget_name'     => $request['widget_name'],
-				'dir'             => $dir
+				'dir'             => $dir,
 			)
 		);
 	}

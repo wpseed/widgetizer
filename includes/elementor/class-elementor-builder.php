@@ -92,13 +92,14 @@ class Elementor_Builder {
 							$current_widget = $subfolders_item->getFileName();
 							$current_config[ $current_provider ][ $current_widget ] = false;
 							if ( Validator::is_widgetizer_slug( $current_widget ) ) {
-								$current_widget_config        = array();
-								$current_widget_config_path                                     = $dir . '/' . $current_provider . '/' . $current_widget . '/' . $current_widget . '.neon';
+								$current_widget_config      = array();
+								$current_widget_config_path = $dir . '/' . $current_provider . '/' . $current_widget . '/' . $current_widget . '.neon';
 								$current_config[ $current_provider ][ $current_widget ]['path'] = str_replace( '\\', '/', str_replace( realpath( WP_CONTENT_DIR ), '', realpath( $dir . '/' . $current_provider . '/' . $current_widget ) ) );
 								if ( $fs->exists( $current_widget_config_path ) ) {
 									try {
 										$current_widget_config = $neon::decode( \Nette\Utils\FileSystem::read( $current_widget_config_path ) );
-									} catch ( \Exception $exception ) {}
+									} catch ( \Exception $exception ) {
+									}
 									if ( ! isset( $exception ) ) {
 										$current_config[ $current_provider ][ $current_widget ]['config'] = $current_widget_config;
 									}
@@ -122,7 +123,7 @@ class Elementor_Builder {
 	 */
 	public function get_widgets() {
 		$output = array();
-		$id = 0;
+		$id     = 0;
 		foreach ( $this->config as $provider_name => $provider_content ) {
 			foreach ( $provider_content as $widget_name => $widget_content ) {
 				$output[] = array(

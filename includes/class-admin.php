@@ -54,8 +54,8 @@ class Admin {
 	 * Check is plugin page or not
 	 */
 	public function is_plugin_page() {
-		$page = isset( $_GET['page'] ) ? trim( $_GET['page'] ) : null;
-		if ( in_array( $page, $this->pages ) ) {
+		$page = ( check_admin_referer() && isset( $_GET['page'] ) ) ? trim( $_GET['page'] ) : null;
+		if ( in_array( $page, $this->pages, true ) ) {
 			return true;
 		}
 		return false;

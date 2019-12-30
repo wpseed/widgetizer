@@ -80,7 +80,7 @@ final class Widgetizer {
 		add_action( 'rest_api_init', array( $this, 'create_rest_api_routes' ) );
 		add_action( 'plugins_loaded', array( $this, 'init' ) );
 	}
-	
+
 	public function create_rest_api_routes() {
 		$rest_api_widgets = new Rest_Api_Widgets_Controller();
 		$rest_api_widgets->register_routes();
