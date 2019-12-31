@@ -15,7 +15,7 @@ use Wpseed\Widgetizer\Rest_Api\Controllers\RestApiWidgetsController;
  *
  * @since  1.0.0
  */
-final class PluginWidgetizer {
+final class WidgetizerPlugin {
 
 	/**
 	 * Plugin instance

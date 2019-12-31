@@ -57,4 +57,4 @@ define( 'WPSEED_WIDGETIZER_URL', plugin_dir_url( __FILE__ ) );
 require_once WPSEED_WIDGETIZER_PATH . '/vendor/autoload.php';
 
 // Kick it off.
-add_action( 'plugins_loaded', array( \Wpseed\Widgetizer\PluginWidgetizer::get_instance(), 'init' ) );
+add_action( 'plugins_loaded', array( \Wpseed\Widgetizer\WidgetizerPlugin::get_instance(), 'init' ) );
