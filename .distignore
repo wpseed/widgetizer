@@ -39,3 +39,4 @@ assets-repo
 mix-manifest.json
 webpack.mix.js
 tools
+.eslintrc.json
