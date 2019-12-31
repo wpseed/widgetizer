@@ -31,7 +31,6 @@
     "nette/utils": "^2.5",
     "symfony/filesystem": "^3.4",
     "nette/php-generator": "^2.6",
-    "symfony/http-foundation": "^3.4",
     "pimple/pimple": "^3.2"
   },
   "require-dev": {
