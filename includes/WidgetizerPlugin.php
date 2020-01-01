@@ -20,7 +20,7 @@ final class WidgetizerPlugin {
 	/**
 	 * Plugin instance
 	 *
-	 * @var PluginWidgetizer|null $instance Widgetizer instance.
+	 * @var WidgetizerPlugin|null $instance Widgetizer instance.
 	 */
 	protected static $instance = null;
 
