@@ -144,9 +144,11 @@ class ElementorWidget extends \Elementor\Widget_Base {
 					'tab'   => array_key_exists( 'tab', $widget_content_item_value ) ? $widget_content_item_value['tab'] : 'content',
 				)
 			);
-
 			if ( is_array( $widget_content_item_value ) ) {
 				foreach ( $widget_content_item_value as $widget_content_subitem_index => $widget_content_subitem_value ) {
+					if ( ! is_array( $widget_content_subitem_value ) ) {
+						continue;
+					}
 					if ( 'tab' === $widget_content_subitem_index ) {
 						continue;
 					}
