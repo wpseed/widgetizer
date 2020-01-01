@@ -5,12 +5,12 @@
  * @package Widgetizer
  */
 
-namespace Wpseed\Widgetizer\Rest_Api\Controllers;
+namespace Wpseed\Widgetizer\RestApi\Controllers;
 
 use WP_REST_Server;
 use WP_Error;
 use Symfony\Component\Filesystem\Filesystem;
-use Wpseed\Widgetizer\Elementor\Elementor_Builder;
+use Wpseed\Widgetizer\Elementor\ElementorBuilder;
 
 /**
  * Rest API class for widgets
@@ -19,7 +19,7 @@ use Wpseed\Widgetizer\Elementor\Elementor_Builder;
  *
  * @package Wpseed\Widgetizer\Rest_Api
  */
-class RestApiWidgetsController extends Rest_Api_Controller {
+class RestApiWidgetsController extends RestApiController {
 
 	/**
 	 * Constructor.
@@ -118,7 +118,7 @@ class RestApiWidgetsController extends Rest_Api_Controller {
 	 * @return \WP_REST_Response|WP_Error Response object on success, or WP_Error object on failure.
 	 */
 	public function get_items( $request ) {
-		$widgets_parser = new Elementor_Builder(
+		$widgets_parser = new ElementorBuilder(
 			array(
 				WPSEED_WIDGETIZER_PATH . '/widgets/elementor',
 				WP_CONTENT_DIR . '/widgets/elementor',

@@ -8,7 +8,7 @@
 namespace Wpseed\Widgetizer;
 
 use Wpseed\Widgetizer\Elementor\ElementorBuilder;
-use Wpseed\Widgetizer\Rest_Api\Controllers\RestApiWidgetsController;
+use Wpseed\Widgetizer\RestApi\Controllers\RestApiWidgetsController;
 
 /**
  * Main initiation plugin class

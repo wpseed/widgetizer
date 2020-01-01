@@ -11,8 +11,7 @@ use Nette\Neon\Neon;
 use Nette\PhpGenerator\ClassType;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Finder\Finder;
-use Wpseed\Widgetizer\Helpers;
-use Wpseed\Widgetizer\Validator;
+use Wpseed\Widgetizer\Helpers\StringHelper;
 
 /**
  * Class ElementorBuilder
@@ -83,7 +82,7 @@ class ElementorBuilder {
 			foreach ( $folders as $folders_item ) {
 				$current_provider                    = $folders_item->getFileName();
 				$current_config[ $current_provider ] = false;
-				if ( Helpers\StringHelper::is_widgetizer_slug( $current_provider ) ) {
+				if ( StringHelper::is_widgetizer_slug( $current_provider ) ) {
 					$subfolders_finder                   = new Finder();
 					$subfolders                          = $subfolders_finder->directories()->in( $dir . '/' . $current_provider )->depth( '== 0' )->sortByName();
 					$current_config[ $current_provider ] = array();
@@ -91,7 +90,7 @@ class ElementorBuilder {
 						foreach ( $subfolders as $subfolders_item ) {
 							$current_widget = $subfolders_item->getFileName();
 							$current_config[ $current_provider ][ $current_widget ] = false;
-							if ( Helpers\StringHelper::is_widgetizer_slug( $current_widget ) ) {
+							if ( StringHelper::is_widgetizer_slug( $current_widget ) ) {
 								$current_widget_config      = array();
 								$current_widget_config_path = $dir . '/' . $current_provider . '/' . $current_widget . '/' . $current_widget . '.neon';
 								$current_config[ $current_provider ][ $current_widget ]['path'] = str_replace( '\\', '/', str_replace( realpath( WP_CONTENT_DIR ), '', realpath( $dir . '/' . $current_provider . '/' . $current_widget ) ) );
@@ -164,7 +163,7 @@ class ElementorBuilder {
 		$class = new ClassType( $class_name );
 		$class
 			->setFinal()
-			->setExtends( 'Wpseed\Widgetizer\Elementor\Elementor_Widget' );
+			->setExtends( 'Wpseed\Widgetizer\Elementor\ElementorWidget' );
 		foreach ( $properties as $property => $value ) {
 			$class
 				->addProperty( $property )
@@ -229,7 +228,7 @@ class ElementorBuilder {
 	public function register_widgets() {
 		foreach ( $this->config as $provider_name => $provider_items ) {
 			foreach ( $provider_items as $widget_name => $widget_content ) {
-				$class_name       = 'Wpseed_Widgetizer_Elementor_' . Helpers::dashes_to_class_name( $provider_name . '-' . $widget_name );
+				$class_name       = 'Wpseed_Widgetizer_Elementor_' . StringHelper::dashes_to_class_name( $provider_name . '-' . $widget_name );
 				$class_properties = array(
 					'widget_provider' => $provider_name,
 					'widget_name'     => $widget_name,

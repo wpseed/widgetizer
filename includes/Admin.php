@@ -8,7 +8,7 @@
 namespace Wpseed\Widgetizer;
 
 use Latte\Engine;
-use Wpseed\Widgetizer\Elementor\Elementor_Builder;
+use Wpseed\Widgetizer\Elementor\ElementorBuilder;
 
 /**
  * Class Admin
@@ -77,7 +77,7 @@ class Admin {
 	 */
 	public function render_admin_page() {
 		$template       = WPSEED_WIDGETIZER_PATH . '/templates/main.latte';
-		$widgets_parser = new Elementor_Builder(
+		$widgets_parser = new ElementorBuilder(
 			array(
 				WPSEED_WIDGETIZER_PATH . '/widgets/elementor',
 				WP_CONTENT_DIR . '/widgets/elementor',
