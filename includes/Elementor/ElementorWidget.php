@@ -141,7 +141,7 @@ class ElementorWidget extends \Elementor\Widget_Base {
 				'section_' . mb_strtolower( esc_html( $widget_content_item_index ), 'UTF-8' ),
 				array(
 					'label' => ucfirst( mb_strtolower( esc_html( $widget_content_item_index ), 'UTF-8' ) ),
-					'tab'   => array_key_exists( 'tab', $widget_content_item_value ) ? $widget_content_item_value['tab'] : 'content',
+					'tab'   => (is_array($widget_content_item_value) && array_key_exists( 'tab', $widget_content_item_value )) ? $widget_content_item_value['tab'] : 'content',
 				)
 			);
 			if ( is_array( $widget_content_item_value ) ) {
