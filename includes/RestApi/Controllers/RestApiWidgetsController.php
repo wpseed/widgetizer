@@ -211,7 +211,7 @@ class RestApiWidgetsController extends RestApiController {
 	 * @param \WP_REST_Request $request Full data about the request.
 	 * @return \WP_REST_Response|WP_Error Response object on success, or WP_Error object on failure.
 	 */
-	public function update_item( \WP_REST_Request $request ) {
+	public function update_item( $request ) {
 		$filesystem = new Filesystem();
 		if ( ! isset( $request['widget_provider'] ) || ! isset( $request['widget_name'] ) ) {
 			return new WP_Error( 'fields_cannot_be_empty', __( 'Fields cannot be empty', 'wpseed-widgetizer' ) );
@@ -248,7 +248,7 @@ class RestApiWidgetsController extends RestApiController {
 	 * @param \WP_REST_Request $request Full data about the request.
 	 * @return \WP_REST_Response|WP_Error Response object on success, or WP_Error object on failure.
 	 */
-	public function delete_item( \WP_REST_Request $request ) {
+	public function delete_item( $request ) {
 		if ( ! isset( $request['widget_provider'] ) || ! isset( $request['widget_name'] ) ) {
 			return new WP_Error( 'fields_cannot_be_empty', __( 'Fields cannot be empty', 'wpseed-widgetizer' ) );
 		}
